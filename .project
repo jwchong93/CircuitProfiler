@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/Main/NodeList.java</name>
+			<type>1</type>
+			<location>C:/Users/Jing Wen/workspace/CircuitProfiler/src/Main/NodeList.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

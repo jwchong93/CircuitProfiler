@@ -11,7 +11,13 @@ public class Nets
 	public Nodes outputNodes;
 	public ArrayList<Pins> inputPins = new ArrayList<Pins>();
 	public Pins outputPins;
-	public int numberOfPins;
+	public Nets ()
+	{
+		this.outputNodes =null;
+		this.outputPins = null;
+		
+	}
+
 
 	
 	
