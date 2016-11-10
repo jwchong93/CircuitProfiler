@@ -6,8 +6,10 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		String testFileName = "adaptec1";
-		String testFileDirectory = "C:/Users/Jing Wen/Desktop/testFiles/"+testFileName+"/";
+		String testFileName = "bigblue1";
+		System.out.println("Analysing " + testFileName);
+		String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
+		
 		NodeList nodeList = new NodeList();
 		nodeList.readAndAnalyseFile(testFileName, testFileDirectory);
 		nodeList.printSummary();
@@ -19,7 +21,7 @@ public class Main
 		netList.netListReadAndAnalyseFile(testFileName, testFileDirectory);
 		netList.printSummary();
 		System.out.println("Information: End reading .nets file");
-
+		
 		
 	}
 }

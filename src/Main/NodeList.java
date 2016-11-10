@@ -34,7 +34,7 @@ public class NodeList {
 		System.out.println("Information: Start process .nodes file");
 		// Set .nodes file pointer
 		FileIO nodeFile = new FileIO();
-		nodeFile.initFileIO(testFileDirectory, testFileName, ".nodes");
+		nodeFile.initFileInput(testFileDirectory, testFileName, ".nodes");
 		// Now we have pointer to the file, parse the file, process line by line
 		String line;
 		String[] tempArray;

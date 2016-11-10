@@ -11,7 +11,7 @@ public class FileIO
 
 private static BufferedReader in;
 private FileInputStream fStream;
-public void initFileIO (String testFileDirectory, String testFileName, String ext)
+public void initFileInput (String testFileDirectory, String testFileName, String ext)
 {
 	try
 	{

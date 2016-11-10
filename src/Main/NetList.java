@@ -2,7 +2,6 @@ package Main;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -32,7 +31,7 @@ public class NetList
 	{
 		
 		FileIO file = new FileIO();
-		file.initFileIO(testFileDirectory, testFileName, ".nets");
+		file.initFileInput(testFileDirectory, testFileName, ".nets");
 		String line;
 		String[] tempArray;
 		//Find the first net
