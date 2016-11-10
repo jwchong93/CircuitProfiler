@@ -12,6 +12,4 @@ public class Pins
 		this.coordinatesX = coordinatesX;
 		this.coordinatesY = coordinatesY;
 	}
-	
-	
 }

@@ -79,7 +79,4 @@ public class Nets
 	{
 		return this.netName;
 	}
-
-	
-	
 }
