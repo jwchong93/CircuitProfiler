@@ -12,7 +12,8 @@ public class Main
 		String testFileDirectory = "C:/Users/dihjiann/Desktop/VLSIDA/testFiles/"+testFileName+"/";
 
 		NodeList nodeList = new NodeList();
-		nodeList.nodeListOperation(testFileName, testFileDirectory);
+		nodeList.readAndAnalyseFile(testFileName, testFileDirectory);
+		nodeList.printSummary();
 
 		//============================================================================================================
 
@@ -42,7 +43,7 @@ public class Main
 			while ((!tempArray[0].equals("NetDegree")) && line != null)
 			{
 				Nodes newNode = new Nodes();
-				newNode.nodeName = tempArray[0].trim();
+				newNode.setNodeName(tempArray[0].trim());
 				Pins newPin = new Pins();
 				newPin.coordinatesX = Float.parseFloat(tempArray[3]);
 				newPin.coordinatesX = Float.parseFloat(tempArray[4]);
