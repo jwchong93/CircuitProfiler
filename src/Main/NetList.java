@@ -37,7 +37,7 @@ public class NetList
 			while ((!tempArray[0].equals("NetDegree")) && line != null)
 			{
 				Nodes newNode = new Nodes();
-				newNode.nodeName = tempArray[0].trim();
+				newNode.setNodeName(tempArray[0].trim());
 				Pins newPin = new Pins();
 				newPin.coordinatesX = Float.parseFloat(tempArray[3]);
 				newPin.coordinatesX = Float.parseFloat(tempArray[4]);

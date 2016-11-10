@@ -9,12 +9,12 @@ public class Main
 		String testFileName = "adaptec1";
 		String testFileDirectory = "C:/Users/Jing Wen/Desktop/testFiles/"+testFileName+"/";
 		NodeList nodeList = new NodeList();
-		nodeList.nodeListOperation(testFileName, testFileDirectory);
+		nodeList.readAndAnalyseFile(testFileName, testFileDirectory);
+		nodeList.printSummary();
 
 		//============================================================================================================
 
 		System.out.println("Start reading .nets file");
-		
 		NetList netList = new NetList();
 		netList.netListOperation(testFileName, testFileDirectory);
 		

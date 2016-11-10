@@ -3,20 +3,20 @@ package Main;
 import java.util.*;
 
 public class NodeList {
-	ArrayList<Nodes> nodelist;
+	private ArrayList<Nodes> nodelist;
 	
-	int totalTerminalNodes = 0;
-	int totalNonTerminalNodes = 0;
-	int totalNode = 0;
-	int totalNonTerminalWidth = 0;
+	private int totalTerminalNodes = 0;
+	private int totalNonTerminalNodes = 0;
+	private int totalNode = 0;
+	private int totalNonTerminalWidth = 0;
 	
 	// Variable for storing comparison
-	ArrayList<Nodes> largestAreaTerminalNodeList;
-	ArrayList<Nodes> smallestAreaTerminalNodeList;
-	ArrayList<Nodes> largestAreaNonTerminalNodeList;
-	ArrayList<Nodes> smallestAreaNonTerminalNodeList;
-	final Nodes largestAreaNode = new Nodes(null, 0, 0, null);
-	final Nodes smallestAreaNode = new Nodes(null, (int)Math.sqrt(Integer.MAX_VALUE), (int)Math.sqrt(Integer.MAX_VALUE), null);
+	private ArrayList<Nodes> largestAreaTerminalNodeList;
+	private ArrayList<Nodes> smallestAreaTerminalNodeList;
+	private ArrayList<Nodes> largestAreaNonTerminalNodeList;
+	private ArrayList<Nodes> smallestAreaNonTerminalNodeList;
+	private final Nodes largestAreaNode = new Nodes(null, 0, 0, null);
+	private final Nodes smallestAreaNode = new Nodes(null, (int)Math.sqrt(Integer.MAX_VALUE), (int)Math.sqrt(Integer.MAX_VALUE), null);
 	
 	public NodeList () {
 		this.nodelist = new ArrayList<Nodes>();
@@ -30,8 +30,8 @@ public class NodeList {
 		this.smallestAreaNonTerminalNodeList.add(this.smallestAreaNode);
 	}
 	
-	public void nodeListOperation (String testFileName, String testFileDirectory) {
-		System.out.println("Start reading .nodes file");
+	public void readAndAnalyseFile (String testFileName, String testFileDirectory) {
+		System.out.println("Start process .nodes file");
 		// Set .nodes file pointer
 		FileIO nodeFile = new FileIO();
 		nodeFile.initFileIO(testFileDirectory, testFileName, ".nodes");
@@ -55,7 +55,7 @@ public class NodeList {
 			if(tempArray.length == 3) {
 				newNode = new Nodes(tempArray[0], Integer.parseInt(tempArray[1]), Integer.parseInt(tempArray[2]), "non-terminal");
 				totalNonTerminalNodes++;
-				totalNonTerminalWidth += newNode.nodeWidth;
+				totalNonTerminalWidth += newNode.getNodeWidth();
 				
 				// Find largest and smallest non-terminal nodes
 				if(newNode.getArea() > largestAreaNonTerminalNodeList.get(0).getArea()) {
@@ -104,27 +104,30 @@ public class NodeList {
 				tempArray = line.split(" |\t");
 			}
 		}
-		
-		// Print out description and parameter
+		System.out.println("Process .nodes File done");
+	}
+	
+	// Print out description and parameter
+	public void printSummary() {
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
 		System.out.println("NumTerminals: "+totalTerminalNodes);
 		System.out.println("NumNonTerminals: "+totalNonTerminalNodes);
 		System.out.println("NumNodes: "+totalNode);
 		System.out.println("Largest Non-Terminal Node("+largestAreaNonTerminalNodeList.size()+"): Area "+largestAreaNonTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < largestAreaNonTerminalNodeList.size(); i++) {
-			System.out.println(largestAreaNonTerminalNodeList.get(i).nodeName);
+			System.out.println(largestAreaNonTerminalNodeList.get(i).getNodeName());
 		}
 		System.out.println("Smallest Non-Terminal Node("+smallestAreaNonTerminalNodeList.size()+"): Area "+smallestAreaNonTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < smallestAreaNonTerminalNodeList.size(); i++) {
-			System.out.println(smallestAreaNonTerminalNodeList.get(i).nodeName);
+			System.out.println(smallestAreaNonTerminalNodeList.get(i).getNodeName());
 		}
 		System.out.println("Largest Terminal Node("+largestAreaTerminalNodeList.size()+"): Area "+largestAreaTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < largestAreaTerminalNodeList.size(); i++) {
-			System.out.println(largestAreaTerminalNodeList.get(i).nodeName);
+			System.out.println(largestAreaTerminalNodeList.get(i).getNodeName());
 		}
 		System.out.println("Smallest Terminal Node("+smallestAreaTerminalNodeList.size()+"): Area "+smallestAreaTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < smallestAreaTerminalNodeList.size(); i++) {
-			System.out.println(smallestAreaTerminalNodeList.get(i).nodeName);
+			System.out.println(smallestAreaTerminalNodeList.get(i).getNodeName());
 		}
 		System.out.println("Total non-terminal node width length: "+totalNonTerminalWidth);
 		
