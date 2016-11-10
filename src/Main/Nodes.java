@@ -2,9 +2,9 @@ package Main;
 
 public class Nodes 
 {
-	String nodeName;
-	String nodeType;
-	int nodeWidth, nodeHeight;
+	private String nodeName;
+	private String nodeType;
+	private int nodeWidth, nodeHeight;
 	private int nodeArea;
 	
 	// constructor
@@ -25,7 +25,10 @@ public class Nodes
 	}
 
 	// methods
-	public int getArea () { return this.nodeArea; }
+	public int getArea() { return this.nodeArea; }
+	public int getNodeWidth() { return this.nodeWidth; }
+	public String getNodeName() { return this.nodeName; }
+	public void setNodeName(String nodeName) { this.nodeName = nodeName; }
 	public boolean isTerminal() { return this.nodeType == "terminal"; }
 	public Nodes copyNode () {
 		Nodes copyNode = new Nodes(this.nodeName, this.nodeWidth, this.nodeHeight, this.nodeType);
