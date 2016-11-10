@@ -62,6 +62,14 @@ public class Nets
 	{
 		return this.outputPins.size();
 	}
+	public int getDegree() 
+	{
+		return this.netDegree;
+	}
+	public String getNetName() 
+	{
+		return this.netName;
+	}
 	
 	
 }
