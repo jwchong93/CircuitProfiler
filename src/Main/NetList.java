@@ -27,10 +27,10 @@ public class NetList
 		this.totalBidirectionalPins = 0;
 		this.maxDegreeName = null;
 	}
-	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory)
+	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
 		
-		FileIO file = new FileIO();
+		
 		file.initFileInput(testFileDirectory, testFileName, ".nets");
 		String line;
 		String[] tempArray;
@@ -106,20 +106,20 @@ public class NetList
 			this.netlist.add(newNet);
 		}
 	}
-	public void printSummary() 
+	public void printSummary(FileIO file) 
 	{
-		System.out.println("Total number of nets : " + this.size);
-		System.out.println("Total number of pins : " + this.totalPins);
-		System.out.println("Total number of input pins : " + this.totalInputPins);
-		System.out.println("Total number of output pins : " + this.totalOutputPins);
-		System.out.println("Total number of bidirectional pins : " + this.totalBidirectionalPins);
-		System.out.println("Maximum net degree : " + this.maxDegree + "\nNet name of maximum net degree : " + this.maxDegreeName);
+		file.writeToFiles("Total number of nets : " + this.size);
+		file.writeToFiles("Total number of pins : " + this.totalPins);
+		file.writeToFiles("Total number of input pins : " + this.totalInputPins);
+		file.writeToFiles("Total number of output pins : " + this.totalOutputPins);
+		file.writeToFiles("Total number of bidirectional pins : " + this.totalBidirectionalPins);
+		file.writeToFiles("Maximum net degree : " + this.maxDegree + "\nNet name of maximum net degree : " + this.maxDegreeName);
 		Set keys = this.histogramOfConnectivity.entrySet();
-		System.out.println("Net Degree | Number of Nets");
+		file.writeToFiles("Net Degree | Number of Nets");
 		for (Iterator i = keys.iterator();i.hasNext();)
 		{
 			Map.Entry entry = (Map.Entry) i.next();
-			System.out.println(entry.getKey() + " | " + entry.getValue() );
+			file.writeToFiles(entry.getKey() + " | " + entry.getValue() );
 		}
 		
 	}

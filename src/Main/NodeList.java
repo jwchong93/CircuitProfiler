@@ -30,18 +30,16 @@ public class NodeList {
 		this.smallestAreaNonTerminalNodeList.add(this.smallestAreaNode);
 	}
 	
-	public void readAndAnalyseFile (String testFileName, String testFileDirectory) {
-		System.out.println("Information: Start process .nodes file");
-		// Set .nodes file pointer
-		FileIO nodeFile = new FileIO();
-		nodeFile.initFileInput(testFileDirectory, testFileName, ".nodes");
+	public void readAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file) {
+		
+		file.initFileInput(testFileDirectory, testFileName, ".nodes");
 		// Now we have pointer to the file, parse the file, process line by line
 		String line;
 		String[] tempArray;
  		// Go to first node
 		do
 		{
-			line = nodeFile.readTextFiles().trim();
+			line = file.readTextFiles().trim();
 			tempArray = line.split(" |\t");
 		}
 		while (!tempArray[0].equals("o0"));
@@ -97,41 +95,41 @@ public class NodeList {
 			nodelist.add(newNode);
 			
 			// Read next file line
-			line = nodeFile.readTextFiles();
+			line = file.readTextFiles();
 			if(line != null)
 			{
 				line = line.trim();
 				tempArray = line.split(" |\t");
 			}
 		}
-		System.out.println("Information: Process .nodes File done");
+		
 	}
 	
 	// Print out description and parameter
-	public void printSummary() {
+	public void printSummary(FileIO file) {
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
-		System.out.println("NumTerminals: "+totalTerminalNodes);
-		System.out.println("NumNonTerminals: "+totalNonTerminalNodes);
-		System.out.println("NumNodes: "+totalNode);
-		System.out.println("Largest Non-Terminal Node("+largestAreaNonTerminalNodeList.size()+"): Area "+largestAreaNonTerminalNodeList.get(0).getArea());
+		file.writeToFiles("NumTerminals: "+totalTerminalNodes);
+		file.writeToFiles("NumNonTerminals: "+totalNonTerminalNodes);
+		file.writeToFiles("NumNodes: "+totalNode);
+		file.writeToFiles("Largest Non-Terminal Node("+largestAreaNonTerminalNodeList.size()+"): Area "+largestAreaNonTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < largestAreaNonTerminalNodeList.size(); i++) {
-			System.out.println(largestAreaNonTerminalNodeList.get(i).getNodeName());
+			file.writeToFiles(largestAreaNonTerminalNodeList.get(i).getNodeName());
 		}
-		System.out.println("Smallest Non-Terminal Node("+smallestAreaNonTerminalNodeList.size()+"): Area "+smallestAreaNonTerminalNodeList.get(0).getArea());
+		file.writeToFiles("Smallest Non-Terminal Node("+smallestAreaNonTerminalNodeList.size()+"): Area "+smallestAreaNonTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < smallestAreaNonTerminalNodeList.size(); i++) {
-			System.out.println(smallestAreaNonTerminalNodeList.get(i).getNodeName());
+			file.writeToFiles(smallestAreaNonTerminalNodeList.get(i).getNodeName());
 		}
-		System.out.println("Largest Terminal Node("+largestAreaTerminalNodeList.size()+"): Area "+largestAreaTerminalNodeList.get(0).getArea());
+		file.writeToFiles("Largest Terminal Node("+largestAreaTerminalNodeList.size()+"): Area "+largestAreaTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < largestAreaTerminalNodeList.size(); i++) {
-			System.out.println(largestAreaTerminalNodeList.get(i).getNodeName());
+			file.writeToFiles(largestAreaTerminalNodeList.get(i).getNodeName());
 		}
-		System.out.println("Smallest Terminal Node("+smallestAreaTerminalNodeList.size()+"): Area "+smallestAreaTerminalNodeList.get(0).getArea());
+		file.writeToFiles("Smallest Terminal Node("+smallestAreaTerminalNodeList.size()+"): Area "+smallestAreaTerminalNodeList.get(0).getArea());
 		for(int i = 0; i < smallestAreaTerminalNodeList.size(); i++) {
-			System.out.println(smallestAreaTerminalNodeList.get(i).getNodeName());
+			file.writeToFiles(smallestAreaTerminalNodeList.get(i).getNodeName());
 		}
-		System.out.println("Total non-terminal node width length: "+totalNonTerminalWidth);
+		file.writeToFiles("Total non-terminal node width length: "+totalNonTerminalWidth);
 		
 		// Reach end of .nodes file
-		System.out.println("Information: End read .nodes file");
+		
 	}
 }
