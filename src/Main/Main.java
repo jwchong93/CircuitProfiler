@@ -17,9 +17,9 @@ public class Main
 		System.out.println("Start reading .nets file");
 		NetList netList = new NetList();
 		netList.netListOperation(testFileName, testFileDirectory);
+		netList.printSummary();
+		System.out.println("End reading .nets file");
 		
-		System.out.println(netList.size);
-		System.out.println(netList.totalPins);
 		//FileIO.readTextFiles(testFileDirectory, testFileName, ".nodes");
 		
 		//placementGreedy(testFileDirectory, testFileName);
