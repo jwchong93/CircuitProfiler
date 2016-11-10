@@ -14,15 +14,12 @@ public class Main
 
 		//============================================================================================================
 
-		System.out.println("Start reading .nets file");
+		System.out.println("Information: Start reading .nets file");
 		NetList netList = new NetList();
-		netList.netListOperation(testFileName, testFileDirectory);
+		netList.netListReadAndAnalyseFile(testFileName, testFileDirectory);
 		netList.printSummary();
-		System.out.println("End reading .nets file");
-		
-		//FileIO.readTextFiles(testFileDirectory, testFileName, ".nodes");
-		
-		//placementGreedy(testFileDirectory, testFileName);
+		System.out.println("Information: End reading .nets file");
+
 		
 	}
 }

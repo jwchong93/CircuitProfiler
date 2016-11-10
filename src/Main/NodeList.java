@@ -31,7 +31,7 @@ public class NodeList {
 	}
 	
 	public void readAndAnalyseFile (String testFileName, String testFileDirectory) {
-		System.out.println("Start process .nodes file");
+		System.out.println("Information: Start process .nodes file");
 		// Set .nodes file pointer
 		FileIO nodeFile = new FileIO();
 		nodeFile.initFileIO(testFileDirectory, testFileName, ".nodes");
@@ -104,7 +104,7 @@ public class NodeList {
 				tempArray = line.split(" |\t");
 			}
 		}
-		System.out.println("Process .nodes File done");
+		System.out.println("Information: Process .nodes File done");
 	}
 	
 	// Print out description and parameter
@@ -132,6 +132,6 @@ public class NodeList {
 		System.out.println("Total non-terminal node width length: "+totalNonTerminalWidth);
 		
 		// Reach end of .nodes file
-		System.out.println("End read .nodes file");
+		System.out.println("Information: End read .nodes file");
 	}
 }

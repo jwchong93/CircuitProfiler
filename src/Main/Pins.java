@@ -2,7 +2,16 @@ package Main;
 
 public class Pins 
 {
-	public String pinName;
-	public float coordinatesX;
-	public float coordinatesY;
+	private String pinName;
+	private float coordinatesX;
+	private float coordinatesY;
+	
+	public Pins(String pinName, float coordinatesX, float coordinatesY)
+	{
+		this.pinName = pinName;
+		this.coordinatesX = coordinatesX;
+		this.coordinatesY = coordinatesY;
+	}
+	
+	
 }

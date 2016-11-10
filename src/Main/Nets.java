@@ -18,6 +18,18 @@ public class Nets
 	public Nets ()
 	{
 	}
+	public int getNumberOfOutputPins() 
+	{
+		return this.outputPins.size();
+	}
+	public int getNumberOfInputPins() 
+	{
+		return this.inputPins.size();
+	}
+	public int getNumberOfBidirectionalPins() 
+	{
+		return this.bidirectionalPins.size();
+	}
 	public int getTotalNumberOfPins ()
 	{
 		return this.inputPins.size() + 
@@ -58,10 +70,7 @@ public class Nets
 		
 		this.bidirectionalNodes.add(newNode);
 	}
-	public int getNumberOfOutputPins() 
-	{
-		return this.outputPins.size();
-	}
+
 	public int getDegree() 
 	{
 		return this.netDegree;
@@ -70,6 +79,7 @@ public class Nets
 	{
 		return this.netName;
 	}
+
 	
 	
 }
