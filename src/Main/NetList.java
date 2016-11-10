@@ -17,6 +17,7 @@ public class NetList
 	private String maxDegreeName;
 	private TreeMap<Integer, Integer> histogramOfConnectivity = new TreeMap<Integer, Integer>();
 	public ArrayList<Nets> netlist = new ArrayList<Nets>();
+	
 	public NetList()
 	{
 		this.size = 0;
@@ -29,8 +30,6 @@ public class NetList
 	}
 	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
-		
-		
 		file.initFileInput(testFileDirectory, testFileName, ".nets");
 		String line;
 		String[] tempArray;
@@ -106,6 +105,7 @@ public class NetList
 			this.netlist.add(newNet);
 		}
 	}
+	
 	public void printSummary(FileIO file) 
 	{
 		file.writeToFiles("Total number of nets : " + this.size);
@@ -113,14 +113,14 @@ public class NetList
 		file.writeToFiles("Total number of input pins : " + this.totalInputPins);
 		file.writeToFiles("Total number of output pins : " + this.totalOutputPins);
 		file.writeToFiles("Total number of bidirectional pins : " + this.totalBidirectionalPins);
-		file.writeToFiles("Maximum net degree : " + this.maxDegree + "\nNet name of maximum net degree : " + this.maxDegreeName);
-		Set keys = this.histogramOfConnectivity.entrySet();
+		file.writeToFiles("Maximum net degree : " + this.maxDegree);
+		file.writeToFiles("Net name of maximum net degree : " + this.maxDegreeName);
+		Set<Map.Entry<Integer, Integer>> keys = this.histogramOfConnectivity.entrySet();
 		file.writeToFiles("Net Degree | Number of Nets");
-		for (Iterator i = keys.iterator();i.hasNext();)
+		for (Iterator<Map.Entry<Integer, Integer>> i = keys.iterator();i.hasNext();)
 		{
-			Map.Entry entry = (Map.Entry) i.next();
+			Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) i.next();
 			file.writeToFiles(entry.getKey() + " | " + entry.getValue() );
 		}
-		
 	}
 }

@@ -15,7 +15,7 @@ public class Nodes
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 	}
-	// constructor overload
+	// constructor overload for 4 arguments
 	public Nodes(String nodeName, int nodeWidth, int nodeHeight, String nodeType) {
 		this.nodeName = nodeName;
 		this.nodeWidth = nodeWidth;
@@ -30,7 +30,8 @@ public class Nodes
 	public String getNodeName() { return this.nodeName; }
 	public void setNodeName(String nodeName) { this.nodeName = nodeName; }
 	public boolean isTerminal() { return this.nodeType == "terminal"; }
-	public Nodes copyNode () {
+	// deep copy
+	public Nodes copyNode () { 
 		Nodes copyNode = new Nodes(this.nodeName, this.nodeWidth, this.nodeHeight, this.nodeType);
 		return copyNode;
 	}

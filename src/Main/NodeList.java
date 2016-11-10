@@ -2,7 +2,8 @@ package Main;
 
 import java.util.*;
 
-public class NodeList {
+public class NodeList 
+{
 	private ArrayList<Nodes> nodelist;
 	
 	private int totalTerminalNodes = 0;
@@ -18,6 +19,7 @@ public class NodeList {
 	private final Nodes largestAreaNode = new Nodes(null, 0, 0, null);
 	private final Nodes smallestAreaNode = new Nodes(null, (int)Math.sqrt(Integer.MAX_VALUE), (int)Math.sqrt(Integer.MAX_VALUE), null);
 	
+	// Constructor
 	public NodeList () {
 		this.nodelist = new ArrayList<Nodes>();
 		this.largestAreaTerminalNodeList = new ArrayList<Nodes>();
@@ -31,22 +33,19 @@ public class NodeList {
 	}
 	
 	public void readAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file) {
-		
 		file.initFileInput(testFileDirectory, testFileName, ".nodes");
 		// Now we have pointer to the file, parse the file, process line by line
 		String line;
 		String[] tempArray;
  		// Go to first node
-		do
-		{
+		do{
 			line = file.readTextFiles().trim();
 			tempArray = line.split(" |\t");
 		}
 		while (!tempArray[0].equals("o0"));
 		
 		// Start process node by node
-		while (line !=null)
-		{
+		while (line !=null){
 			// Get node and store in nodeList
 			Nodes newNode;
 			// Non-terminal node
@@ -54,7 +53,7 @@ public class NodeList {
 				newNode = new Nodes(tempArray[0], Integer.parseInt(tempArray[1]), Integer.parseInt(tempArray[2]), "non-terminal");
 				totalNonTerminalNodes++;
 				totalNonTerminalWidth += newNode.getNodeWidth();
-				
+		
 				// Find largest and smallest non-terminal nodes
 				if(newNode.getArea() > largestAreaNonTerminalNodeList.get(0).getArea()) {
 					largestAreaNonTerminalNodeList.clear();
@@ -96,16 +95,14 @@ public class NodeList {
 			
 			// Read next file line
 			line = file.readTextFiles();
-			if(line != null)
-			{
+			if(line != null){
 				line = line.trim();
 				tempArray = line.split(" |\t");
 			}
 		}
-		
 	}
 	
-	// Print out description and parameter
+	// Print out description and parameter into Result.txt
 	public void printSummary(FileIO file) {
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
 		file.writeToFiles("NumTerminals: "+totalTerminalNodes);
@@ -128,8 +125,5 @@ public class NodeList {
 			file.writeToFiles(smallestAreaTerminalNodeList.get(i).getNodeName());
 		}
 		file.writeToFiles("Total non-terminal node width length: "+totalNonTerminalWidth);
-		
-		// Reach end of .nodes file
-		
 	}
 }
