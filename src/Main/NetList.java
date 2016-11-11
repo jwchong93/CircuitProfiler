@@ -14,7 +14,7 @@ public class NetList
 	private int totalInputPins;
 	private int maxDegree;
 	private int totalBidirectionalPins;
-	private String maxDegreeName;
+	private ArrayList<String> maxDegreeName = new ArrayList<String>();
 	private TreeMap<Integer, Integer> histogramOfConnectivity = new TreeMap<Integer, Integer>();
 	public ArrayList<Nets> netlist = new ArrayList<Nets>();
 	
@@ -26,7 +26,6 @@ public class NetList
 		this.totalInputPins = 0;
 		this.maxDegree = 0;
 		this.totalBidirectionalPins = 0;
-		this.maxDegreeName = null;
 	}
 	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
@@ -88,11 +87,21 @@ public class NetList
 			this.totalInputPins += newNet.getNumberOfInputPins();
 			this.totalOutputPins += newNet.getNumberOfOutputPins();
 			this.totalBidirectionalPins += newNet.getNumberOfBidirectionalPins();
-			if (newNet.getDegree() > this.maxDegree)
+			if (newNet.getDegree() >= this.maxDegree)
 			{
+				if (newNet.getDegree() == this.maxDegree)
+				{
+					this.maxDegreeName.add(newNet.getNetName());
+				}
+				else
+				{
+					this.maxDegreeName.clear();
+					this.maxDegreeName.add(newNet.getNetName());
+				}
 				this.maxDegree = newNet.getDegree(); 
-				this.maxDegreeName = newNet.getNetName();
-			}
+				
+			} 
+				
 			if (this.histogramOfConnectivity.containsKey(newNet.getDegree()))
 			{
 				this.histogramOfConnectivity.put(newNet.getDegree(),this.histogramOfConnectivity.get(newNet.getDegree()) + 1);
@@ -115,7 +124,7 @@ public class NetList
 		file.writeToFiles("Total number of output pins : " + this.totalOutputPins);
 		file.writeToFiles("Total number of bidirectional pins : " + this.totalBidirectionalPins);
 		file.writeToFiles("Maximum net degree : " + this.maxDegree);
-		file.writeToFiles("Net name of maximum net degree : " + this.maxDegreeName);
+		printArrayList("Net name of maximum net degree : ", this.maxDegreeName,file);	
 		Set<Map.Entry<Integer, Integer>> keys = this.histogramOfConnectivity.entrySet();
 		file.writeToFiles("Net Degree | Number of Nets");
 		for (Iterator<Map.Entry<Integer, Integer>> i = keys.iterator();i.hasNext();)
@@ -124,4 +133,15 @@ public class NetList
 			file.writeToFiles( String.format("%10s", entry.getKey()) + " | " + entry.getValue() );
 		}
 	}
+	
+	private void printArrayList(String headerString, ArrayList<String> list, FileIO file)
+	{
+		String tempString = "";
+		for (Iterator<String> i = list.iterator();i.hasNext();)
+		{
+			tempString += " " + i.next().toString();
+		}
+		file.writeToFiles(headerString + " " + tempString);
+	}
 }
+
