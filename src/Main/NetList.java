@@ -108,6 +108,7 @@ public class NetList
 	
 	public void printSummary(FileIO file) 
 	{
+		file.writeToFiles(".nets file summary:");
 		file.writeToFiles("Total number of nets : " + this.size);
 		file.writeToFiles("Total number of pins : " + this.totalPins);
 		file.writeToFiles("Total number of input pins : " + this.totalInputPins);
@@ -120,7 +121,7 @@ public class NetList
 		for (Iterator<Map.Entry<Integer, Integer>> i = keys.iterator();i.hasNext();)
 		{
 			Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) i.next();
-			file.writeToFiles(entry.getKey() + " | " + entry.getValue() );
+			file.writeToFiles( String.format("%10s", entry.getKey()) + " | " + entry.getValue() );
 		}
 	}
 }

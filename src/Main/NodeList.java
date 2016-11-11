@@ -104,26 +104,45 @@ public class NodeList
 	
 	// Print out description and parameter into Result.txt
 	public void printSummary(FileIO file) {
+		file.writeToFiles(".nodes file summary:");
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
-		file.writeToFiles("NumTerminals: "+totalTerminalNodes);
-		file.writeToFiles("NumNonTerminals: "+totalNonTerminalNodes);
-		file.writeToFiles("NumNodes: "+totalNode);
+		file.writeToFiles("Total Number of Terminals Node: "+totalTerminalNodes);
+		file.writeToFiles("Total Number of Non-Terminals Node: "+totalNonTerminalNodes);
+		file.writeToFiles("Total Number of Nodes: "+totalNode);
 		file.writeToFiles("Largest Non-Terminal Node("+largestAreaNonTerminalNodeList.size()+"): Area "+largestAreaNonTerminalNodeList.get(0).getArea());
-		for(int i = 0; i < largestAreaNonTerminalNodeList.size(); i++) {
-			file.writeToFiles(largestAreaNonTerminalNodeList.get(i).getNodeName());
-		}
+		printInMatrixForm(largestAreaNonTerminalNodeList, file);
 		file.writeToFiles("Smallest Non-Terminal Node("+smallestAreaNonTerminalNodeList.size()+"): Area "+smallestAreaNonTerminalNodeList.get(0).getArea());
-		for(int i = 0; i < smallestAreaNonTerminalNodeList.size(); i++) {
-			file.writeToFiles(smallestAreaNonTerminalNodeList.get(i).getNodeName());
-		}
+		printInMatrixForm(smallestAreaNonTerminalNodeList, file);
 		file.writeToFiles("Largest Terminal Node("+largestAreaTerminalNodeList.size()+"): Area "+largestAreaTerminalNodeList.get(0).getArea());
-		for(int i = 0; i < largestAreaTerminalNodeList.size(); i++) {
-			file.writeToFiles(largestAreaTerminalNodeList.get(i).getNodeName());
-		}
+		printInMatrixForm(largestAreaTerminalNodeList, file);
 		file.writeToFiles("Smallest Terminal Node("+smallestAreaTerminalNodeList.size()+"): Area "+smallestAreaTerminalNodeList.get(0).getArea());
-		for(int i = 0; i < smallestAreaTerminalNodeList.size(); i++) {
-			file.writeToFiles(smallestAreaTerminalNodeList.get(i).getNodeName());
-		}
+		printInMatrixForm(smallestAreaTerminalNodeList, file);	
 		file.writeToFiles("Total non-terminal node width length: "+totalNonTerminalWidth);
 	}
+	
+	private void printInMatrixForm(ArrayList<Nodes> nodeList, FileIO file){
+		String tempStr="";
+		int remainNode = nodeList.size() % 5;
+		int lastDigit;
+		if(nodeList.size() < 5) {
+			lastDigit = 0;
+		}
+		else {
+			lastDigit = nodeList.size() - remainNode;
+		}
+		
+		for(int i = 0; i < nodeList.size() - remainNode; i=i+5) {
+			for(int j = 0; j < 5; j++) {
+				tempStr=tempStr+String.format("%9s", nodeList.get(i+j).getNodeName());
+			}
+			file.writeToFiles(tempStr);
+			tempStr="";
+		}
+		
+		for(int j = 0; j < remainNode; j++) {
+			tempStr=tempStr+String.format("%9s", nodeList.get(lastDigit+j).getNodeName());
+		}
+		if(remainNode != 0) file.writeToFiles(tempStr);
+	}
+	
 }
