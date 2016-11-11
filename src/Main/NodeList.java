@@ -69,9 +69,10 @@ public class NodeList
 				else if(newNode.getArea() == smallestAreaNonTerminalNodeList.get(0).getArea()) {
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
+				nodelist.add(newNode);
 			}
 			// Terminal node
-			else {
+			else if(tempArray.length == 4){
 				newNode = new Nodes(tempArray[0], Integer.parseInt(tempArray[1]), Integer.parseInt(tempArray[2]), tempArray[3]);
 				totalTerminalNodes++;
 				
@@ -90,8 +91,8 @@ public class NodeList
 				else if(newNode.getArea() == smallestAreaTerminalNodeList.get(0).getArea()) {
 					smallestAreaTerminalNodeList.add(newNode);
 				}
+				nodelist.add(newNode);
 			}
-			nodelist.add(newNode);
 			
 			// Read next file line
 			line = file.readTextFiles();
