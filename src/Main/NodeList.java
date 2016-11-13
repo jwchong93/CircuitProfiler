@@ -59,14 +59,15 @@ public class NodeList
 					largestAreaNonTerminalNodeList.removeAll(largestAreaNonTerminalNodeList);
 					largestAreaNonTerminalNodeList.add(newNode);
 				}
+				else if(newNode.getArea() == largestAreaNonTerminalNodeList.get(0).getArea()) {
+					largestAreaNonTerminalNodeList.add(newNode);
+				}
+				
 				if(newNode.getArea() < smallestAreaNonTerminalNodeList.get(0).getArea()) {
 					smallestAreaNonTerminalNodeList.removeAll(smallestAreaNonTerminalNodeList);
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
-				if(newNode.getArea() == largestAreaNonTerminalNodeList.get(0).getArea()) {
-					largestAreaNonTerminalNodeList.add(newNode);
-				}
-				if(newNode.getArea() == smallestAreaNonTerminalNodeList.get(0).getArea()) {
+				else if(newNode.getArea() == smallestAreaNonTerminalNodeList.get(0).getArea()) {
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
 				nodelist.add(newNode);
@@ -81,14 +82,15 @@ public class NodeList
 					largestAreaTerminalNodeList.removeAll(largestAreaTerminalNodeList);
 					largestAreaTerminalNodeList.add(newNode);
 				}
+				else if(newNode.getArea() == largestAreaTerminalNodeList.get(0).getArea()) {
+					largestAreaTerminalNodeList.add(newNode);
+				}
+				
 				if(newNode.getArea() < smallestAreaTerminalNodeList.get(0).getArea()) {
 					smallestAreaTerminalNodeList.removeAll(smallestAreaTerminalNodeList);
 					smallestAreaTerminalNodeList.add(newNode);
 				}
-				if(newNode.getArea() == largestAreaTerminalNodeList.get(0).getArea()) {
-					largestAreaTerminalNodeList.add(newNode);
-				}
-				if(newNode.getArea() == smallestAreaTerminalNodeList.get(0).getArea()) {
+				else if(newNode.getArea() == smallestAreaTerminalNodeList.get(0).getArea()) {
 					smallestAreaTerminalNodeList.add(newNode);
 				}
 				nodelist.add(newNode);
