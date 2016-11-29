@@ -153,4 +153,7 @@ public class NodeList
 		return null;
 	}
 	
+	public ArrayList<Nodes> getNodeList() {
+		return this.nodelist;
+	}
 }
