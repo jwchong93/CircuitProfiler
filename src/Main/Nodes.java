@@ -7,6 +7,8 @@ public class Nodes
 	private int nodeWidth, nodeHeight;
 	private int nodeArea;
 	
+	private NodeCoordinate nodeLocation;
+	
 	// constructor
 	public Nodes() {
 		this.nodeName = null;
@@ -14,6 +16,7 @@ public class Nodes
 		this.nodeWidth = 0;
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
+		this.nodeLocation = new NodeCoordinate();
 	}
 	// constructor overload for 4 arguments
 	public Nodes(String nodeName, int nodeWidth, int nodeHeight, String nodeType) {
@@ -35,4 +38,15 @@ public class Nodes
 		Nodes copyNode = new Nodes(this.nodeName, this.nodeWidth, this.nodeHeight, this.nodeType);
 		return copyNode;
 	}
+	
+	//update node coordinate and get node coordinate 
+	public void setNodeCoordinate(int nodeXCoordinate, int nodeYCoordinate) {
+		this.nodeLocation.setNodeXCoordinate(nodeXCoordinate); 
+		this.nodeLocation.setNodeYCoordinate(nodeYCoordinate);
+	}
+	
+	public NodeCoordinate getNodeCoordinate() {
+		return this.nodeLocation;
+	}
+	
 }

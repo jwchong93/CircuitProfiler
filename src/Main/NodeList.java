@@ -56,7 +56,7 @@ public class NodeList
 		
 				// Find largest and smallest non-terminal nodes
 				if(newNode.getArea() > largestAreaNonTerminalNodeList.get(0).getArea()) {
-					largestAreaNonTerminalNodeList.removeAll(largestAreaNonTerminalNodeList);
+					largestAreaNonTerminalNodeList.clear();
 					largestAreaNonTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == largestAreaNonTerminalNodeList.get(0).getArea()) {
@@ -64,7 +64,7 @@ public class NodeList
 				}
 				
 				if(newNode.getArea() < smallestAreaNonTerminalNodeList.get(0).getArea()) {
-					smallestAreaNonTerminalNodeList.removeAll(smallestAreaNonTerminalNodeList);
+					smallestAreaNonTerminalNodeList.clear();
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == smallestAreaNonTerminalNodeList.get(0).getArea()) {
@@ -79,7 +79,7 @@ public class NodeList
 			
 				// Find largest and smallest terminal nodes
 				if(newNode.getArea() > largestAreaTerminalNodeList.get(0).getArea()) {
-					largestAreaTerminalNodeList.removeAll(largestAreaTerminalNodeList);
+					largestAreaTerminalNodeList.clear();
 					largestAreaTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == largestAreaTerminalNodeList.get(0).getArea()) {
@@ -87,7 +87,7 @@ public class NodeList
 				}
 				
 				if(newNode.getArea() < smallestAreaTerminalNodeList.get(0).getArea()) {
-					smallestAreaTerminalNodeList.removeAll(smallestAreaTerminalNodeList);
+					smallestAreaTerminalNodeList.clear();
 					smallestAreaTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == smallestAreaTerminalNodeList.get(0).getArea()) {
@@ -148,4 +148,7 @@ public class NodeList
 		if(remainNode != 0) file.writeToFiles(tempStr);
 	}
 	
+	public ArrayList<Nodes> getNodeList() {
+		return this.nodelist;
+	}
 }
