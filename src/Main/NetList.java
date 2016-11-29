@@ -56,7 +56,7 @@ public class NetList
 						tempArray[0].trim(),
 						Float.parseFloat(tempArray[3]),
 						Float.parseFloat(tempArray[4])
-						);
+				);
 				
 				if (tempArray[1].equals("I"))
 				{
