@@ -1,5 +1,8 @@
 package Main;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Main 
 {
 	// Constant throughout the program
@@ -23,6 +26,9 @@ public class Main
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
 		netOperation(netList, file, nodeList);
+		
+		//Calcute HPWL
+		int hpwl = totalHPWL(netList);
 
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
@@ -47,5 +53,45 @@ public class Main
 		System.out.println("Dumping nets data to "+resultFileName + resultExtension);
 		netList.printSummary(file);
 		System.out.println("Done processing .nets file");
+	}
+	
+	public static int totalHPWL(NetList nList)
+	{
+		int hpwl = 0, inputNodeSize = 0, outputNodeSize = 0;
+		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
+		
+		for(int i = 0; i < nList.netlist.size(); i++)
+		{
+			inputNodeSize = nList.netlist.get(i).inputNodes.size();
+			outputNodeSize = nList.netlist.get(i).outputNodes.size();
+			
+			for(int j = 0; j < inputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).inputNodes.get(j).getNodeCoordinate());
+			
+			for(int j = 0; j < outputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).outputNodes.get(j).getNodeCoordinate());
+			
+			hpwl += calHPWL(nCoor);
+		}
+		
+		return hpwl;
+	}
+	
+	public static int calHPWL(ArrayList<NodeCoordinate> nCoor)
+	{
+		int xCoor = 0, yCoor = 0;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		ArrayList<Integer> y = new ArrayList<Integer>();
+		
+		for(int i = 0; i < nCoor.size(); i++)
+		{
+			x.add(nCoor.get(i).getNodeXCoordinate());
+			y.add(nCoor.get(i).getNodeYCoordinate());
+		}
+		
+		xCoor = Collections.max(x) - Collections.min(x);
+		yCoor = Collections.max(y) - Collections.min(y);
+		
+		return xCoor + yCoor;
 	}
 }
