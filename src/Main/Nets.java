@@ -7,8 +7,8 @@ public class Nets
 {
 	private String netName;
 	private int netDegree;
-	private ArrayList<Nodes> inputNodes = new ArrayList<Nodes>();
-	private ArrayList<Nodes> outputNodes = new ArrayList<Nodes>();
+	public  ArrayList<Nodes> inputNodes = new ArrayList<Nodes>();
+	public  ArrayList<Nodes> outputNodes = new ArrayList<Nodes>();
 	private ArrayList<Nodes> bidirectionalNodes = new ArrayList<Nodes>();
 	private ArrayList<Pins> inputPins = new ArrayList<Pins>();
 	private ArrayList<Pins> outputPins = new ArrayList<Pins>();

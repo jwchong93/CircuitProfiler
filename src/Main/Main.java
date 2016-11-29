@@ -5,7 +5,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "bigblue1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -22,7 +22,7 @@ public class Main
 		// object always pass by reference
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
-		netOperation(netList, file);
+		netOperation(netList, file, nodeList);
 
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
@@ -38,10 +38,11 @@ public class Main
 		System.out.println("Done processing .nodes file");
 	}
 	
-	public static void netOperation(NetList netList, FileIO file)
+	public static void netOperation(NetList netList, FileIO file, NodeList nodeList)
 	{
 		System.out.println("Start processing .nets file");
 		netList.netListReadAndAnalyseFile(testFileName, testFileDirectory, file);
+		netList.updateNodelist(nodeList);
 		System.out.println("Process .nets file done");
 		System.out.println("Dumping nets data to "+resultFileName + resultExtension);
 		netList.printSummary(file);

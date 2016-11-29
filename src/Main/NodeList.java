@@ -4,7 +4,7 @@ import java.util.*;
 
 public class NodeList 
 {
-	private ArrayList<Nodes> nodelist;
+	public ArrayList<Nodes> nodelist;
 	
 	private int totalTerminalNodes = 0;
 	private int totalNonTerminalNodes = 0;
@@ -56,42 +56,45 @@ public class NodeList
 		
 				// Find largest and smallest non-terminal nodes
 				if(newNode.getArea() > largestAreaNonTerminalNodeList.get(0).getArea()) {
-					largestAreaNonTerminalNodeList.clear();
+					largestAreaNonTerminalNodeList.removeAll(largestAreaNonTerminalNodeList);
 					largestAreaNonTerminalNodeList.add(newNode);
-				}
-				else if(newNode.getArea() < smallestAreaNonTerminalNodeList.get(0).getArea()) {
-					smallestAreaNonTerminalNodeList.clear();
-					smallestAreaNonTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == largestAreaNonTerminalNodeList.get(0).getArea()) {
 					largestAreaNonTerminalNodeList.add(newNode);
 				}
+				
+				if(newNode.getArea() < smallestAreaNonTerminalNodeList.get(0).getArea()) {
+					smallestAreaNonTerminalNodeList.removeAll(smallestAreaNonTerminalNodeList);
+					smallestAreaNonTerminalNodeList.add(newNode);
+				}
 				else if(newNode.getArea() == smallestAreaNonTerminalNodeList.get(0).getArea()) {
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
+				nodelist.add(newNode);
 			}
 			// Terminal node
-			else {
+			else if(tempArray.length == 4){
 				newNode = new Nodes(tempArray[0], Integer.parseInt(tempArray[1]), Integer.parseInt(tempArray[2]), tempArray[3]);
 				totalTerminalNodes++;
-				
+			
 				// Find largest and smallest terminal nodes
 				if(newNode.getArea() > largestAreaTerminalNodeList.get(0).getArea()) {
-					largestAreaTerminalNodeList.clear();
+					largestAreaTerminalNodeList.removeAll(largestAreaTerminalNodeList);
 					largestAreaTerminalNodeList.add(newNode);
-				}
-				else if(newNode.getArea() < smallestAreaTerminalNodeList.get(0).getArea()) {
-					smallestAreaTerminalNodeList.clear();
-					smallestAreaTerminalNodeList.add(newNode);
 				}
 				else if(newNode.getArea() == largestAreaTerminalNodeList.get(0).getArea()) {
 					largestAreaTerminalNodeList.add(newNode);
 				}
+				
+				if(newNode.getArea() < smallestAreaTerminalNodeList.get(0).getArea()) {
+					smallestAreaTerminalNodeList.removeAll(smallestAreaTerminalNodeList);
+					smallestAreaTerminalNodeList.add(newNode);
+				}
 				else if(newNode.getArea() == smallestAreaTerminalNodeList.get(0).getArea()) {
 					smallestAreaTerminalNodeList.add(newNode);
 				}
+				nodelist.add(newNode);
 			}
-			nodelist.add(newNode);
 			
 			// Read next file line
 			line = file.readTextFiles();
@@ -143,6 +146,11 @@ public class NodeList
 			tempStr=tempStr+String.format("%9s", nodeList.get(lastDigit+j).getNodeName());
 		}
 		if(remainNode != 0) file.writeToFiles(tempStr);
+	}
+
+	public ArrayList<Nodes> getTerminalNodeList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

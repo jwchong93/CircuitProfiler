@@ -143,5 +143,52 @@ public class NetList
 		}
 		file.writeToFiles(headerString + " " + tempString);
 	}
+	public void updateNodelist(NodeList nodeList) 
+	{
+		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
+		{
+			Nets thisNet = i.next();
+			ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
+			ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
+			int searchStatus =0;
+			ArrayList<Nodes> terminalList = nodeList.getTerminalNodeList();
+			for (int j =0 ; j< tempInputNodes.size();j++)
+			{
+				for (int k =0;k<terminalList.size();k++)
+				{
+					if (terminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()))
+					{
+						tempInputNodes.set(j, terminalList.get(k)) ;
+						searchStatus = 1;
+					}
+				}
+				if (searchStatus == 0)
+				{
+					tempInputNodes.remove(j);
+				}
+			}
+			
+			
+			searchStatus = 0;
+			for (int j =0 ; j< tempOutputNodes.size();j++)
+			{
+				for (int k =0;k<terminalList.size();k++)
+				{
+					if (terminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()))
+					{
+						tempOutputNodes.set(j, terminalList.get(k));
+						searchStatus = 1;
+					}
+				}
+				if (searchStatus == 0)
+				{
+					tempOutputNodes.remove(j);
+				}
+			}
+			searchStatus = 0;
+			
+		}
+		
+	}
 }
 
