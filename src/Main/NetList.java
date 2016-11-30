@@ -147,48 +147,46 @@ public class NetList
 	
 	public void updateNodelist(NodeList nodeList) 
 	{
+		boolean removed =false;
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
 		{
 			Nets thisNet = i.next();
-			// Loop all net and assign input and output node to temp var.
 			ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
 			ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
-			
-			int searchStatus = 0;
-	
-			ArrayList<Nodes> TerminalList = nodeList.getTerminalNodeList();
+			ArrayList<Nodes> nonTerminalNodes = nodeList.getNonTerminalNodeList();
 			for (int j = 0 ; j< tempInputNodes.size(); j++)
 			{
-				for (int k = 0;k < TerminalList.size(); k++)
+				int nodeNameNumber = Integer.parseUnsignedInt(tempInputNodes.get(j).getNodeName().substring(1));
+				if (nodeNameNumber < nonTerminalNodes.size())
 				{
-					if (TerminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()) == false)
-					{
-						tempInputNodes.set(j, TerminalList.get(k)) ;
-						searchStatus = 1;
-					}
+					tempInputNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
 				}
-				if (searchStatus == 0)
+				else //This is terminal node that non existed.
 				{
-					tempInputNodes.remove(j);
+					this.netlist.remove(thisNet);
+					removed = true;
+					break; //Stop working on this net.
+				}
+			}
+			if (removed)
+			{
+				removed = false;
+				break; //break this loop so that next net will be consider.
+			}
+			for (int j = 0 ; j< tempOutputNodes.size(); j++)
+			{
+				int nodeNameNumber = Integer.parseUnsignedInt(tempOutputNodes.get(j).getNodeName().substring(1));
+				if (nodeNameNumber < nonTerminalNodes.size())
+				{
+					tempOutputNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
+				}
+				else //This is terminal node that non existed.
+				{
+					this.netlist.remove(thisNet);
+					break; //Stop working on this net.
 				}
 			}
 			
-			searchStatus = 0;
-			for (int j =0 ; j< tempOutputNodes.size();j++)
-			{
-				for (int k =0;k < TerminalList.size();k++)
-				{
-					if (TerminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()) == false)
-					{
-						tempOutputNodes.set(j, TerminalList.get(k));
-						searchStatus = 1;
-					}
-				}
-				if (searchStatus == 0)
-				{
-					tempOutputNodes.remove(j);
-				}
-			}	
 		}	
 	}
 }
