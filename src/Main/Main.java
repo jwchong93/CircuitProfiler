@@ -1,7 +1,7 @@
 package Main;
 
-import java.util.Collections;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class Main 
 {
@@ -30,7 +30,13 @@ public class Main
 		file.deInitFileIO();
 	
 		//////////////// Project 2 Start here //////////////
-		//netList.updateNodelist(nodeList);
+
+		System.out.println("Updated node started here....");
+
+		System.out.println(LocalDateTime.now().toString());
+		netList.updateNodelist(nodeList);
+		System.out.println(LocalDateTime.now().toString());
+		
 		System.out.println("Updated node completed");
 	}
 	

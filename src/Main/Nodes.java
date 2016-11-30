@@ -17,8 +17,6 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
-		this.nodeLocation.setNodeXCoordinate(0);
-		this.nodeLocation.setNodeYCoordinate(0);
 	}
 	// constructor overload for 4 arguments
 	public Nodes(String nodeName, int nodeWidth, int nodeHeight, String nodeType) {
