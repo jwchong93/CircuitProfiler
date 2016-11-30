@@ -27,6 +27,7 @@ public class NetList
 		this.maxDegree = 0;
 		this.totalBidirectionalPins = 0;
 	}
+	
 	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
 		file.initFileInput(testFileDirectory, testFileName, ".nets");
@@ -143,22 +144,26 @@ public class NetList
 		}
 		file.writeToFiles(headerString + " " + tempString);
 	}
+	
 	public void updateNodelist(NodeList nodeList) 
 	{
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
 		{
 			Nets thisNet = i.next();
+			// Loop all net and assign input and output node to temp var.
 			ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
 			ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
-			int searchStatus =0;
-			ArrayList<Nodes> terminalList = nodeList.getTerminalNodeList();
-			for (int j =0 ; j< tempInputNodes.size();j++)
+			
+			int searchStatus = 0;
+	
+			ArrayList<Nodes> TerminalList = nodeList.getTerminalNodeList();
+			for (int j = 0 ; j< tempInputNodes.size(); j++)
 			{
-				for (int k =0;k<terminalList.size();k++)
+				for (int k = 0;k < TerminalList.size(); k++)
 				{
-					if (terminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()))
+					if (TerminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()) == false)
 					{
-						tempInputNodes.set(j, terminalList.get(k)) ;
+						tempInputNodes.set(j, TerminalList.get(k)) ;
 						searchStatus = 1;
 					}
 				}
@@ -168,15 +173,14 @@ public class NetList
 				}
 			}
 			
-			
 			searchStatus = 0;
 			for (int j =0 ; j< tempOutputNodes.size();j++)
 			{
-				for (int k =0;k<terminalList.size();k++)
+				for (int k =0;k < TerminalList.size();k++)
 				{
-					if (terminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()))
+					if (TerminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()) == false)
 					{
-						tempOutputNodes.set(j, terminalList.get(k));
+						tempOutputNodes.set(j, TerminalList.get(k));
 						searchStatus = 1;
 					}
 				}
@@ -184,11 +188,8 @@ public class NetList
 				{
 					tempOutputNodes.remove(j);
 				}
-			}
-			searchStatus = 0;
-			
-		}
-		
+			}	
+		}	
 	}
 }
 
