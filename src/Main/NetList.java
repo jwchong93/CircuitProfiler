@@ -1,6 +1,7 @@
 package Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -143,6 +144,7 @@ public class NetList
 		}
 		file.writeToFiles(headerString + " " + tempString);
 	}
+	
 	public void updateNodelist(NodeList nodeList) 
 	{
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
@@ -188,7 +190,47 @@ public class NetList
 			searchStatus = 0;
 			
 		}
+	}
+	
+	public int getTotalHPWL(NetList nList)
+	{
+		int hpwl = 0, inputNodeSize = 0, outputNodeSize = 0;
+		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
 		
+		for(int i = 0; i < nList.netlist.size(); i++)
+		{
+			inputNodeSize = nList.netlist.get(i).inputNodes.size();
+			outputNodeSize = nList.netlist.get(i).outputNodes.size();
+			
+			for(int j = 0; j < inputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).inputNodes.get(j).getNodeCoordinate());
+			
+			for(int j = 0; j < outputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).outputNodes.get(j).getNodeCoordinate());
+			
+			hpwl += calHPWL(nCoor);
+			nCoor.clear();
+		}
+		
+		return hpwl;
+	}
+	
+	public int calHPWL(ArrayList<NodeCoordinate> nCoor)
+	{
+		int xCoor = 0, yCoor = 0;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		ArrayList<Integer> y = new ArrayList<Integer>();
+		
+		for(int i = 0; i < nCoor.size(); i++)
+		{
+			x.add(nCoor.get(i).getNodeXCoordinate());
+			y.add(nCoor.get(i).getNodeYCoordinate());
+		}
+		
+		xCoor = Collections.max(x) - Collections.min(x);
+		yCoor = Collections.max(y) - Collections.min(y);
+		
+		return xCoor + yCoor;
 	}
 }
 
