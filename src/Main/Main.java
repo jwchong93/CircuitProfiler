@@ -26,7 +26,7 @@ public class Main
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
-		
+
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
 	
@@ -42,7 +42,7 @@ public class Main
 		System.out.println("Updated node completed");
 		
 		//Calculate HPWL...testing
-		int hpwl = netList.getTotalHPWL(netList);
+		int hpwl = netList.getTotalHPWL();
 		System.out.println(hpwl);
 	}
 	
