@@ -4,7 +4,9 @@ import java.util.*;
 
 public class NodeList 
 {
-	public ArrayList<Nodes> nodelist;
+	private ArrayList<Nodes> nodelist;
+	private ArrayList<Nodes> terminalnodelist;
+	private ArrayList<Nodes> nonTerminalnodelist;
 	
 	private int totalTerminalNodes = 0;
 	private int totalNonTerminalNodes = 0;
@@ -22,6 +24,8 @@ public class NodeList
 	// Constructor
 	public NodeList () {
 		this.nodelist = new ArrayList<Nodes>();
+		this.terminalnodelist = new ArrayList<Nodes>();
+		this.nonTerminalnodelist = new ArrayList<Nodes>();
 		this.largestAreaTerminalNodeList = new ArrayList<Nodes>();
 		this.smallestAreaTerminalNodeList = new ArrayList<Nodes>();
 		this.largestAreaNonTerminalNodeList = new ArrayList<Nodes>();
@@ -71,6 +75,7 @@ public class NodeList
 					smallestAreaNonTerminalNodeList.add(newNode);
 				}
 				nodelist.add(newNode);
+				nonTerminalnodelist.add(newNode);
 			}
 			// Terminal node
 			else if(tempArray.length == 4){
@@ -94,6 +99,7 @@ public class NodeList
 					smallestAreaTerminalNodeList.add(newNode);
 				}
 				nodelist.add(newNode);
+				terminalnodelist.add(newNode);
 			}
 			
 			// Read next file line
@@ -148,12 +154,7 @@ public class NodeList
 		if(remainNode != 0) file.writeToFiles(tempStr);
 	}
 
-	public ArrayList<Nodes> getTerminalNodeList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public ArrayList<Nodes> getNodeList() {
-		return this.nodelist;
-	}
+	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
+	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
+	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
 }
