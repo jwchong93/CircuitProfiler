@@ -1,5 +1,6 @@
 package Main;
 
+import java.util.*;
 import java.time.LocalDateTime;
 
 public class Main 
@@ -26,17 +27,22 @@ public class Main
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
 		
-		//Calculate HPWL...testing
-		int hpwl = netList.getTotalHPWL(netList);
-		
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
 	
 		//////////////// Project 2 Start here //////////////
+
+		System.out.println("Updated node started here....");
+
 		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList);
 		System.out.println(LocalDateTime.now().toString());
 		
+		System.out.println("Updated node completed");
+		
+		//Calculate HPWL...testing
+		int hpwl = netList.getTotalHPWL(netList);
+		System.out.println(hpwl);
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
