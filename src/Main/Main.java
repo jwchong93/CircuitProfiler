@@ -22,13 +22,16 @@ public class Main
 		// object always pass by reference
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
-		netOperation(netList, file, nodeList);
+		netOperation(netList, file);
 		
-		//Calculate HPWL
+		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL(netList);
-
+		
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
+	
+		//////////////// Project 2 Start here //////////////
+		netList.updateNodelist(nodeList);
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
@@ -41,11 +44,10 @@ public class Main
 		System.out.println("Done processing .nodes file");
 	}
 	
-	public static void netOperation(NetList netList, FileIO file, NodeList nodeList)
+	public static void netOperation(NetList netList, FileIO file)
 	{
 		System.out.println("Start processing .nets file");
 		netList.netListReadAndAnalyseFile(testFileName, testFileDirectory, file);
-		netList.updateNodelist(nodeList);
 		System.out.println("Process .nets file done");
 		System.out.println("Dumping nets data to "+resultFileName + resultExtension);
 		netList.printSummary(file);

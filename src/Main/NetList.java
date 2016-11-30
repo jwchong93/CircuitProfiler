@@ -28,6 +28,7 @@ public class NetList
 		this.maxDegree = 0;
 		this.totalBidirectionalPins = 0;
 	}
+	
 	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
 		file.initFileInput(testFileDirectory, testFileName, ".nets");
@@ -150,17 +151,20 @@ public class NetList
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
 		{
 			Nets thisNet = i.next();
+			// Loop all net and assign input and output node to temp var.
 			ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
 			ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
-			int searchStatus =0;
-			ArrayList<Nodes> terminalList = nodeList.getTerminalNodeList();
-			for (int j =0 ; j< tempInputNodes.size();j++)
+			
+			int searchStatus = 0;
+	
+			ArrayList<Nodes> TerminalList = nodeList.getTerminalNodeList();
+			for (int j = 0 ; j< tempInputNodes.size(); j++)
 			{
-				for (int k =0;k<terminalList.size();k++)
+				for (int k = 0;k < TerminalList.size(); k++)
 				{
-					if (terminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()))
+					if (TerminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()) == false)
 					{
-						tempInputNodes.set(j, terminalList.get(k)) ;
+						tempInputNodes.set(j, TerminalList.get(k)) ;
 						searchStatus = 1;
 					}
 				}
@@ -170,15 +174,14 @@ public class NetList
 				}
 			}
 			
-			
 			searchStatus = 0;
 			for (int j =0 ; j< tempOutputNodes.size();j++)
 			{
-				for (int k =0;k<terminalList.size();k++)
+				for (int k =0;k < TerminalList.size();k++)
 				{
-					if (terminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()))
+					if (TerminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()) == false)
 					{
-						tempOutputNodes.set(j, terminalList.get(k));
+						tempOutputNodes.set(j, TerminalList.get(k));
 						searchStatus = 1;
 					}
 				}
@@ -188,17 +191,16 @@ public class NetList
 				}
 			}
 			searchStatus = 0;
-			
 		}
 	}
 	
 	public int getTotalHPWL(NetList nList)
 	{
 		int hpwl = 0, inputNodeSize = 0, outputNodeSize = 0;
-		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
 		
 		for(int i = 0; i < nList.netlist.size(); i++)
 		{
+			ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
 			inputNodeSize = nList.netlist.get(i).inputNodes.size();
 			outputNodeSize = nList.netlist.get(i).outputNodes.size();
 			
@@ -209,7 +211,6 @@ public class NetList
 				nCoor.add(nList.netlist.get(i).outputNodes.get(j).getNodeCoordinate());
 			
 			hpwl += calHPWL(nCoor);
-			nCoor.clear();
 		}
 		
 		return hpwl;
@@ -217,7 +218,7 @@ public class NetList
 	
 	public int calHPWL(ArrayList<NodeCoordinate> nCoor)
 	{
-		int xCoor = 0, yCoor = 0;
+		Object xCoor, yCoor;
 		ArrayList<Integer> x = new ArrayList<Integer>();
 		ArrayList<Integer> y = new ArrayList<Integer>();
 		
@@ -227,10 +228,14 @@ public class NetList
 			y.add(nCoor.get(i).getNodeYCoordinate());
 		}
 		
-		xCoor = Collections.max(x) - Collections.min(x);
-		yCoor = Collections.max(y) - Collections.min(y);
-		
-		return xCoor + yCoor;
+		if(!x.isEmpty() && !y.isEmpty())
+		{
+			xCoor = Collections.max(x) - Collections.min(x);
+			yCoor = Collections.max(y) - Collections.min(y);
+			return (Integer)xCoor + (Integer)yCoor;
+		}
+		else
+			return 0;
 	}
 }
 
