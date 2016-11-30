@@ -6,7 +6,6 @@ public class Nodes implements Comparable<Nodes>
 	private String nodeType;
 	private int nodeWidth, nodeHeight;
 	private int nodeArea;
-	
 	private NodeCoordinate nodeLocation;
 	
 	// constructor
@@ -26,6 +25,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeHeight = nodeHeight;
 		this.nodeType = nodeType;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
+		this.nodeLocation = new NodeCoordinate();
 	}
 
 	// methods
@@ -53,7 +53,7 @@ public class Nodes implements Comparable<Nodes>
 	public int compareTo(Nodes compareNod) {
 		String compareNodeName=((Nodes)compareNod).getNodeName();
         /* For Ascending order*/
-        return this.nodeName.compareTo(compareNodeName);
+		return Integer.parseInt(this.nodeName.substring(1)) - Integer.parseInt(compareNodeName.substring(1));
 	}
 	
 	//@Overrides
