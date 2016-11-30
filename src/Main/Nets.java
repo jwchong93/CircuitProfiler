@@ -1,12 +1,13 @@
 package Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Nets 
 {
 	private String netName;
-	private int netDegree;
+	private int netDegree, netHPWL;
 	public  ArrayList<Nodes> inputNodes = new ArrayList<Nodes>();
 	public  ArrayList<Nodes> outputNodes = new ArrayList<Nodes>();
 	private ArrayList<Nodes> bidirectionalNodes = new ArrayList<Nodes>();
@@ -86,5 +87,42 @@ public class Nets
 	public String getNetName() 
 	{
 		return this.netName;
+	}
+	
+	public int getHPWL()
+	{
+		return this.netHPWL = calHPWL();
+	}
+	
+	public int calHPWL()
+	{
+		Object xCoor, yCoor;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		ArrayList<Integer> y = new ArrayList<Integer>();
+		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
+		
+		// loop all inputNode and outputNode
+		for(int i = 0; i < this.inputNodes.size(); i++)
+			nCoor.add(this.inputNodes.get(i).getNodeCoordinate());
+		
+		for(int i = 0; i < this.outputNodes.size(); i++)
+			nCoor.add(this.outputNodes.get(i).getNodeCoordinate());
+		
+		// get x and y coordinate from each Node
+		for(int i = 0; i < nCoor.size(); i++)
+		{
+			x.add(nCoor.get(i).getNodeXCoordinate());
+			y.add(nCoor.get(i).getNodeYCoordinate());
+		}
+		
+		// Find max and min ...///
+		if(!x.isEmpty() && !y.isEmpty())
+		{
+			xCoor = Collections.max(x) - Collections.min(x);
+			yCoor = Collections.max(y) - Collections.min(y);
+			return (Integer)xCoor + (Integer)yCoor;
+		}
+		else
+			return 0;
 	}
 }
