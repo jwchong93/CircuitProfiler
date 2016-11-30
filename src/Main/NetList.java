@@ -1,6 +1,7 @@
 package Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -186,8 +187,51 @@ public class NetList
 					break; //Stop working on this net.
 				}
 			}
+		}
+	}
+	
+	public int getTotalHPWL(NetList nList)
+	{
+		int hpwl = 0, inputNodeSize = 0, outputNodeSize = 0;
+		
+		for(int i = 0; i < nList.netlist.size(); i++)
+		{
+			ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
+			inputNodeSize = nList.netlist.get(i).inputNodes.size();
+			outputNodeSize = nList.netlist.get(i).outputNodes.size();
 			
-		}	
+			for(int j = 0; j < inputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).inputNodes.get(j).getNodeCoordinate());
+			
+			for(int j = 0; j < outputNodeSize; j++)
+				nCoor.add(nList.netlist.get(i).outputNodes.get(j).getNodeCoordinate());
+			
+			hpwl += calHPWL(nCoor);
+		}
+		
+		return hpwl;
+	}
+	
+	public int calHPWL(ArrayList<NodeCoordinate> nCoor)
+	{
+		Object xCoor, yCoor;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		ArrayList<Integer> y = new ArrayList<Integer>();
+		
+		for(int i = 0; i < nCoor.size(); i++)
+		{
+			x.add(nCoor.get(i).getNodeXCoordinate());
+			y.add(nCoor.get(i).getNodeYCoordinate());
+		}
+		
+		if(!x.isEmpty() && !y.isEmpty())
+		{
+			xCoor = Collections.max(x) - Collections.min(x);
+			yCoor = Collections.max(y) - Collections.min(y);
+			return (Integer)xCoor + (Integer)yCoor;
+		}
+		else
+			return 0;
 	}
 }
 

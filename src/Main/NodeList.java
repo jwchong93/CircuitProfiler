@@ -113,10 +113,6 @@ public class NodeList
 	
 	// Print out description and parameter into Result.txt
 	public void printSummary(FileIO file) {
-		//Collections.sort(nodelist);
-		/*for(Nodes str: nodelist){
-			System.out.println(str);
-	    }*/
 		file.writeToFiles(".nodes file summary:");
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
 		file.writeToFiles("Total Number of Terminals Node: "+totalTerminalNodes);
