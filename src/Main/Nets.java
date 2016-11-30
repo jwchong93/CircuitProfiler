@@ -101,18 +101,21 @@ public class Nets
 		ArrayList<Integer> y = new ArrayList<Integer>();
 		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
 		
+		// loop all inputNode and outputNode
 		for(int i = 0; i < this.inputNodes.size(); i++)
 			nCoor.add(this.inputNodes.get(i).getNodeCoordinate());
 		
 		for(int i = 0; i < this.outputNodes.size(); i++)
 			nCoor.add(this.outputNodes.get(i).getNodeCoordinate());
 		
+		// get x and y coordinate from each Node
 		for(int i = 0; i < nCoor.size(); i++)
 		{
 			x.add(nCoor.get(i).getNodeXCoordinate());
 			y.add(nCoor.get(i).getNodeYCoordinate());
 		}
 		
+		// Find max and min ...///
 		if(!x.isEmpty() && !y.isEmpty())
 		{
 			xCoor = Collections.max(x) - Collections.min(x);
