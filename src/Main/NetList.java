@@ -149,6 +149,7 @@ public class NetList
 	public void updateNodelist(NodeList nodeList) 
 	{
 		boolean removed =false;
+		ArrayList<Nets> netsToRemove = new ArrayList<Nets> ();
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
 		{
 			Nets thisNet = i.next();
@@ -164,7 +165,7 @@ public class NetList
 				}
 				else //This is terminal node that non existed.
 				{
-					this.netlist.remove(thisNet);
+					netsToRemove.add(thisNet);
 					removed = true;
 					break; //Stop working on this net.
 				}
@@ -172,7 +173,7 @@ public class NetList
 			if (removed)
 			{
 				removed = false;
-				break; //break this loop so that next net will be consider.
+				continue; //Stop this iteration so that next net will be consider.
 			}
 			for (int j = 0 ; j< tempOutputNodes.size(); j++)
 			{
@@ -183,11 +184,12 @@ public class NetList
 				}
 				else //This is terminal node that non existed.
 				{
-					this.netlist.remove(thisNet);
+					netsToRemove.add(thisNet);
 					break; //Stop working on this net.
 				}
 			}
 		}
+		this.netlist.removeAll(netsToRemove);
 	}
 	
 	public int getTotalHPWL(NetList nList)

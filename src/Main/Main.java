@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "bigblue1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -35,6 +35,7 @@ public class Main
 		//////////////// Project 2 Start here //////////////
 		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList);
+		System.out.println(netList.netlist.size());
 		System.out.println(LocalDateTime.now().toString());
 		
 	}
