@@ -15,6 +15,7 @@ public class NetList
 	private int totalInputPins;
 	private int maxDegree;
 	private int totalBidirectionalPins;
+	private int totalHPWL;
 	private ArrayList<String> maxDegreeName = new ArrayList<String>();
 	private TreeMap<Integer, Integer> histogramOfConnectivity = new TreeMap<Integer, Integer>();
 	public ArrayList<Nets> netlist = new ArrayList<Nets>();
@@ -190,48 +191,14 @@ public class NetList
 		}
 	}
 	
-	public int getTotalHPWL(NetList nList)
+	public int getTotalHPWL()
 	{
-		int hpwl = 0, inputNodeSize = 0, outputNodeSize = 0;
+		this.totalHPWL = 0;
 		
-		for(int i = 0; i < nList.netlist.size(); i++)
-		{
-			ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
-			inputNodeSize = nList.netlist.get(i).inputNodes.size();
-			outputNodeSize = nList.netlist.get(i).outputNodes.size();
-			
-			for(int j = 0; j < inputNodeSize; j++)
-				nCoor.add(nList.netlist.get(i).inputNodes.get(j).getNodeCoordinate());
-			
-			for(int j = 0; j < outputNodeSize; j++)
-				nCoor.add(nList.netlist.get(i).outputNodes.get(j).getNodeCoordinate());
-			
-			hpwl += calHPWL(nCoor);
-		}
-		
-		return hpwl;
-	}
-	
-	public int calHPWL(ArrayList<NodeCoordinate> nCoor)
-	{
-		Object xCoor, yCoor;
-		ArrayList<Integer> x = new ArrayList<Integer>();
-		ArrayList<Integer> y = new ArrayList<Integer>();
-		
-		for(int i = 0; i < nCoor.size(); i++)
-		{
-			x.add(nCoor.get(i).getNodeXCoordinate());
-			y.add(nCoor.get(i).getNodeYCoordinate());
-		}
-		
-		if(!x.isEmpty() && !y.isEmpty())
-		{
-			xCoor = Collections.max(x) - Collections.min(x);
-			yCoor = Collections.max(y) - Collections.min(y);
-			return (Integer)xCoor + (Integer)yCoor;
-		}
-		else
-			return 0;
+		for(int i = 0; i < netlist.size(); i++)
+			this.totalHPWL += netlist.get(i).getHPWL();
+
+		return this.totalHPWL;
 	}
 }
 

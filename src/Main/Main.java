@@ -27,7 +27,7 @@ public class Main
 		netOperation(netList, file);
 		
 		//Calculate HPWL...testing
-		int hpwl = netList.getTotalHPWL(netList);
+		int hpwl = netList.getTotalHPWL();
 		
 		System.out.println("Analyzing completed");
 		file.deInitFileIO();
