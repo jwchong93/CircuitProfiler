@@ -1,5 +1,8 @@
 package Main;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Main 
 {
 	// Constant throughout the program
@@ -27,7 +30,8 @@ public class Main
 		file.deInitFileIO();
 	
 		//////////////// Project 2 Start here //////////////
-		netList.updateNodelist(nodeList);
+		//netList.updateNodelist(nodeList);
+		System.out.println("Updated node completed");
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

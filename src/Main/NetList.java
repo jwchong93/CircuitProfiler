@@ -156,15 +156,16 @@ public class NetList
 			
 			int searchStatus = 0;
 	
-			ArrayList<Nodes> TerminalList = nodeList.getTerminalNodeList();
+			ArrayList<Nodes> nonTerminalList = nodeList.getNonTerminalNodeList();
 			for (int j = 0 ; j< tempInputNodes.size(); j++)
 			{
-				for (int k = 0;k < TerminalList.size(); k++)
+				for (int k = 0;k < nonTerminalList.size(); k++)
 				{
-					if (TerminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()) == false)
+					if (nonTerminalList.get(k).getNodeName().equals(tempInputNodes.get(j).getNodeName()))
 					{
-						tempInputNodes.set(j, TerminalList.get(k)) ;
+						tempInputNodes.set(j, nonTerminalList.get(k)) ;
 						searchStatus = 1;
+						break;
 					}
 				}
 				if (searchStatus == 0)
@@ -176,12 +177,13 @@ public class NetList
 			searchStatus = 0;
 			for (int j =0 ; j< tempOutputNodes.size();j++)
 			{
-				for (int k =0;k < TerminalList.size();k++)
+				for (int k =0;k < nonTerminalList.size();k++)
 				{
-					if (TerminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()) == false)
+					if (nonTerminalList.get(k).getNodeName().equals(tempOutputNodes.get(j).getNodeName()))
 					{
-						tempOutputNodes.set(j, TerminalList.get(k));
+						tempOutputNodes.set(j, nonTerminalList.get(k));
 						searchStatus = 1;
+						break;
 					}
 				}
 				if (searchStatus == 0)
