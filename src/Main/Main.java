@@ -1,5 +1,7 @@
 package Main;
 
+import java.time.LocalDateTime;
+
 public class Main 
 {
 	// Constant throughout the program
@@ -31,7 +33,10 @@ public class Main
 		file.deInitFileIO();
 	
 		//////////////// Project 2 Start here //////////////
+		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList);
+		System.out.println(LocalDateTime.now().toString());
+		
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
