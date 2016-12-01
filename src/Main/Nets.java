@@ -33,8 +33,8 @@ public class Nets implements Comparable<Nets>
 	public int getDegree()  { return this.netDegree; }
 	public String getNetName()  { return this.netName; }
 	public ArrayList<Nodes> getIO_nodes() { return io_nodes; }
-	private ArrayList<Nodes> getInputNodes() { return inputNodes; }
-	private ArrayList<Nodes> getOutputNodes() { return outputNodes; }
+	public ArrayList<Nodes> getInputNodes() { return inputNodes; }
+	public ArrayList<Nodes> getOutputNodes() { return outputNodes; }
 	
 	public int getTotalNumberOfPins ()
 	{

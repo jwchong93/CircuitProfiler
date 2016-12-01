@@ -157,7 +157,7 @@ public class NetList
 		return this.totalHPWL;
 	}
 	
-	public void sortNetList() {
+	public void sortNetListDescending() { // Sort Net list descending according to degree
 		Collections.sort(this.netlist);
 	}
 	

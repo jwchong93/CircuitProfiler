@@ -7,8 +7,8 @@ public class NodeCoordinate
 	
 	public NodeCoordinate()
 	{
-		this.nodeXCoordinate = 0;
-		this.nodeYCoordinate = 0;
+		this.nodeXCoordinate = -1;
+		this.nodeYCoordinate = -1;
 	}
 	
 	public void setNodeXCoordinate(int nodeXCoordinate) {

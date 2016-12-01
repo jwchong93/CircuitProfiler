@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "test1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -41,9 +41,13 @@ public class Main
 		System.out.println("Updated node completed");
 		
 		// Sort NetList
-		netList.getNetlist().get(0).getIO_nodes().get(0).setNodeCoordinate(5, 36);
-		netList.sortNetList();
-		netList.printNetDegree();
+		
+		
+		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
+			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5+i, i);
+		}
+		netList.sortNetListDescending();
+		//netList.printNetDegree();
 		
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
