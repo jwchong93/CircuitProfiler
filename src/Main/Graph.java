@@ -2,6 +2,7 @@ package Main;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Graph {
 	
@@ -20,6 +21,23 @@ public class Graph {
 		this.placementList = new ArrayList<Nodes>(nodeList.getNonTerminalNodeList());
 		
 	}
+	
+	public Nodes nodeInThisLocation (int x, int y)
+	{
+		Nodes tempNode;
+		NodeCoordinate tempCoordinate;
+		for (Iterator<Nodes> i = this.placementList.iterator(); i.hasNext();)
+		{
+			tempNode = i.next();
+			tempCoordinate = tempNode.getNodeCoordinate();
+			if (tempCoordinate.getNodeXCoordinate() == x &&
+				tempCoordinate.getNodeYCoordinate() == y	)
+			{
+				return tempNode;
+			}
+		}
+		return null;
+	}
 	public void swapNodes (Nodes node1, Nodes node2)
 	{
 		int index1 = this.placementList.indexOf(node1);
@@ -33,6 +51,15 @@ public class Graph {
 		
 		
 	}
+	
+	public void changeCoordinate (Nodes node, int x, int y)
+	{
+		NodeCoordinate newCoordinate = node.getNodeCoordinate();
+		newCoordinate.setNodeXCoordinate(x);
+		newCoordinate.setNodeYCoordinate(y);
+	}
+	
+	
 	public boolean moveNodeByWidth (Nodes node, int width)
 	{
 		int locationInPlacementList = this.placementList.indexOf(node);
