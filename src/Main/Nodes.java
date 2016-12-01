@@ -58,6 +58,6 @@ public class Nodes implements Comparable<Nodes>
 	
 	//@Overrides
 	public String toString() {
-	        return "[nodeName = " + this.nodeName + "]";
+	        return "[nodeName = " + this.nodeName + this.getNodeCoordinate() + "]";
 	}
 }

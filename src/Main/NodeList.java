@@ -113,10 +113,6 @@ public class NodeList
 	
 	// Print out description and parameter into Result.txt
 	public void printSummary(FileIO file) {
-		/*Collections.sort(nodelist);
-		for(Nodes str:nodelist) {
-			System.out.println(str);
-		}*/
 		file.writeToFiles(".nodes file summary:");
 		totalNode = totalNonTerminalNodes + totalTerminalNodes;
 		file.writeToFiles("Total Number of Terminals Node: "+totalTerminalNodes);
@@ -158,6 +154,16 @@ public class NodeList
 		if(remainNode != 0) file.writeToFiles(tempStr);
 	}
 
+	public void sortNetList() {
+		Collections.sort(this.nodelist);
+	}
+	
+	public void printNodeCoordinate(){
+		for(Nodes str:nodelist) {
+			System.out.println(str);
+		}
+	}
+	
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
 	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
 	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
