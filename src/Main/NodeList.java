@@ -167,4 +167,5 @@ public class NodeList
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
 	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
 	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
+	public void addNodeToNodeList(Nodes node) {this.nodelist.add(node);};
 }
