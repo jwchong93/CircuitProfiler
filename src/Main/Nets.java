@@ -8,8 +8,9 @@ public class Nets
 {
 	private String netName;
 	private int netDegree, netHPWL;
-	public  ArrayList<Nodes> inputNodes = new ArrayList<Nodes>();
-	public  ArrayList<Nodes> outputNodes = new ArrayList<Nodes>();
+	public  ArrayList<Nodes> nodes = new ArrayList<Nodes>();
+	//public  ArrayList<Nodes> inputNodes = new ArrayList<Nodes>();
+	//public  ArrayList<Nodes> outputNodes = new ArrayList<Nodes>();
 	private ArrayList<Nodes> bidirectionalNodes = new ArrayList<Nodes>();
 	private ArrayList<Pins> inputPins = new ArrayList<Pins>();
 	private ArrayList<Pins> outputPins = new ArrayList<Pins>();
@@ -53,20 +54,25 @@ public class Nets
 	{
 		this.inputPins.add (newInputPin);
 	}
-	
+	/*
 	public void addInputNode (Nodes newInputNode)
 	{
 		this.inputNodes.add(newInputNode);
 	}
-	
+	*/
 	public void addOutputPin (Pins outputPin)
 	{
 		this.outputPins.add(outputPin);
 	}
-	
+	/*
 	public void addOutputNode (Nodes outputNode)
 	{
 		this.outputNodes.add(outputNode);
+	}
+	*/
+	public void addNode(Nodes node)
+	{
+		this.nodes.add(node);
 	}
 	
 	public void addBidirectionalPin(Pins newPin) 
@@ -101,21 +107,18 @@ public class Nets
 		ArrayList<Integer> y = new ArrayList<Integer>();
 		ArrayList<NodeCoordinate> nCoor = new ArrayList<NodeCoordinate>();
 		
-		// loop all inputNode and outputNode
-		for(int i = 0; i < this.inputNodes.size(); i++)
-			nCoor.add(this.inputNodes.get(i).getNodeCoordinate());
+		// get all nodes coordinate
+		for(int i = 0; i < this.nodes.size(); i++)
+			nCoor.add(this.nodes.get(i).getNodeCoordinate());
 		
-		for(int i = 0; i < this.outputNodes.size(); i++)
-			nCoor.add(this.outputNodes.get(i).getNodeCoordinate());
-		
-		// get x and y coordinate from each Node
+		// get x and y coordinate from each node
 		for(int i = 0; i < nCoor.size(); i++)
 		{
 			x.add(nCoor.get(i).getNodeXCoordinate());
 			y.add(nCoor.get(i).getNodeYCoordinate());
 		}
 		
-		// Find max and min ...///
+		// Find max and min ...//
 		if(!x.isEmpty() && !y.isEmpty())
 		{
 			xCoor = Collections.max(x) - Collections.min(x);

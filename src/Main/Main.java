@@ -36,6 +36,7 @@ public class Main
 
 		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList);
+		System.out.println(netList.netlist.size());
 		System.out.println(LocalDateTime.now().toString());
 		System.out.println(netList.netlist.size());
 		
