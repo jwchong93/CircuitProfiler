@@ -1,6 +1,5 @@
 package Main;
 
-import java.util.*;
 import java.time.LocalDateTime;
 
 public class Main 
@@ -8,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -33,18 +32,23 @@ public class Main
 		//////////////// Project 2 Start here //////////////
 
 		System.out.println("Updated node started here....");
-
+		
 		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList);
-		System.out.println(netList.netlist.size());
 		System.out.println(LocalDateTime.now().toString());
-		System.out.println(netList.netlist.size());
+		System.out.println(netList.getNetlist().size());
 		
 		System.out.println("Updated node completed");
+		
+		// Sort NetList
+		netList.getNetlist().get(0).getIO_nodes().get(0).setNodeCoordinate(5, 36);
+		netList.sortNetList();
+		netList.printNetDegree();
 		
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
 		System.out.println(hpwl);
+
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

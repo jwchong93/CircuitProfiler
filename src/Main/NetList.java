@@ -2,7 +2,7 @@ package Main;
 
 import java.util.*;
 
-public class NetList 
+public class NetList
 {
 	private int size;
 	private int totalPins;
@@ -13,7 +13,7 @@ public class NetList
 	private int totalHPWL;
 	private ArrayList<String> maxDegreeName = new ArrayList<String>();
 	private TreeMap<Integer, Integer> histogramOfConnectivity = new TreeMap<Integer, Integer>();
-	public ArrayList<Nets> netlist = new ArrayList<Nets>();
+	private ArrayList<Nets> netlist = new ArrayList<Nets>();
 	
 	public NetList()
 	{
@@ -24,6 +24,8 @@ public class NetList
 		this.maxDegree = 0;
 		this.totalBidirectionalPins = 0;
 	}
+	
+	public ArrayList<Nets> getNetlist() { return netlist; }
 	
 	public void netListReadAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file)
 	{
@@ -59,17 +61,20 @@ public class NetList
 				if (tempArray[1].equals("I"))
 				{
 					newNet.addInputPin(newPin);
+					newNet.addInputNode(newNode);
 					newNet.addNode(newNode);
 				}
 				else if (tempArray[1].equals("O"))
 				{
 					newNet.addOutputPin(newPin);
+					newNet.addOutputNode(newNode);
 					newNet.addNode(newNode);
 				}
 				else if (tempArray[1].equals("B"))
 				{
 					newNet.addBidirectionalPin (newPin);
 					newNet.addBidirectionalNode (newNode);
+					newNet.addNode(newNode);
 				}
 				line = file.readTextFiles();
 				
@@ -142,68 +147,6 @@ public class NetList
 		file.writeToFiles(headerString + " " + tempString);
 	}
 	
-	public void updateNodelist(NodeList nodeList) 
-	{
-		boolean removed =false;
-		ArrayList<Nets> netsToRemove = new ArrayList<Nets> ();
-		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
-		{
-			Nets thisNet = i.next();
-			ArrayList<Nodes> tempNodes = thisNet.nodes;
-			//ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
-			//ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
-			ArrayList<Nodes> nonTerminalNodes = nodeList.getNonTerminalNodeList();
-			
-			for (int j = 0 ; j< tempNodes.size(); j++)
-			{
-				int nodeNameNumber = Integer.parseUnsignedInt(tempNodes.get(j).getNodeName().substring(1));
-				if (nodeNameNumber < nonTerminalNodes.size())
-				{
-					tempNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
-				}
-				else //This is terminal node that non existed.
-				{
-					netsToRemove.add(thisNet);
-					removed = true;
-					break; //Stop working on this net.
-				}
-			}
-			/*for (int j = 0 ; j< tempInputNodes.size(); j++)
-			{
-				int nodeNameNumber = Integer.parseUnsignedInt(tempInputNodes.get(j).getNodeName().substring(1));
-				if (nodeNameNumber < nonTerminalNodes.size())
-				{
-					tempInputNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
-				}
-				else //This is terminal node that non existed.
-				{
-					netsToRemove.add(thisNet);
-					removed = true;
-					break; //Stop working on this net.
-				}
-			}*/
-			if (removed)
-			{
-				removed = false;
-				continue; //Stop this iteration so that next net will be consider.
-			}
-			/*for (int j = 0 ; j< tempOutputNodes.size(); j++)
-			{
-				int nodeNameNumber = Integer.parseUnsignedInt(tempOutputNodes.get(j).getNodeName().substring(1));
-				if (nodeNameNumber < nonTerminalNodes.size())
-				{
-					tempOutputNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
-				}
-				else //This is terminal node that non existed.
-				{
-					netsToRemove.add(thisNet);
-					break; //Stop working on this net.
-				}
-			}*/
-		}
-		this.netlist.removeAll(netsToRemove);
-	}
-	
 	public int getTotalHPWL()
 	{
 		this.totalHPWL = 0;
@@ -213,5 +156,43 @@ public class NetList
 
 		return this.totalHPWL;
 	}
+	
+	public void sortNetList() {
+		Collections.sort(this.netlist);
+	}
+	
+	public void printNetDegree(){
+		for(Nets str:netlist) {
+			System.out.println(str);
+		}
+	}
+	
+	public void updateNodelist(NodeList nodeList) 
+	{
+		ArrayList<Nets> netsToRemove = new ArrayList<Nets> ();
+		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
+		{
+			Nets thisNet = i.next();
+			ArrayList<Nodes> tempNodes = thisNet.getIO_nodes();
+			ArrayList<Nodes> nonTerminalNodes = nodeList.getNonTerminalNodeList();
+			
+			for (int j = 0 ; j< tempNodes.size(); j++)
+			{
+				int nodeNameNumber = Integer.parseUnsignedInt(tempNodes.get(j).getNodeName().substring(1));
+				if (nodeNameNumber < nonTerminalNodes.size()) // If bigger then out of bound
+				{
+					tempNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
+				}
+				else //This is terminal node that non existed.
+				{
+					netsToRemove.add(thisNet);
+					break; //Stop working on this net.
+				}
+			}
+		}
+		this.netlist.removeAll(netsToRemove);
+	}
+	
+	
 }
 
