@@ -64,12 +64,12 @@ public class NetList
 				if (tempArray[1].equals("I"))
 				{
 					newNet.addInputPin(newPin);
-					newNet.addInputNode(newNode);
+					newNet.addNode(newNode);
 				}
 				else if (tempArray[1].equals("O"))
 				{
 					newNet.addOutputPin(newPin);
-					newNet.addOutputNode(newNode);
+					newNet.addNode(newNode);
 				}
 				else if (tempArray[1].equals("B"))
 				{
@@ -154,10 +154,26 @@ public class NetList
 		for (Iterator<Nets> i = this.netlist.iterator(); i.hasNext();)
 		{
 			Nets thisNet = i.next();
-			ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
-			ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
+			ArrayList<Nodes> tempNodes = thisNet.nodes;
+			//ArrayList<Nodes> tempInputNodes = thisNet.inputNodes;
+			//ArrayList<Nodes> tempOutputNodes = thisNet.outputNodes;
 			ArrayList<Nodes> nonTerminalNodes = nodeList.getNonTerminalNodeList();
-			for (int j = 0 ; j< tempInputNodes.size(); j++)
+			
+			for (int j = 0 ; j< tempNodes.size(); j++)
+			{
+				int nodeNameNumber = Integer.parseUnsignedInt(tempNodes.get(j).getNodeName().substring(1));
+				if (nodeNameNumber < nonTerminalNodes.size())
+				{
+					tempNodes.set(j, nonTerminalNodes.get(nodeNameNumber));
+				}
+				else //This is terminal node that non existed.
+				{
+					netsToRemove.add(thisNet);
+					removed = true;
+					break; //Stop working on this net.
+				}
+			}
+			/*for (int j = 0 ; j< tempInputNodes.size(); j++)
 			{
 				int nodeNameNumber = Integer.parseUnsignedInt(tempInputNodes.get(j).getNodeName().substring(1));
 				if (nodeNameNumber < nonTerminalNodes.size())
@@ -170,13 +186,13 @@ public class NetList
 					removed = true;
 					break; //Stop working on this net.
 				}
-			}
+			}*/
 			if (removed)
 			{
 				removed = false;
 				continue; //Stop this iteration so that next net will be consider.
 			}
-			for (int j = 0 ; j< tempOutputNodes.size(); j++)
+			/*for (int j = 0 ; j< tempOutputNodes.size(); j++)
 			{
 				int nodeNameNumber = Integer.parseUnsignedInt(tempOutputNodes.get(j).getNodeName().substring(1));
 				if (nodeNameNumber < nonTerminalNodes.size())
@@ -188,7 +204,7 @@ public class NetList
 					netsToRemove.add(thisNet);
 					break; //Stop working on this net.
 				}
-			}
+			}*/
 		}
 		this.netlist.removeAll(netsToRemove);
 	}
