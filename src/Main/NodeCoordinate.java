@@ -1,6 +1,7 @@
 package Main;
 
-public class NodeCoordinate {
+public class NodeCoordinate
+{
 	private int nodeXCoordinate;
 	private int nodeYCoordinate;
 	
@@ -24,5 +25,10 @@ public class NodeCoordinate {
 	
 	public int getNodeYCoordinate() {
 		return this.nodeYCoordinate;
+	}
+	
+	//@Overrides
+	public String toString() {
+	        return this.nodeXCoordinate +", "+ this.nodeYCoordinate;
 	}
 }
