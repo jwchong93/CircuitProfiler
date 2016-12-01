@@ -151,8 +151,8 @@ public class NetList
 	{
 		this.totalHPWL = 0;
 		
-		for(int i = 0; i < netlist.size(); i++)
-			this.totalHPWL += netlist.get(i).getHPWL();
+		for(int i = 0; i < this.netlist.size(); i++)
+			this.totalHPWL += this.netlist.get(i).getHPWL();
 
 		return this.totalHPWL;
 	}
@@ -192,7 +192,5 @@ public class NetList
 		}
 		this.netlist.removeAll(netsToRemove);
 	}
-	
-	
 }
 

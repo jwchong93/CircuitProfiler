@@ -164,6 +164,28 @@ public class NodeList
 		}
 	}
 	
+	public void updateAllConnectedNodes(ArrayList<Nets> netlist)
+	{
+		for(int i = 0; i < this.nodelist.size(); i++)
+		{
+			for(int j = 0; j < netlist.size(); j++)
+			{
+				this.nodelist.get(i).updateConnectedNodes(netlist.get(j).getIO_nodes());
+			}
+		}
+	}
+	
+	public void printConnectedNode()
+	{
+		for(int i = 0; i < this.nodelist.size(); i++)
+		{
+			System.out.print(nodelist.get(i).getNodeName() + ": ");
+			for(int j = 0; j < nodelist.get(i).getConnectedNodes().size(); j++)
+				System.out.print(nodelist.get(i).getConnectedNodes().get(j).getNodeName() + " ");
+			System.out.println();
+		}
+	}
+	
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
 	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
 	public ArrayList<Nodes> getNodeList() { return this.nodelist; }

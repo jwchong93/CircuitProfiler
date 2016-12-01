@@ -1,5 +1,7 @@
 package Main;
 
+import java.util.ArrayList;
+
 public class Nodes implements Comparable<Nodes>
 {
 	private String nodeName;
@@ -7,6 +9,7 @@ public class Nodes implements Comparable<Nodes>
 	private int nodeWidth, nodeHeight;
 	private int nodeArea;
 	private NodeCoordinate nodeLocation;
+	private ArrayList<Nodes> connectedNodes = new ArrayList<Nodes>();
 	
 	// constructor
 	public Nodes() {
@@ -17,7 +20,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
 	}
-	
+
 	// constructor overload for 4 arguments
 	public Nodes(String nodeName, int nodeWidth, int nodeHeight, String nodeType) {
 		this.nodeName = nodeName;
@@ -48,6 +51,33 @@ public class Nodes implements Comparable<Nodes>
 	}
 	
 	public NodeCoordinate getNodeCoordinate() { return this.nodeLocation; }
+	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
+	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
+	
+	public void updateConnectedNodes(ArrayList<Nodes> io_nodes)
+	{
+		ArrayList<String> ioNodeName = new ArrayList<String>();
+		ArrayList<String> connectedNodeName = new ArrayList<String>();
+		
+		// Get all connected node name
+		for(int i = 0; i < io_nodes.size(); i++)
+			ioNodeName.add(io_nodes.get(i).getNodeName());
+		
+		// Get all connected node added in the list
+		for(int i = 0; i < this.connectedNodes.size(); i++)
+			connectedNodeName.add(this.connectedNodes.get(i).getNodeName());
+		
+		// if current node exist in the net, add the connected node
+		if(ioNodeName.contains(this.getNodeName()))
+		{
+			// loop connected nodes in a net
+			for(int i = 0; i < io_nodes.size(); i++)
+			{
+				if(connectedNodeName.contains(io_nodes.get(i).getNodeName()) == false)
+					this.addConnectedNode(io_nodes.get(i));
+			}
+		}
+	}
 	
 	//@Overrides
 	public int compareTo(Nodes compareNod) {
