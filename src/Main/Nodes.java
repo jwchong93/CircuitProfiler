@@ -54,26 +54,14 @@ public class Nodes implements Comparable<Nodes>
 	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
 	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
 	
-	public void updateConnectedNodes(ArrayList<Nodes> io_nodes)
+	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, ArrayList<Nodes> nodelist)
 	{
-		ArrayList<String> ioNodeName = new ArrayList<String>();
-		ArrayList<String> connectedNodeName = new ArrayList<String>();
-		
-		// Get all connected node name
-		for(int i = 0; i < io_nodes.size(); i++)
-			ioNodeName.add(io_nodes.get(i).getNodeName());
-		
-		// Get all connected node added in the list
-		for(int i = 0; i < this.connectedNodes.size(); i++)
-			connectedNodeName.add(this.connectedNodes.get(i).getNodeName());
-		
-		// if current node exist in the net, add the connected node
-		if(ioNodeName.contains(this.getNodeName()))
+		if(io_nodes.contains(this))
 		{
 			// loop connected nodes in a net
 			for(int i = 0; i < io_nodes.size(); i++)
 			{
-				if(connectedNodeName.contains(io_nodes.get(i).getNodeName()) == false)
+				if(!this.connectedNodes.contains(io_nodes.get(i)))
 					this.addConnectedNode(io_nodes.get(i));
 			}
 		}

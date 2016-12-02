@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -25,7 +25,8 @@ public class Main
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
-
+		file.deInitFileIO();
+		
 		System.out.println("Analyzing completed");
 	
 		//////////////// Project 2 Start here //////////////
@@ -49,14 +50,9 @@ public class Main
 		System.out.println(hpwl);
 
 		// Display connected nodes
-		NetList tempNetList = new NetList();
-		tempNetList.netListReadAndAnalyseFile(testFileName, testFileDirectory, file);
-		System.out.println(LocalDateTime.now().toString());
-		nodeList.updateAllConnectedNodes(tempNetList.getNetlist());
-		System.out.println(LocalDateTime.now().toString());
-		nodeList.printConnectedNode();
-		
-		file.deInitFileIO();
+		System.out.println("Display node connection");
+		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		//nodeList.printConnectedNode();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
