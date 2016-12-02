@@ -25,9 +25,9 @@ public class Main
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
-
-		System.out.println("Analyzing completed");
 		file.deInitFileIO();
+		
+		System.out.println("Analyzing completed");
 	
 		//////////////// Project 2 Start here //////////////
 
@@ -43,12 +43,16 @@ public class Main
 		// Sort NetList
 		netList.getNetlist().get(0).getIO_nodes().get(0).setNodeCoordinate(5, 36);
 		netList.sortNetList();
-		netList.printNetDegree();
+		//netList.printNetDegree();
 		
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
 		System.out.println(hpwl);
 
+		// Display connected nodes
+		System.out.println("Display node connection");
+		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		//nodeList.printConnectedNode();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

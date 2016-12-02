@@ -87,6 +87,6 @@ public class Nets implements Comparable<Nets>
 		
 	//@Overrides
 	public String toString() {
-		      return "[NetName = " + this.netName + " Net Degree = " + this.netDegree + "]";
+		return "[NetName = " + this.netName + " Net Degree = " + this.netDegree + "]";
 	}
 }
