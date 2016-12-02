@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "test1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -52,7 +52,7 @@ public class Main
 		// Display connected nodes
 		System.out.println("Display node connection");
 		netList.updateAllConnectedNodes(nodeList.getNodeList());
-		//nodeList.printConnectedNode();
+		nodeList.printConnectedNodeDetail();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

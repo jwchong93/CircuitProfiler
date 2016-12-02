@@ -43,7 +43,7 @@ public class Nets implements Comparable<Nets>
 				this.bidirectionalPins.size();
 	}
 	
-	public int getHPWL()
+	public int getNetHPWL()
 	{
 		calHPWL();
 		return this.netHPWL;

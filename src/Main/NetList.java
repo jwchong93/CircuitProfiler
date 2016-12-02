@@ -152,7 +152,7 @@ public class NetList
 		this.totalHPWL = 0;
 		
 		for(int i = 0; i < this.netlist.size(); i++)
-			this.totalHPWL += this.netlist.get(i).getHPWL();
+			this.totalHPWL += this.netlist.get(i).getNetHPWL();
 
 		return this.totalHPWL;
 	}
@@ -201,7 +201,8 @@ public class NetList
 			for(int j = 0; j < this.netlist.get(i).getIO_nodes().size(); j++)
 			{
 				Nodes node = this.netlist.get(i).getIO_nodes().get(j);
-				node.updateConnectedNodes(this.netlist.get(i).getIO_nodes(), nodelist);
+				node.updateConnectedNodes(this.netlist.get(i).getIO_nodes(), netlist.get(i));
+				node.addConnectionNets(netlist.get(i));
 			}
 		}
 	}
