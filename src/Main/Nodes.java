@@ -10,6 +10,8 @@ public class Nodes implements Comparable<Nodes>
 	private int nodeArea;
 	private NodeCoordinate nodeLocation;
 	private ArrayList<Nodes> connectedNodes = new ArrayList<Nodes>();
+	private int nodeDegree;
+	private ArrayList<Nets> connectionNets = new ArrayList<Nets>();
 	
 	// constructor
 	public Nodes() {
@@ -19,6 +21,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
+		this.nodeDegree = 0;
 	}
 
 	// constructor overload for 4 arguments
@@ -29,6 +32,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeType = nodeType;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
+		this.nodeDegree = 0;
 	}
 
 	// methods
@@ -37,6 +41,10 @@ public class Nodes implements Comparable<Nodes>
 	public String getNodeName() { return this.nodeName; }
 	public void setNodeName(String nodeName) { this.nodeName = nodeName; }
 	public boolean isTerminal() { return this.nodeType == "terminal"; }
+	public int getNodeDegree() { return this.nodeDegree; }
+	public void setNodeDegree(int nodeDegree) { this.nodeDegree = nodeDegree; }
+	public ArrayList<Nets> getConnectionNets() { return this.connectionNets; }
+	public void addConnectionNets(Nets net) { this.getConnectionNets().add(net); }
 	
 	// deep copy
 	public Nodes copyNode () { 
@@ -54,17 +62,27 @@ public class Nodes implements Comparable<Nodes>
 	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
 	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
 	
-	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, ArrayList<Nodes> nodelist)
+	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, Nets net)
 	{
-		if(io_nodes.contains(this))
+		// loop nodes in a net
+		for(int i = 0; i < io_nodes.size(); i++)
 		{
-			// loop connected nodes in a net
-			for(int i = 0; i < io_nodes.size(); i++)
+			if(!this.connectedNodes.contains(io_nodes.get(i)))
 			{
-				if(!this.connectedNodes.contains(io_nodes.get(i)))
-					this.addConnectedNode(io_nodes.get(i));
+				this.addConnectedNode(io_nodes.get(i));
+				this.nodeDegree++;
 			}
 		}
+	}
+	
+	public int getNodeAllNetHPWL()
+	{
+		int hpwl = 0;
+		
+		for(int i = 0; i < this.connectionNets.size(); i++)
+			hpwl += this.connectionNets.get(i).getNetHPWL();
+		
+		return hpwl; 
 	}
 	
 	//@Overrides
