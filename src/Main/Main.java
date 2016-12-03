@@ -1,8 +1,5 @@
 package Main;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
 public class Main 
 {
 	// Constant throughout the program
@@ -20,48 +17,26 @@ public class Main
 		NodeList nodeList = new NodeList();
 		NetList netList = new NetList();
 		
-		System.out.println("-I- Analysing " + testFileName);
-
-		// object always pass by reference
-		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
-		long startTime = System.currentTimeMillis();
-		nodeOperation(nodeList, file);
-		netOperation(netList, file);
-		long endTime   = System.currentTimeMillis();
-		long totalTime = (endTime - startTime)/1000;
-		System.out.println("Runtime = " + totalTime + " seconds");
-
-		file.deInitFileIO();
-		
-		System.out.println("-I- Analyzing completed");
+		// Project 1 : Read .nodes and .nets file and write summary to Result file.
+		nodeAndNetOps(nodeList, netList, file);
 	
-		//////////////// Project 2 Start here //////////////
+		//////////////////////////// Project 2 Start here ///////////////////////////
 
-		System.out.println("-I- Updated node started here....");
-		
+		System.out.println("-I- Linked netlist I/O nodelist with node ref and remove netlist that contained terminal node.");
 		netList.updateNodelist(nodeList); // net list with node object and remove terminal
-		System.out.println("Nomber of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
-
-		
-		
-		
-		System.out.println("-I- Updated node completed");
+		System.out.println("Number of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
 		
 		// Sort NetList and update node coordinate
 		//System.out.println("Sorted Net List Descending order.");
 		//netList.sortNetListDescending();
-		
-		// random assign Coordinate - testing
-		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
-			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5*i, i);
-		}
 			
 		// Display connected nodes
 		System.out.println("-I- Update node-to-node connection");
-		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		netList.updateAllConnectedNodes();
 		
 		//Random placement
 		Graph floorplan = new Graph(nodeList);
+		/*
 		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
 		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
 		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
@@ -77,19 +52,42 @@ public class Main
 		floorplan.legalizeNodes();
 		System.out.println("Legalize node");
 		floorplan.printRowNodeListCoor(1);
+		*/
 		
 		System.out.println("Algorithm finished");
-		
 		// Print out message
-		//netList.printNetDegree();
 		//nodeList.printNonTerminalNodeCoordinate();
 		//nodeList.printConnectedNodeDetail();
+		//netList.printNetDegree();
 		
-		FDPrippleMove(nodeList);
+		// Start Force-Directed Placement
+		FDP fdp = new FDP(floorplan, nodeList);
+		FDPrippleMove(fdp);
+		//System.out.println(nodeList.getNonTerminalNodeList().get(2).computeAndReturnZFT());
 		
-		//Calculate HPWL...testing
-		int hpwl = netList.getTotalHPWL();
-		System.out.println("-I- Total hpwl = " + hpwl);
+
+		//Calculate total HPWL
+		long hpwl = netList.getTotalHPWL();
+		System.out.println("Total HPWL = " + hpwl);
+	}
+	
+	public static void nodeAndNetOps(NodeList nodeList, NetList netList, FileIO file)
+	{
+		System.out.println("-I- Analysing " + testFileName + "...");
+
+		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
+		double startTime = System.currentTimeMillis();
+		
+		nodeOperation(nodeList, file);
+		netOperation(netList, file);
+		
+		double endTime   = System.currentTimeMillis();
+		double totalTime = (endTime - startTime)/1000;
+		System.out.println("Runtime = " + totalTime + " seconds");
+		
+		file.deInitFileIO();
+		
+		System.out.println("-I- Analyzing completed");
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
@@ -112,13 +110,9 @@ public class Main
 		System.out.println("-I- Done processing .nets file");
 	}
 	
-	public static void FDPrippleMove(NodeList nodeList)
+	public static void FDPrippleMove(FDP fdp)
 	{
-		System.out.println("-I- Call FDP ripple Move");
-		// assume initial placement done
-		// 
-		nodeList.sortAllNodeList();
-		
-		
+		System.out.println("-I- Call FDP ripple Move Algorithm");
+		fdp.startAlgorithm();
 	}
 }

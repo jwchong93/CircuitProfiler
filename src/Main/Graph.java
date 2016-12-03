@@ -142,7 +142,7 @@ public class Graph {
 		}
 	}
 
-	private void updateNodeCoordinate(Nodes newNode, int x, int y) 
+	public void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
 		
 		newNode.setNodeCoordinate(x, y);

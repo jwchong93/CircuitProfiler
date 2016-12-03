@@ -9,10 +9,13 @@ public class Nodes implements Comparable<Nodes>
 	private int nodeWidth, nodeHeight;
 	private int nodeArea;
 	private NodeCoordinate nodeLocation;
-	private int nodeDegree;
-	private int nodeTotalnetHPWL;
+	
+	private long  nodeTotalnetHPWL;
+	private boolean lock=false;
+	private NodeCoordinate nodeZFT = new NodeCoordinate();
 	private ArrayList<Nodes> connectedNodes = new ArrayList<Nodes>();
 	private ArrayList<Nets> connectionNets = new ArrayList<Nets>();
+	private int nodeDegree=0;
 	
 	// constructor
 	public Nodes() {
@@ -22,7 +25,6 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
-		this.nodeDegree = 0;
 	}
 
 	// constructor overload for 4 arguments
@@ -33,7 +35,6 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeType = nodeType;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
-		this.nodeDegree = 0;
 	}
 
 	// methods
@@ -46,6 +47,9 @@ public class Nodes implements Comparable<Nodes>
 	public void setNodeDegree(int nodeDegree) { this.nodeDegree = nodeDegree; }
 	public ArrayList<Nets> getConnectionNets() { return this.connectionNets; }
 	public void addConnectionNets(Nets net) { this.getConnectionNets().add(net); }
+	public void lockNode() { this.lock = true; }
+	public void unlockNode() { this.lock = false; }
+	public boolean isLock() { return lock; }
 	
 	// deep copy
 	public Nodes copyNode () { 
@@ -59,35 +63,58 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeLocation.setNodeYCoordinate(nodeYCoordinate);
 	}
 	
-	public int getnodeTotalnetHPWL() { return this.nodeTotalnetHPWL; }
+	public long getnodeTotalnetHPWL() { return this.nodeTotalnetHPWL; }
 	public NodeCoordinate getNodeCoordinate() { return this.nodeLocation; }
 	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
-	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
 	
 	// Contain a list of node that connected to this node
-	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, Nets net)
+	public void updateConnectedNodes(ArrayList<Nodes> io_nodes)
 	{
 		// loop nodes in a net
 		for(int i = 0; i < io_nodes.size(); i++)
 		{
 			if(!this.connectedNodes.contains(io_nodes.get(i)))
 			{
-				this.addConnectedNode(io_nodes.get(i));
+				this.connectedNodes.add(io_nodes.get(i));
 				this.nodeDegree++;
 			}
 		}
 	}
 	
 	// calculate the HPWL of net that connected to this node
-	public int calcNodeAllNetHPWL()
+	public long calcNodeAllNetHPWL()
 	{
-		int hpwl = 0;
+		long hpwl = 0;
 		
 		for(int i = 0; i < this.connectionNets.size(); i++)
 			hpwl += this.connectionNets.get(i).getNetHPWL();
 		
 		this.nodeTotalnetHPWL = hpwl; 
 		return this.nodeTotalnetHPWL;
+	}
+	
+	// Compute ZFT location
+	public NodeCoordinate computeAndReturnZFT() {
+		double x_zft = 0, y_zft = 0;
+		if(this.connectedNodes.isEmpty()) {
+			this.nodeZFT = this.nodeLocation;
+			return this.nodeZFT;
+		}
+		for(int i = 0; i < this.connectedNodes.size(); i++){
+			x_zft += this.connectedNodes.get(i).getNodeCoordinate().getNodeXCoordinate();
+			y_zft += this.connectedNodes.get(i).getNodeCoordinate().getNodeYCoordinate();
+		}
+		this.nodeZFT.setNodeXCoordinate((int)Math.round(x_zft/this.connectedNodes.size()));
+		this.nodeZFT.setNodeYCoordinate((int)Math.round(y_zft/this.connectedNodes.size()));
+		return this.nodeZFT;
+	}
+	
+	// Compare the NodeCoordinate is same location or not
+	public boolean isSameLocation(NodeCoordinate nc) {
+		if(this.nodeLocation.getNodeXCoordinate() == nc.getNodeXCoordinate() &&  this.nodeLocation.getNodeYCoordinate() == nc.getNodeYCoordinate())
+			return true;
+		else
+			return false;
 	}
 	
 	//@Overrides
