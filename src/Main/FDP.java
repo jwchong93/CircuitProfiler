@@ -62,7 +62,7 @@ public class FDP {
 				}
 				else if(node_cond.isLock() == false) // occupied but not locked--okay
 				{
-					this.floorplan.updateNodeCoordinate(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
+					this.floorplan.updateNodeCoordinateOnly(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					//System.out.println(node_cond);
 					//System.out.println(thisNodes);
 					this.floorplan.swapNodes(thisNodes, node_cond);

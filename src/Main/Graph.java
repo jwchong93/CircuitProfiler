@@ -64,8 +64,15 @@ public class Graph {
 		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
 		int xIndex1 = this.placementList.get(yIndex1).indexOf(node1);
 		int xIndex2 = this.placementList.get(yIndex2).indexOf(node2);
+		System.out.println(node1);
+		System.out.println(node2);
 		System.out.println(xIndex1);
 		System.out.println(xIndex2);
+		if(xIndex1 == -1){
+			for(int i=0; i<294; i++) {
+				System.out.println(i + " " + this.placementList.get(i).indexOf(node1));
+			}
+		}
 		Nodes tempNode1 = this.placementList.get(yIndex1).get(xIndex1);
 		Nodes tempNode2 = this.placementList.get(yIndex2).get(xIndex2);
 		NodeCoordinate tempCoordinate1 = tempNode1.getNodeCoordinate();
@@ -153,7 +160,7 @@ public class Graph {
 		
 	}
 	
-	private void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
+	public void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);
 	}
