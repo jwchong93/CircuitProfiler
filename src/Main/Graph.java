@@ -152,6 +152,7 @@ public class Graph {
 		for (int row = 0; row <= this.placementList.size(); row++)
 		{
 			ArrayList<Nodes> tempList = this.placementList.get(row);
+			//tempList.so;
 			Nodes leftNode = null;
 			Nodes rightNode = null;
 			NodeCoordinate leftNodeCoordinate,rightNodeCoordinate;

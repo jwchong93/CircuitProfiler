@@ -1,13 +1,14 @@
 package Main;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Main 
 {
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -40,6 +41,7 @@ public class Main
 		
 		netList.updateNodelist(nodeList); // net list with node object and remove terminal
 		System.out.println("Nomber of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
+
 		
 		
 		
@@ -72,6 +74,15 @@ public class Main
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
 		System.out.println("-I- Total hpwl = " + hpwl);
+		
+		netList.getNetlist().get(0).setNetDegree(134257);
+		Nets test_net = netList.getNetlist().get(0);
+		test_net.setNetDegree(0);
+		test_net.getIO_nodes().get(0).setNodeCoordinate(-1, 1000);
+		int test = nodeList.getNodeList().indexOf(test_net.getIO_nodes().get(0));
+		Nodes temp = nodeList.getNonTerminalNodeList().get(test);
+		Nodes tempNode = nodeList.getNodeList().get(1);
+		ArrayList<Nodes> tempList = tempNode.getConnectedNodes();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
