@@ -144,8 +144,10 @@ public class Graph {
 
 	public void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
-		
+		NodeCoordinate oldCoordinate = newNode.getNodeCoordinate();
+		this.placementList.get(oldCoordinate.getNodeYCoordinate()/rowSeperation).remove(newNode);
 		newNode.setNodeCoordinate(x, y);
+		this.placementList.get(y/rowSeperation).add(newNode);
 		
 	}
 
