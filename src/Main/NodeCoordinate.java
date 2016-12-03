@@ -5,27 +5,11 @@ public class NodeCoordinate
 	private int nodeXCoordinate;
 	private int nodeYCoordinate;
 	
-	public NodeCoordinate()
-	{
-		this.nodeXCoordinate = -1;
-		this.nodeYCoordinate = -1;
-	}
-	
-	public void setNodeXCoordinate(int nodeXCoordinate) {
-		this.nodeXCoordinate = nodeXCoordinate;
-	}
-	
-	public void setNodeYCoordinate(int nodeYCoordinate) {
-		this.nodeYCoordinate = nodeYCoordinate;
-	}
-	
-	public int getNodeXCoordinate() {
-		return this.nodeXCoordinate;
-	}
-	
-	public int getNodeYCoordinate() {
-		return this.nodeYCoordinate;
-	}
+	public NodeCoordinate() {}
+	public void setNodeXCoordinate(int nodeXCoordinate) { this.nodeXCoordinate = nodeXCoordinate; }
+	public void setNodeYCoordinate(int nodeYCoordinate) { this.nodeYCoordinate = nodeYCoordinate; }
+	public int getNodeXCoordinate() { return this.nodeXCoordinate; }
+	public int getNodeYCoordinate() { return this.nodeYCoordinate; }
 	
 	//@Overrides
 	public String toString() {
