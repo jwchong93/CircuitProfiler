@@ -292,10 +292,28 @@ public class Graph {
 
 	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) 
 	{
-		
-		if (this.nodeInThisLocation(nodeXCoordinate,nodeYCoordinate)!=null)
+		int tempX = nodeXCoordinate;
+		int tempY = nodeYCoordinate;
+		Nodes node = this.nodeInThisLocation(tempX,tempY);
+		if (node ==null)
 		{
+			return;
+		}
+		else
+		{
+			NodeCoordinate coordinate = node.getNodeCoordinate();
+			while (node.isLock())
+			{
+				node = this.placementList.get(coordinate.getNodeYCoordinate()).get
+						(
+						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)+1)
+						);
 				
+			}
+			coordinate = node.getNodeCoordinate();
+			thisNodes.setNodeCoordinate(coordinate.getNodeXCoordinate(), coordinate.getNodeYCoordinate());
+			this.placementList.get(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation).remove(thisNodes);
+			this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).add(thisNodes);
 		}
 	}
 	
