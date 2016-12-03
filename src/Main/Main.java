@@ -8,7 +8,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "test1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -62,6 +62,22 @@ public class Main
 		
 		//Random placement
 		Graph floorplan = new Graph(nodeList);
+		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
+		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
+		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
+		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
+		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
+		System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
+		secRowFirstNode.setNodeCoordinate(firstRowLastNode.getNodeCoordinate().getNodeXCoordinate() + firstRowLastNode.getNodeWidth(), 0);
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		secRow.remove(secRowFirstNode);
+		firstRow.add(secRowFirstNode);
+		floorplan.legalizeNodes();
+		System.out.println("Legalize node");
+		floorplan.printRowNodeListCoor(1);
+		
 		System.out.println("Algorithm finished");
 		
 		// Print out message
@@ -74,15 +90,6 @@ public class Main
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
 		System.out.println("-I- Total hpwl = " + hpwl);
-		
-		netList.getNetlist().get(0).setNetDegree(134257);
-		Nets test_net = netList.getNetlist().get(0);
-		test_net.setNetDegree(0);
-		test_net.getIO_nodes().get(0).setNodeCoordinate(-1, 1000);
-		int test = nodeList.getNodeList().indexOf(test_net.getIO_nodes().get(0));
-		Nodes temp = nodeList.getNonTerminalNodeList().get(test);
-		Nodes tempNode = nodeList.getNodeList().get(1);
-		ArrayList<Nodes> tempList = tempNode.getConnectedNodes();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
