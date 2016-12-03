@@ -1,5 +1,7 @@
 package Main;
 
+import java.util.ArrayList;
+
 public class Main 
 {
 	// Constant throughout the program
@@ -39,15 +41,29 @@ public class Main
 		
 		System.out.println("-I- Get and linked node-to-node and net relationship in NODE");
 		netList.updateAllConnectedNodes();
-
+			
+		// Display connected nodes
+		System.out.println("-I- Update node-to-node connection");
+		netList.updateAllConnectedNodes();
+		
 		//Random placement
-		System.out.println("-I- Instantiate Floorplan");
-		//NodeList nList = new NodeList();
-		//nList.sortNodesAccordingToNets(netList.getNetlist());
-		//nList.sortNodesAccordingToNodesConnection(nodeList.getNodeList());
-		//Graph floorplan = new Graph(nList);	
-		Graph floorplan = new Graph(nodeList, 0);
-		//floorplan.printRowOfNodes(0);
+		Graph floorplan = new Graph(nodeList);
+		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
+		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
+		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
+		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
+		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
+		//System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
+		secRowFirstNode.setNodeCoordinate(5, 36);
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		//secRow.remove(secRowFirstNode);
+		//firstRow.add(secRowFirstNode);
+		floorplan.legalizeNodes();
+		System.out.println("Legalize node");
+		floorplan.printRowNodeListCoor(1);
+		System.out.println("Algorithm finished");
 
 		// Print out message
 		//nodeList.printNonTerminalNodeCoordinate();
@@ -59,6 +75,7 @@ public class Main
 		//FDPrippleMove(fdp);
 		//System.out.println(nodeList.getNonTerminalNodeList().get(2).computeAndReturnZFT());
 		
+
 		//Calculate total HPWL
 		long hpwl = netList.getTotalHPWL();
 		System.out.println("Total HPWL = " + hpwl);
@@ -107,5 +124,6 @@ public class Main
 	{
 		System.out.println("-I- Call FDP ripple Move Algorithm");
 		fdp.startAlgorithm();
+		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }

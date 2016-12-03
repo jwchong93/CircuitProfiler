@@ -7,7 +7,8 @@ public class FDP {
 	private NodeList nodeList;
 	private Graph floorplan;
 	
-	public final static int iteration_limit = 3;
+	public final static int iteration_limit = 100;
+	public final static int abort_limit = 10;
 	
 	public FDP(Graph floorplan, NodeList nodeList) {
 		this.nodeList = nodeList;
@@ -19,7 +20,7 @@ public class FDP {
 	public void startAlgorithm() {
 
 		int iteration_count = 0;
-		int iteration_limit = 10;
+		int abort_count = 0;
 		
 		// sort nodeList by descending order by degree
 		nodeList.sortAllNodeList();
@@ -28,26 +29,57 @@ public class FDP {
 		{
 			boolean end_ripple_move = false;
 			Nodes thisNodes = i.next();
-			thisNodes.unlockNode();
+			//thisNodes.unlockNode();
 			while(end_ripple_move == false) {
 				NodeCoordinate curr_ZFT = thisNodes.computeAndReturnZFT();
 				Nodes node_cond = this.floorplan.nodeInThisLocation(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
-				if(node_cond == null)
+				if(node_cond == null) // position is free --okay
 				{
+					this.floorplan.updateNodeCoordinate(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
+					thisNodes.lockNode();
 					end_ripple_move = true;
-				}else if(node_cond.isLock() == true)
+					abort_count = 0;
+				}else if(node_cond.isLock() == true) // ZFT position is occupied and fixed.
 				{
+					this.floorplan.updateNodeCoordinateNextFreePos(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
+					thisNodes.lockNode();
 					end_ripple_move = true;
-				}else if(node_cond.isSameLocation(curr_ZFT))
+					abort_count++;
+					if(abort_count > abort_limit)
+					{
+						for(Iterator<Nodes> j = this.nodeList.getNonTerminalNodeList().iterator(); j.hasNext();) 
+						{
+							Nodes tempNodes = j.next();
+							tempNodes.unlockNode();
+						}
+					}
+					iteration_count++;
+				}else if(node_cond.isSameLocation(curr_ZFT)) // --okay
 				{
+					thisNodes.lockNode();
 					end_ripple_move = true;
+					abort_count= 0;
 				}
-				else if(node_cond.isLock() == false)
+				else if(node_cond.isLock() == false) // occupied but not locked--okay
 				{
+					this.floorplan.updateNodeCoordinate(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
+					//System.out.println(node_cond);
+					//System.out.println(thisNodes);
+					this.floorplan.swapNodes(thisNodes, node_cond);
+					thisNodes.lockNode();
+					thisNodes = node_cond;
 					end_ripple_move = false;
+					abort_count = 0;
 				}
 			}
-			
+			iteration_count++;
+			if(iteration_count >= iteration_limit) break;
+		}
+		// Unlock all Nodes
+		for(Iterator<Nodes> i = this.nodeList.getNonTerminalNodeList().iterator(); i.hasNext();) 
+		{
+			Nodes thisNodes = i.next();
+			thisNodes.unlockNode();
 		}
 	}
 }
