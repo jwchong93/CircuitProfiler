@@ -154,27 +154,30 @@ public class NodeList
 		if(remainNode != 0) file.writeToFiles(tempStr);
 	}
 
-	public void sortNetList() {
+	public void sortAllNodeList() {
 		Collections.sort(this.nodelist);
+		Collections.sort(this.nonTerminalnodelist);
+		Collections.sort(this.terminalnodelist);
 	}
 	
-	public void printNodeCoordinate(){
-		for(Nodes str:nodelist) {
+	public void printNonTerminalNodeCoordinate(){
+		for(Nodes str:this.nonTerminalnodelist) {
 			System.out.println(str);
 		}
 	}
 	
 	public void printConnectedNodeDetail()
 	{
-		for(int i = 0; i < this.nodelist.size(); i++)
+		for(int i = 0; i < this.nonTerminalnodelist.size(); i++)
 		{
-			System.out.print(nodelist.get(i).getNodeName() + ": ");
-			for(int j = 0; j < nodelist.get(i).getConnectedNodes().size(); j++)
-				System.out.print(nodelist.get(i).getConnectedNodes().get(j).getNodeName() + " ");
+			System.out.print(nonTerminalnodelist.get(i).getNodeName() + ": ");
+			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectedNodes().size(); j++)
+				System.out.print(nonTerminalnodelist.get(i).getConnectedNodes().get(j).getNodeName() + " ");
 			System.out.print("\nNets: ");
-			for(int j = 0; j < nodelist.get(i).getConnectionNets().size(); j++)
-				System.out.print(nodelist.get(i).getConnectionNets().get(j).getNetName() + " ");
-			System.out.println("\nNetDeg: " + nodelist.get(i).getNodeDegree() + " HPWL: " + nodelist.get(i).getNodeAllNetHPWL());
+			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectionNets().size(); j++)
+				System.out.print(nonTerminalnodelist.get(i).getConnectionNets().get(j).getNetName() + " ");
+			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " + nonTerminalnodelist.get(i).getNodeAllNetHPWL());
+			System.out.println();
 		}
 	}
 	

@@ -1,8 +1,6 @@
 package Main;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.*;
 
 public class Nets implements Comparable<Nets>
 {
@@ -17,7 +15,6 @@ public class Nets implements Comparable<Nets>
 	private ArrayList<Pins> bidirectionalPins = new ArrayList<Pins>();
 	
 	public Nets ()	{}
-	
 	public int getNumberOfOutputPins() { return this.outputPins.size(); }
 	public int getNumberOfInputPins() { return this.inputPins.size(); }	
 	public int getNumberOfBidirectionalPins() { return this.bidirectionalPins.size(); }
@@ -33,8 +30,8 @@ public class Nets implements Comparable<Nets>
 	public int getDegree()  { return this.netDegree; }
 	public String getNetName()  { return this.netName; }
 	public ArrayList<Nodes> getIO_nodes() { return io_nodes; }
-	private ArrayList<Nodes> getInputNodes() { return inputNodes; }
-	private ArrayList<Nodes> getOutputNodes() { return outputNodes; }
+	public ArrayList<Nodes> getInputNodes() { return inputNodes; }
+	public ArrayList<Nodes> getOutputNodes() { return outputNodes; }
 	
 	public int getTotalNumberOfPins ()
 	{

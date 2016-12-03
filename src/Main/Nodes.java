@@ -62,6 +62,7 @@ public class Nodes implements Comparable<Nodes>
 	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
 	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
 	
+	// Contain a list of node that connected to this node
 	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, Nets net)
 	{
 		// loop nodes in a net
@@ -75,6 +76,7 @@ public class Nodes implements Comparable<Nodes>
 		}
 	}
 	
+	// calculate the HPWL of net that connected to this node
 	public int getNodeAllNetHPWL()
 	{
 		int hpwl = 0;
@@ -87,13 +89,12 @@ public class Nodes implements Comparable<Nodes>
 	
 	//@Overrides
 	public int compareTo(Nodes compareNod) {
-		String compareNodeName=((Nodes)compareNod).getNodeName();
-        /* For Ascending order*/
-		return Integer.parseInt(this.nodeName.substring(1)) - Integer.parseInt(compareNodeName.substring(1));
+		// Sort according to ascending order of node degree.
+		return compareNod.getNodeDegree() - this.nodeDegree;
 	}
 	
 	//@Overrides
 	public String toString() {
-	        return "[nodeName = " + this.nodeName + this.getNodeCoordinate() + "]";
+	        return "[nodeName = " + this.nodeName + " " + this.getNodeCoordinate() + " "+ this.nodeDegree + "]";
 	}
 }

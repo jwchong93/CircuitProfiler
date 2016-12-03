@@ -157,7 +157,7 @@ public class NetList
 		return this.totalHPWL;
 	}
 	
-	public void sortNetList() {
+	public void sortNetListDescending() { // Sort Net list descending according to degree
 		Collections.sort(this.netlist);
 	}
 	
@@ -193,6 +193,7 @@ public class NetList
 		this.netlist.removeAll(netsToRemove);
 	}
 	
+	// Copy node and net reference so to maintain data consistency
 	public void updateAllConnectedNodes(ArrayList<Nodes> nodelist)
 	{
 		// Update all node's connected node in each net 

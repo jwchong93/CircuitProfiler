@@ -29,6 +29,7 @@ public class Graph {
 		}catch (Exception e)
 		{
 			System.out.println(e.getMessage());
+			System.out.println("failed");
 		}
 		
 	}
