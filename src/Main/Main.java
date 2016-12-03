@@ -31,13 +31,30 @@ public class Main
 		//netList.sortNetListDescending();
 			
 		// Display connected nodes
-		System.out.println("-I- Get and linked node-to-node and net relationship in NODE");
+		System.out.println("-I- Update node-to-node connection");
 		netList.updateAllConnectedNodes();
-
+		
 		//Random placement
-		System.out.println("-I- Instantiate Floorplan");
 		Graph floorplan = new Graph(nodeList);
-
+		/*
+		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
+		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
+		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
+		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
+		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
+		System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
+		secRowFirstNode.setNodeCoordinate(firstRowLastNode.getNodeCoordinate().getNodeXCoordinate() + firstRowLastNode.getNodeWidth(), 0);
+		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+		secRow.remove(secRowFirstNode);
+		firstRow.add(secRowFirstNode);
+		floorplan.legalizeNodes();
+		System.out.println("Legalize node");
+		floorplan.printRowNodeListCoor(1);
+		*/
+		
+		System.out.println("Algorithm finished");
 		// Print out message
 		//nodeList.printNonTerminalNodeCoordinate();
 		//nodeList.printConnectedNodeDetail();
@@ -48,6 +65,7 @@ public class Main
 		FDPrippleMove(fdp);
 		//System.out.println(nodeList.getNonTerminalNodeList().get(2).computeAndReturnZFT());
 		
+
 		//Calculate total HPWL
 		long hpwl = netList.getTotalHPWL();
 		System.out.println("Total HPWL = " + hpwl);
