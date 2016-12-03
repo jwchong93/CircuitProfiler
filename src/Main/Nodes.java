@@ -90,6 +90,8 @@ public class Nodes implements Comparable<Nodes>
 		return this.nodeTotalnetHPWL;
 	}
 	
+	// Calculate ZFT
+	
 	//@Overrides
 	public int compareTo(Nodes compareNod) {
 		// Sort according to ascending order of node degree.
