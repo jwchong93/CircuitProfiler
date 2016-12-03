@@ -114,5 +114,6 @@ public class Main
 	{
 		System.out.println("-I- Call FDP ripple Move Algorithm");
 		fdp.startAlgorithm();
+		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }
