@@ -15,10 +15,11 @@ public class Graph {
 	public static final int rowSeperation = 36;
 	public Graph(NodeList nodeList)
 	{
-		this.widthGuard = ((int) Math.floor(Math.sqrt(nodeList.gettotalNonTerminalWidth() * rowSeperation)));
+		
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
 		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
+		this.widthGuard = this.calculatedRowSize * rowSeperation;
 		this.placementList = new ArrayList<ArrayList<Nodes>>();
 		ArrayList<Nodes> tempNodeList = nodeList.getNonTerminalNodeList();
 		try
@@ -156,18 +157,8 @@ public class Graph {
 		for (int row = 0; row <= this.placementList.size(); row++)
 		{
 			ArrayList<Nodes> tempList = this.placementList.get(row);
-			for (int width = 0; width <= tempList.size(); width++)
+			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
 			{
-				Nodes node = tempList.get(width);
-				NodeCoordinate tempCoordinate = node.getNodeCoordinate();
-				currentNodeXLocation = tempCoordinate.getNodeXCoordinate();
-				currentNodeYLocation = tempCoordinate.getNodeYCoordinate();
-				if (previousNodeXLocation !=0 && previousNodeYLocation !=0 )
-				{
-					
-				}
-				previousNodeXLocation = currentNodeXLocation + tempCoordinate.getNodeXCoordinate();
-				previousNodeYLocation = currentNodeYLocation;
 				
 			}
 			
