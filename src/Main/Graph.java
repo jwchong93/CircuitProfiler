@@ -1,6 +1,7 @@
 package Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
@@ -12,9 +13,9 @@ public class Graph {
 	private ArrayList<ArrayList<Nodes>> placementList;
 	private int calculatedRowSize;
 	public static final int rowSeperation = 36;
+	
 	public Graph(NodeList nodeList)
 	{
-		
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
 		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
@@ -85,7 +86,7 @@ public class Graph {
 		Nodes tempNode = this.placementList.get(rowNumber).get(locationInPlacementList);
 		if (coordinateOfTheNode.getNodeYCoordinate() + width > this.widthGuard)
 		{
-			return false; //This node at the end, cant switch
+			return false; //This node at the end, cannot switch
 		}
 		else
 		{
@@ -109,7 +110,7 @@ public class Graph {
 		}
 		else
 		{
-			return false; //Fulled and cant place d
+			return false; //Fulled and cannot place already
 		}
 	}
 	
@@ -134,26 +135,207 @@ public class Graph {
 		}
 	}
 
-	private void updateNodeCoordinate(Nodes newNode, int x, int y) 
+	public void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);	
+	}
+	
+	public Graph(NodeList nodeList, int index)
+	{
+		this.currentWidthSize = 0;
+		this.currentRowSize =0;
+		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
+		this.widthGuard = this.calculatedRowSize * rowSeperation;
+		this.placementList = new ArrayList<ArrayList<Nodes>>();
+		ArrayList<Nodes> tempNodeList = nodeList.getNonTerminalNodeList();
+		this.addArrayNodeList(new ArrayList<Nodes>());
+		this.placeNodes(tempNodeList, 0, 0, 0);
+	}
+	
+	// Nested node placer
+	public void placeNodes(ArrayList<Nodes> nodes, int row, int startingPoint, int index)
+	{
+		boolean exceedRowWidth = false;
+		
+		if(row % 2 == 0)
+		{
+			//left to right place
+			exceedRowWidth = this.placeDirection(0, nodes.get(index), startingPoint, row);
+			if(exceedRowWidth)
+			{
+				row++;
+				if(row <= this.calculatedRowSize)
+					this.addArrayNodeList(new ArrayList<Nodes>());
+				placeNodes(nodes, row, 0, 0);
+			}
+			else
+			{
+				startingPoint += nodes.get(index).getNodeWidth();
+				this.addNodeToRow(nodes.get(index), row);
+				if(index < nodes.size() - 1)
+				{
+					if(startingPoint > this.widthGuard)
+					{
+						this.addArrayNodeList(new ArrayList<Nodes>());
+						placeNodes(nodes, row+1, this.widthGuard, index+1);
+					}
+					else
+						placeNodes(nodes, row, startingPoint, index+1);
+				}
+			}
+		}
+		else
+		{
+			//right to left place
+			exceedRowWidth = this.placeDirection(1, nodes.get(index), startingPoint, row);
+			if(exceedRowWidth)
+			{
+				row++;
+				if(row <= this.calculatedRowSize)
+					this.addArrayNodeList(new ArrayList<Nodes>());
+				this.reverseSort(this.getRowNodeList(row));
+				placeNodes(nodes, row, 0, 0);
+			}
+			else
+			{
+				startingPoint -= nodes.get(index).getNodeWidth();
+				this.addNodeToRow(nodes.get(index), row);
+				if(index < nodes.size() - 1)
+				{
+					if(startingPoint < 0)
+					{
+						this.addArrayNodeList(new ArrayList<Nodes>());
+						placeNodes(nodes, row+1, 0, index+1);
+					}
+					else
+						placeNodes(nodes, row, startingPoint, index+1);
+				}
+			}
+		}
+	}
+	
+	public boolean placeDirection(int leftOrRight, Nodes node, int startingPoint, int row)
+	{
+		if(leftOrRight == 0)
+		{
+			if(startingPoint + node.getNodeWidth() != this.widthGuard)
+			{
+				node.setNodeCoordinate(startingPoint, row);
+				return false;
+			}
+		}
+		else
+		{
+			if(startingPoint - node.getNodeWidth() >= 0)
+			{
+				node.setNodeCoordinate(startingPoint - node.getNodeWidth(), row);
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public void reverseSort(ArrayList<Nodes> nodes)
+	{
+		for(int i = 0; i < nodes.size() / 2; i++)
+		{
+			Nodes tempNode = nodes.get(i);
+			nodes.set(i, nodes.get(nodes.size() - i));
+			nodes.set(nodes.size() - 1, tempNode);
+		}
 	}
 
 	public void legalizeNodes ()
 	{
-		int previousNodeXLocation = 0;	
-		int previousNodeYLocation = 0;
-		int currentNodeXLocation = 0;
-		int currentNodeYLocation = 0;
-		
 		for (int row = 0; row <= this.placementList.size(); row++)
 		{
 			ArrayList<Nodes> tempList = this.placementList.get(row);
+			//tempList.so;
+			Nodes leftNode = null;
+			Nodes rightNode = null;
+			NodeCoordinate leftNodeCoordinate,rightNodeCoordinate;
+			int lengthToShift,accumulatedWidthSize = 0;
 			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
 			{
-				
+				rightNode = i.next();
+				accumulatedWidthSize += rightNode.getNodeWidth();
+				if (leftNode != null) //First iteration, first node.
+				{
+					leftNodeCoordinate = leftNode.getNodeCoordinate();
+					rightNodeCoordinate = rightNode.getNodeCoordinate();
+					lengthToShift = leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() - rightNodeCoordinate.getNodeXCoordinate();
+					if (leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() >= rightNodeCoordinate.getNodeXCoordinate())
+						//Overlapped, shift the right cell
+					{
+						if (!this.moveNodeByWidth(rightNode, lengthToShift))
+						{
+							//Reached the end of the boundary.
+							if (accumulatedWidthSize <= this.widthGuard)
+							{
+								//This row can fit all the nodes
+								//Add node to the end of the last line
+								this.reduceTheWidthSpacing (tempList,lengthToShift);
+							}
+							else
+							{
+								//This row can not fit all the nodes.
+								//Change the coordinate of the node and add to the next row.
+								rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate());
+								this.placementList.get(row+1).add(rightNode);
+							}
+						}
+					}
+				}
+				leftNode = rightNode;
 			}
 			
 		}
 	}
+
+	private void reduceTheWidthSpacing(ArrayList<Nodes> tempList, int lengthToShift) 
+	{
+		Nodes rightNode,leftNode =null ;
+		NodeCoordinate rightCoordinate,leftCoordinate;
+		for (Iterator<Nodes> i = tempList.iterator(); i.hasNext()|lengthToShift <= 0;)
+		{
+			rightNode = i.next();
+			rightCoordinate = rightNode.getNodeCoordinate();
+			if (leftNode == null)
+			{
+				//First Iteration
+				if (rightCoordinate.getNodeXCoordinate() !=0)
+				{
+					rightNode.setNodeCoordinate(rightCoordinate.getNodeXCoordinate()-1,rightCoordinate.getNodeYCoordinate());
+					lengthToShift --;
+				}
+			}
+			else
+			{
+				leftCoordinate = leftNode.getNodeCoordinate();
+				if (leftCoordinate.getNodeXCoordinate()+rightNode.getNodeWidth()< rightCoordinate.getNodeXCoordinate())
+				{
+					rightNode.setNodeCoordinate(rightCoordinate.getNodeXCoordinate()-1, rightCoordinate.getNodeYCoordinate());
+					lengthToShift--;
+				}
+			}
+			leftNode = rightNode;
+		}
+		if (lengthToShift > 0)
+		{
+			this.reduceTheWidthSpacing(tempList, lengthToShift);
+		}
+	}
+	
+	public void printRowOfNodes(int row)
+	{
+		for(int i = 0; i < this.placementList.get(row).size(); i++)
+		{
+			System.out.println(this.placementList.get(row).get(i).toString() + this.placementList.get(row).get(i).getNodeWidth());
+		}
+	}
+	
+	public void addArrayNodeList(ArrayList<Nodes> nodes) { this.placementList.add(nodes); }
+	public void addNodeToRow(Nodes node, int row) { this.placementList.get(row).add(node); }
+	public ArrayList<Nodes> getRowNodeList(int row) { return this.placementList.get(row); }
 }

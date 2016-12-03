@@ -10,7 +10,7 @@ public class NetList
 	private int totalInputPins;
 	private int maxDegree;
 	private int totalBidirectionalPins;
-	private int totalHPWL;
+	private long totalHPWL;
 	private ArrayList<String> maxDegreeName = new ArrayList<String>();
 	private TreeMap<Integer, Integer> histogramOfConnectivity = new TreeMap<Integer, Integer>();
 	private ArrayList<Nets> netlist = new ArrayList<Nets>();
@@ -147,7 +147,7 @@ public class NetList
 		file.writeToFiles(headerString + " " + tempString);
 	}
 	
-	public int getTotalHPWL()
+	public long getTotalHPWL()
 	{
 		this.totalHPWL = 0;
 		
@@ -199,11 +199,12 @@ public class NetList
 		// Update all node's connected node in each net
 		for(int i = 0; i < this.netlist.size(); i++)
 		{
+			// Loop all I/O nodes in the net
 			for(int j = 0; j < this.netlist.get(i).getIO_nodes().size(); j++)
 			{
 				Nodes node = this.netlist.get(i).getIO_nodes().get(j);
 				node.updateConnectedNodes(this.netlist.get(i).getIO_nodes());
-				node.addConnectionNets(netlist.get(i));
+				node.addConnectionNets(this.netlist.get(i));
 			}
 		}
 	}
