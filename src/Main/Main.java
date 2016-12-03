@@ -36,8 +36,8 @@ public class Main
 		
 		//Random placement
 		System.out.println("-I- Instantiate Floorplan");
-		Graph floorplan = new Graph(10577,nodeList);
-		
+		Graph floorplan = new Graph(nodeList);
+
 		// Print out message
 		//netList.printNetDegree();
 		//nodeList.printNonTerminalNodeCoordinate();
