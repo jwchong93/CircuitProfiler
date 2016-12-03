@@ -7,8 +7,8 @@ public class FDP {
 	private NodeList nodeList;
 	private Graph floorplan;
 	
-	public final static int iteration_limit = 100;
-	public final static int abort_limit = 10;
+	public final static int iteration_limit = 5000;
+	public final static int abort_limit = 3;
 	
 	public FDP(Graph floorplan, NodeList nodeList) {
 		this.nodeList = nodeList;
@@ -62,9 +62,12 @@ public class FDP {
 				}
 				else if(node_cond.isLock() == false) // occupied but not locked--okay
 				{
-					this.floorplan.updateNodeCoordinateOnly(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
-					//System.out.println(node_cond);
-					//System.out.println(thisNodes);
+//					System.out.println("Ripple cont");
+//					System.out.println(thisNodes);
+//					System.out.println(node_cond);
+//					System.out.println(curr_ZFT);
+//					System.out.println("swapping");
+					this.floorplan.updateNodeCoordinate(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					this.floorplan.swapNodes(thisNodes, node_cond);
 					thisNodes.lockNode();
 					thisNodes = node_cond;
@@ -73,7 +76,11 @@ public class FDP {
 				}
 			}
 			iteration_count++;
-			if(iteration_count >= iteration_limit) break;
+			System.out.println("Reach iteration at ===== " + iteration_count);
+			if(iteration_count >= iteration_limit) {
+				System.out.println("Reach iteration Limit break");
+				break;
+			}
 		}
 		// Unlock all Nodes
 		for(Iterator<Nodes> i = this.nodeList.getNonTerminalNodeList().iterator(); i.hasNext();) 
