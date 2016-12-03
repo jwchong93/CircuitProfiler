@@ -25,9 +25,9 @@ public class Main
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
-
-		System.out.println("Analyzing completed");
 		file.deInitFileIO();
+		
+		System.out.println("Analyzing completed");
 	
 		//////////////// Project 2 Start here //////////////
 
@@ -41,8 +41,6 @@ public class Main
 		System.out.println("Updated node completed");
 		
 		// Sort NetList
-		
-		
 		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
 			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5+i, i);
 		}
@@ -53,6 +51,10 @@ public class Main
 		int hpwl = netList.getTotalHPWL();
 		System.out.println(hpwl);
 
+		// Display connected nodes
+		System.out.println("Display node connection");
+		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		nodeList.printConnectedNodeDetail();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
