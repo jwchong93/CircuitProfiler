@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -39,7 +39,7 @@ public class Main
 		System.out.println("-I- Updated node started here....");
 		
 		netList.updateNodelist(nodeList); // net list with node object and remove terminal
-		System.out.println("Nomber of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
+		System.out.println("Number of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
 		
 		
 		
@@ -53,19 +53,23 @@ public class Main
 		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
 			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5*i, i);
 		}
-			
+		
 		// Display connected nodes
 		System.out.println("-I- Update node-to-node connection");
-		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		netList.updateAllConnectedNodes();
 		
 		//Random placement
-		Graph floorplan = new Graph(10577,nodeList);
+		//NodeList nList = new NodeList();
+		//nList.sortNodesAccordingToNets(netList.getNetlist());
+		//nList.sortNodesAccordingToNodesConnection(nodeList.getNodeList());
+		//Graph floorplan = new Graph(nList);
+		Graph floorplan = new Graph(nodeList);
 		System.out.println("Algorithm finished");
 		
 		// Print out message
 		//netList.printNetDegree();
 		//nodeList.printNonTerminalNodeCoordinate();
-		//nodeList.printConnectedNodeDetail();
+		nodeList.printConnectedNodeDetail();
 		
 		FDPrippleMove(nodeList);
 		

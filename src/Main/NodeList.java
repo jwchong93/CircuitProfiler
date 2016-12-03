@@ -160,7 +160,47 @@ public class NodeList
 		Collections.sort(this.terminalnodelist);
 	}
 	
-	public void printNonTerminalNodeCoordinate(){
+	public void sortNodesAccordingToNets(ArrayList<Nets> nets)
+	{
+		for(int i = 0; i < nets.size(); i++)
+		{
+			ArrayList<Nodes> nodes = new ArrayList<Nodes>();
+			nodes = nets.get(i).getIO_nodes();
+			
+			for(int j = 0; j < nodes.size(); j++)
+			{
+				if(!this.nodelist.contains(nodes.get(j)))
+				{
+					this.nodelist.add(nodes.get(j));
+					//System.out.println(nodes.get(j).getNodeName());
+				}
+			}
+		}
+	}
+	
+	public void sortNodesAccordingToNodesConnection(ArrayList<Nodes> nList)
+	{
+		for(int i = 0; i < nList.size(); i++)
+		{
+			ArrayList<Nodes> nodes = new ArrayList<Nodes>();
+			
+			if(!this.nodelist.contains(nList.get(i)))
+			{
+				nodes = nList.get(i).getConnectedNodes();
+				
+				for(int j = 0; j < nodes.size(); j++)
+				{
+					if(!this.nodelist.contains(nodes.get(j)))
+					{
+						this.nodelist.add(nodes.get(j));
+						//System.out.println(nodes.get(j).getNodeName());
+					}
+				}
+			}
+		}
+	}
+	
+	public void printNonTerminalNodeCoordinate() {
 		for(Nodes str:this.nonTerminalnodelist) {
 			System.out.println(str);
 		}
@@ -181,18 +221,9 @@ public class NodeList
 		}
 	}
 	
-	public ArrayList<Nodes> getSortedNodeList()
-	{
-		ArrayList<Nodes> nodeList = new ArrayList<Nodes>();
-		
-		
-		
-		return nodeList;
-	}
-	
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
 	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
 	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
-	public int gettotalNonTerminalWidth() { return this.totalNonTerminalWidth; };
-	public void addNodeToNodeList(Nodes node) {this.nodelist.add(node);};
+	public int gettotalNonTerminalWidth() { return this.totalNonTerminalWidth; }
+	public void addNodeToNodeList(Nodes node) { this.nodelist.add(node); }
 }

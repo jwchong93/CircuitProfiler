@@ -194,15 +194,15 @@ public class NetList
 	}
 	
 	// Copy node and net reference so to maintain data consistency
-	public void updateAllConnectedNodes(ArrayList<Nodes> nodelist)
+	public void updateAllConnectedNodes()
 	{
-		// Update all node's connected node in each net 
+		// Update all node's connected node in each net
 		for(int i = 0; i < this.netlist.size(); i++)
 		{
 			for(int j = 0; j < this.netlist.get(i).getIO_nodes().size(); j++)
 			{
 				Nodes node = this.netlist.get(i).getIO_nodes().get(j);
-				node.updateConnectedNodes(this.netlist.get(i).getIO_nodes(), netlist.get(i));
+				node.updateConnectedNodes(this.netlist.get(i).getIO_nodes());
 				node.addConnectionNets(netlist.get(i));
 			}
 		}

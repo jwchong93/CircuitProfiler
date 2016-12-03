@@ -11,13 +11,14 @@ public class Graph {
 	private int currentRowSize;
 	private ArrayList<ArrayList<Nodes>> placementList;
 	private int calculatedRowSize;
-
-	public Graph(int widthSize, NodeList nodeList)
+	public static final int rowSeperation = 36;
+	public Graph(NodeList nodeList)
 	{
-		this.widthGuard = widthSize;
+		
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
-		this.calculatedRowSize = 294; 
+		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
+		this.widthGuard = this.calculatedRowSize * rowSeperation;
 		this.placementList = new ArrayList<ArrayList<Nodes>>();
 		ArrayList<Nodes> tempNodeList = nodeList.getNonTerminalNodeList();
 		try
@@ -57,8 +58,8 @@ public class Graph {
 	
 	public void swapNodes (Nodes node1, Nodes node2)
 	{
-		int yIndex1 = node1.getNodeCoordinate().getNodeYCoordinate()/36;
-		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/36;
+		int yIndex1 = node1.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
+		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
 		int xIndex1 = this.placementList.get(yIndex1).indexOf(node1);
 		int xIndex2 = this.placementList.get(yIndex2).indexOf(node2);
 		Nodes tempNode1 = this.placementList.get(yIndex1).get(xIndex1);
@@ -79,7 +80,7 @@ public class Graph {
 	public boolean moveNodeByWidth (Nodes node, int width)
 	{
 		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
-		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/36;
+		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
 		int locationInPlacementList = this.placementList.get(rowNumber).indexOf(node);
 		Nodes tempNode = this.placementList.get(rowNumber).get(locationInPlacementList);
 		if (coordinateOfTheNode.getNodeYCoordinate() + width > this.widthGuard)
@@ -99,11 +100,11 @@ public class Graph {
 		{
 			this.updateNodeCoordinate (newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
-			if (this.placementList.size() < (this.currentRowSize/36) + 1 )
+			if (this.placementList.size() < (this.currentRowSize/rowSeperation) + 1 )
 			{
 				this.placementList.add(new ArrayList<Nodes>());
 			}
-			this.placementList.get(this.currentRowSize/36).add(newNode);
+			this.placementList.get(this.currentRowSize/rowSeperation).add(newNode);
 			return true;
 		}
 		else
@@ -120,9 +121,9 @@ public class Graph {
 		}
 		else
 		{
-			this.currentRowSize += 36;
+			this.currentRowSize += rowSeperation;
 			this.currentWidthSize = 0;
-			if (this.currentRowSize/36 > this.calculatedRowSize)
+			if (this.currentRowSize/rowSeperation > this.calculatedRowSize)
 			{
 				return false; //Fulled.
 			}
@@ -136,5 +137,23 @@ public class Graph {
 	private void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);	
+	}
+
+	public void legalizeNodes ()
+	{
+		int previousNodeXLocation = 0;	
+		int previousNodeYLocation = 0;
+		int currentNodeXLocation = 0;
+		int currentNodeYLocation = 0;
+		
+		for (int row = 0; row <= this.placementList.size(); row++)
+		{
+			ArrayList<Nodes> tempList = this.placementList.get(row);
+			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
+			{
+				
+			}
+			
+		}
 	}
 }

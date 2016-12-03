@@ -65,7 +65,7 @@ public class Nodes implements Comparable<Nodes>
 	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
 	
 	// Contain a list of node that connected to this node
-	public void updateConnectedNodes(ArrayList<Nodes> io_nodes, Nets net)
+	public void updateConnectedNodes(ArrayList<Nodes> io_nodes)
 	{
 		// loop nodes in a net
 		for(int i = 0; i < io_nodes.size(); i++)
