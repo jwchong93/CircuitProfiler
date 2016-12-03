@@ -58,6 +58,10 @@ public class Main
 		System.out.println("-I- Update node-to-node connection");
 		netList.updateAllConnectedNodes(nodeList.getNodeList());
 		
+		//Random placement
+		Graph floorplan = new Graph(10577,nodeList);
+		System.out.println("Algorithm finished");
+		
 		// Print out message
 		//netList.printNetDegree();
 		//nodeList.printNonTerminalNodeCoordinate();
