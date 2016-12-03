@@ -25,6 +25,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeHeight = 0;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
+		this.lock=false;
 	}
 
 	// constructor overload for 4 arguments
@@ -35,6 +36,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeType = nodeType;
 		this.nodeArea = this.nodeHeight*this.nodeWidth;
 		this.nodeLocation = new NodeCoordinate();
+		this.lock=false;
 	}
 
 	// methods

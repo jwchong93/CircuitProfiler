@@ -29,24 +29,27 @@ public class FDP {
 		{
 			boolean end_ripple_move = false;
 			Nodes thisNodes = i.next();
-			//thisNodes.unlockNode();
+			thisNodes.unlockNode();
 			while(end_ripple_move == false) {
 				NodeCoordinate curr_ZFT = thisNodes.computeAndReturnZFT();
 				Nodes node_cond = this.floorplan.nodeInThisLocation(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 				if(node_cond == null) // position is free --okay
 				{
+					//System.out.println("node_cond is empty");
 					this.floorplan.updateNodeCoordinate(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					thisNodes.lockNode();
 					end_ripple_move = true;
 					abort_count = 0;
 				}else if(node_cond.isLock() == true) // ZFT position is occupied and fixed.
 				{
+					//System.out.println("node_cond is LOCKED");
 					this.floorplan.updateNodeCoordinateNextFreePos(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					thisNodes.lockNode();
 					end_ripple_move = true;
 					abort_count++;
 					if(abort_count > abort_limit)
 					{
+						System.out.println("abort_count > abort_limit");
 						for(Iterator<Nodes> j = this.nodeList.getNonTerminalNodeList().iterator(); j.hasNext();) 
 						{
 							Nodes tempNodes = j.next();
@@ -56,17 +59,14 @@ public class FDP {
 					iteration_count++;
 				}else if(node_cond.isSameLocation(curr_ZFT)) // --okay
 				{
+					//System.out.println("node_cond is SAME");
 					thisNodes.lockNode();
 					end_ripple_move = true;
 					abort_count= 0;
 				}
 				else if(node_cond.isLock() == false) // occupied but not locked--okay
 				{
-//					System.out.println("Ripple cont");
-//					System.out.println(thisNodes);
-//					System.out.println(node_cond);
-//					System.out.println(curr_ZFT);
-//					System.out.println("swapping");
+					//System.out.println("node_cond is FREE");
 					this.floorplan.updateNodeCoordinate(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					this.floorplan.swapNodes(thisNodes, node_cond);
 					thisNodes.lockNode();
@@ -75,7 +75,6 @@ public class FDP {
 					abort_count = 0;
 				}
 			}
-			iteration_count++;
 			System.out.println("Reach iteration at ===== " + iteration_count);
 			if(iteration_count >= iteration_limit) {
 				System.out.println("Reach iteration Limit break");

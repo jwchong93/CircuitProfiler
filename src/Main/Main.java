@@ -35,6 +35,7 @@ public class Main
 		netList.updateAllConnectedNodes();
 		
 		//Random placement
+		nodeList.sortAllNodeList();
 		Graph floorplan = new Graph(nodeList);
 		/*
 		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
@@ -63,8 +64,6 @@ public class Main
 		// Start Force-Directed Placement
 		FDP fdp = new FDP(floorplan, nodeList);
 		FDPrippleMove(fdp);
-		//System.out.println(nodeList.getNonTerminalNodeList().get(2).computeAndReturnZFT());
-		
 
 		//Calculate total HPWL
 		long hpwl = netList.getTotalHPWL();
@@ -113,7 +112,13 @@ public class Main
 	public static void FDPrippleMove(FDP fdp)
 	{
 		System.out.println("-I- Call FDP ripple Move Algorithm");
+		double startTime = System.currentTimeMillis();
 		fdp.startAlgorithm();
+		//fdp.getFloorPlan().legalizeNodes();
+		double endTime   = System.currentTimeMillis();
+		double totalTime = (endTime - startTime)/1000;
+		System.out.println("Runtime = " + totalTime + " seconds");
+		
 		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }

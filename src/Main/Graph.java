@@ -304,9 +304,9 @@ public class Graph {
 			NodeCoordinate coordinate = node.getNodeCoordinate();
 			while (node.isLock())
 			{
-				node = this.placementList.get(coordinate.getNodeYCoordinate()).get
+				node = this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).get
 						(
-						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)+1)
+						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)-1)
 						);
 				
 			}
