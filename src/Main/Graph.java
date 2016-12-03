@@ -63,6 +63,8 @@ public class Graph {
 		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
 		int xIndex1 = this.placementList.get(yIndex1).indexOf(node1);
 		int xIndex2 = this.placementList.get(yIndex2).indexOf(node2);
+		System.out.println(xIndex1);
+		System.out.println(xIndex2);
 		Nodes tempNode1 = this.placementList.get(yIndex1).get(xIndex1);
 		Nodes tempNode2 = this.placementList.get(yIndex2).get(xIndex2);
 		NodeCoordinate tempCoordinate1 = tempNode1.getNodeCoordinate();
@@ -226,6 +228,11 @@ public class Graph {
 		{
 			this.reduceTheWidthSpacing(tempList, lengthToShift);
 		}
+	}
+
+	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

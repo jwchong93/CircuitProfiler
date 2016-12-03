@@ -5,7 +5,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "test1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -96,5 +96,6 @@ public class Main
 	{
 		System.out.println("-I- Call FDP ripple Move Algorithm");
 		fdp.startAlgorithm();
+		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }
