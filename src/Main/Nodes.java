@@ -9,8 +9,9 @@ public class Nodes implements Comparable<Nodes>
 	private int nodeWidth, nodeHeight;
 	private int nodeArea;
 	private NodeCoordinate nodeLocation;
-	private ArrayList<Nodes> connectedNodes = new ArrayList<Nodes>();
 	private int nodeDegree;
+	private int nodeTotalnetHPWL;
+	private ArrayList<Nodes> connectedNodes = new ArrayList<Nodes>();
 	private ArrayList<Nets> connectionNets = new ArrayList<Nets>();
 	
 	// constructor
@@ -58,6 +59,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeLocation.setNodeYCoordinate(nodeYCoordinate);
 	}
 	
+	public int getnodeTotalnetHPWL() { return this.nodeTotalnetHPWL; }
 	public NodeCoordinate getNodeCoordinate() { return this.nodeLocation; }
 	public ArrayList<Nodes> getConnectedNodes() { return this.connectedNodes; }
 	public void addConnectedNode(Nodes node) { this.connectedNodes.add(node); }
@@ -77,14 +79,15 @@ public class Nodes implements Comparable<Nodes>
 	}
 	
 	// calculate the HPWL of net that connected to this node
-	public int getNodeAllNetHPWL()
+	public int calcNodeAllNetHPWL()
 	{
 		int hpwl = 0;
 		
 		for(int i = 0; i < this.connectionNets.size(); i++)
 			hpwl += this.connectionNets.get(i).getNetHPWL();
 		
-		return hpwl; 
+		this.nodeTotalnetHPWL = hpwl; 
+		return this.nodeTotalnetHPWL;
 	}
 	
 	//@Overrides
