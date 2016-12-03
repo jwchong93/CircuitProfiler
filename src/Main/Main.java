@@ -59,7 +59,7 @@ public class Main
 		netList.updateAllConnectedNodes(nodeList.getNodeList());
 		
 		//Random placement
-		Graph floorplan = new Graph(10577,nodeList);
+		Graph floorplan = new Graph(nodeList);
 		System.out.println("Algorithm finished");
 		
 		// Print out message
