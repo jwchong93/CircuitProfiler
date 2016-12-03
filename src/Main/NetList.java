@@ -196,7 +196,7 @@ public class NetList
 	// Copy node and net reference so to maintain data consistency
 	public void updateAllConnectedNodes()
 	{
-		// Update all node's connected node in each net 
+		// Update all node's connected node in each net
 		for(int i = 0; i < this.netlist.size(); i++)
 		{
 			// Loop all I/O nodes in the net
