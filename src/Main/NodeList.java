@@ -2,7 +2,7 @@ package Main;
 
 import java.util.*;
 
-public class NodeList 
+public class NodeList
 {
 	private ArrayList<Nodes> nodelist;
 	private ArrayList<Nodes> terminalnodelist;
@@ -179,6 +179,15 @@ public class NodeList
 			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " + nonTerminalnodelist.get(i).calcNodeAllNetHPWL());
 			System.out.println();
 		}
+	}
+	
+	public ArrayList<Nodes> getSortedNodeList()
+	{
+		ArrayList<Nodes> nodeList = new ArrayList<Nodes>();
+		
+		
+		
+		return nodeList;
 	}
 	
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }

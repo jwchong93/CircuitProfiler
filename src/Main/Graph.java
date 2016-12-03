@@ -1,6 +1,5 @@
 package Main;
 
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -33,7 +32,6 @@ public class Graph {
 			System.out.println(e.getMessage());
 			System.out.println("failed");
 		}
-		
 	}
 	
 	public Nodes nodeInThisLocation (int x, int y)
@@ -56,6 +54,7 @@ public class Graph {
 		}
 		return null;
 	}
+	
 	public void swapNodes (Nodes node1, Nodes node2)
 	{
 		int yIndex1 = node1.getNodeCoordinate().getNodeYCoordinate()/36;
@@ -68,8 +67,6 @@ public class Graph {
 		NodeCoordinate tempCoordinate2 = tempNode2.getNodeCoordinate();
 		tempNode1.setNodeCoordinate(tempCoordinate2.getNodeXCoordinate(), tempCoordinate2.getNodeYCoordinate());
 		tempNode2.setNodeCoordinate(tempCoordinate1.getNodeXCoordinate(), tempCoordinate1.getNodeYCoordinate());
-		
-		
 	}
 	
 	public void changeCoordinate (Nodes node, int x, int y)
@@ -78,7 +75,6 @@ public class Graph {
 		newCoordinate.setNodeXCoordinate(x);
 		newCoordinate.setNodeYCoordinate(y);
 	}
-	
 	
 	public boolean moveNodeByWidth (Nodes node, int width)
 	{
@@ -95,8 +91,6 @@ public class Graph {
 			tempNode.setNodeCoordinate(coordinateOfTheNode.getNodeXCoordinate(), coordinateOfTheNode.getNodeYCoordinate() + width);
 			return true; //This node can be switch.
 		}
-		
-		
 	}
 	
 	public boolean addNode(Nodes newNode)
@@ -141,10 +135,6 @@ public class Graph {
 
 	private void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
-		
-		newNode.setNodeCoordinate(x, y);
-		
+		newNode.setNodeCoordinate(x, y);	
 	}
-
-
 }
