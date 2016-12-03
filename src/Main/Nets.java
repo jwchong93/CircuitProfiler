@@ -43,7 +43,7 @@ public class Nets implements Comparable<Nets>
 				this.bidirectionalPins.size();
 	}
 	
-	public int getHPWL()
+	public int getNetHPWL()
 	{
 		calHPWL();
 		return this.netHPWL;
@@ -87,6 +87,6 @@ public class Nets implements Comparable<Nets>
 		
 	//@Overrides
 	public String toString() {
-		      return "[NetName = " + this.netName + " Net Degree = " + this.netDegree + "]";
+		return "[NetName = " + this.netName + " Net Degree = " + this.netDegree + "]";
 	}
 }
