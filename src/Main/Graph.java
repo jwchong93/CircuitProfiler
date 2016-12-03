@@ -2,6 +2,7 @@ package Main;
 
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class Graph {
@@ -19,14 +20,15 @@ public class Graph {
 		this.currentRowSize =0;
 		this.calculatedRowSize = 294; 
 		this.placementList = new ArrayList<ArrayList<Nodes>>();
+		ArrayList<Nodes> tempNodeList = nodeList.getNonTerminalNodeList();
 		try
 		{
-			for (Iterator<Nodes> i = nodeList.getNonTerminalNodeList().iterator(); i.hasNext();)
+			for (Iterator<Nodes> i = tempNodeList.iterator(); i.hasNext();)
 			{
 				Nodes tempNode = i.next();
 				this.addNode(tempNode);
 			}
-		}catch (Exception e)
+		}catch (ConcurrentModificationException e)
 		{
 			System.out.println(e.getMessage());
 			System.out.println("failed");
@@ -103,6 +105,10 @@ public class Graph {
 		{
 			this.updateNodeCoordinate (newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
+			if (this.placementList.size() < (this.currentRowSize/36) + 1 )
+			{
+				this.placementList.add(new ArrayList<Nodes>());
+			}
 			this.placementList.get(this.currentRowSize/36).add(newNode);
 			return true;
 		}
