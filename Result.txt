@@ -3,15 +3,15 @@
 Total Number of Terminals Node: 4
 Total Number of Non-Terminals Node: 6
 Total Number of Nodes: 10
-Largest Non-Terminal Node(1): Area 192
-       o3
+Largest Non-Terminal Node(5): Area 156
+       o1       o2       o3       o4       o5
 Smallest Non-Terminal Node(1): Area 96
        o0
 Largest Terminal Node(4): Area 156
        o6       o7       o8       o9
 Smallest Terminal Node(4): Area 156
        o6       o7       o8       o9
-Total non-terminal node width length: 76
+Total non-terminal node width length: 73
 .nets file summary:
 Total number of nets : 10
 Total number of pins : 23

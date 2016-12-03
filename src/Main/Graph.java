@@ -149,19 +149,82 @@ public class Graph {
 
 	public void legalizeNodes ()
 	{
-		int previousNodeXLocation = 0;	
-		int previousNodeYLocation = 0;
-		int currentNodeXLocation = 0;
-		int currentNodeYLocation = 0;
-		
 		for (int row = 0; row <= this.placementList.size(); row++)
 		{
 			ArrayList<Nodes> tempList = this.placementList.get(row);
+			//tempList.so;
+			Nodes leftNode = null;
+			Nodes rightNode = null;
+			NodeCoordinate leftNodeCoordinate,rightNodeCoordinate;
+			int lengthToShift,accumulatedWidthSize = 0;
 			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
 			{
-				
+				rightNode = i.next();
+				accumulatedWidthSize += rightNode.getNodeWidth();
+				if (leftNode != null) //First iteration, first node.
+				{
+					leftNodeCoordinate = leftNode.getNodeCoordinate();
+					rightNodeCoordinate = rightNode.getNodeCoordinate();
+					lengthToShift = leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() - rightNodeCoordinate.getNodeXCoordinate();
+					if (leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() >= rightNodeCoordinate.getNodeXCoordinate())
+						//Overlapped, shift the right cell
+					{
+						if (!this.moveNodeByWidth(rightNode, lengthToShift))
+						{
+							//Reached the end of the boundary.
+							if (accumulatedWidthSize <= this.widthGuard)
+							{
+								//This row can fit all the nodes
+								//Add node to the end of the last line
+								this.reduceTheWidthSpacing (tempList,lengthToShift);
+							}
+							else
+							{
+								//This row can not fit all the nodes.
+								//Change the coordinate of the node and add to the next row.
+								rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate());
+								this.placementList.get(row+1).add(rightNode);
+							}
+						}
+					}
+				}
+				leftNode = rightNode;
 			}
 			
+		}
+	}
+
+	private void reduceTheWidthSpacing(ArrayList<Nodes> tempList, int lengthToShift) 
+	{
+		Nodes rightNode,leftNode =null ;
+		NodeCoordinate rightCoordinate,leftCoordinate;
+		for (Iterator<Nodes> i = tempList.iterator(); i.hasNext()|lengthToShift <= 0;)
+		{
+			rightNode = i.next();
+			rightCoordinate = rightNode.getNodeCoordinate();
+			if (leftNode == null)
+			{
+				//First Iteration
+				if (rightCoordinate.getNodeXCoordinate() !=0)
+				{
+					rightNode.setNodeCoordinate(rightCoordinate.getNodeXCoordinate()-1,rightCoordinate.getNodeYCoordinate());
+					lengthToShift --;
+				}
+			}
+			else
+			{
+				leftCoordinate = leftNode.getNodeCoordinate();
+				if (leftCoordinate.getNodeXCoordinate()+rightNode.getNodeWidth()< rightCoordinate.getNodeXCoordinate())
+				{
+					rightNode.setNodeCoordinate(rightCoordinate.getNodeXCoordinate()-1, rightCoordinate.getNodeYCoordinate());
+					lengthToShift--;
+				}
+			}
+			leftNode = rightNode;
+		}
+		if (lengthToShift > 0)
+		{
+			this.reduceTheWidthSpacing(tempList, lengthToShift);
 		}
 	}
 
