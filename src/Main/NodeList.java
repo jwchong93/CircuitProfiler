@@ -176,7 +176,7 @@ public class NodeList
 			System.out.print("\nNets: ");
 			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectionNets().size(); j++)
 				System.out.print(nonTerminalnodelist.get(i).getConnectionNets().get(j).getNetName() + " ");
-			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " + nonTerminalnodelist.get(i).getNodeAllNetHPWL());
+			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " + nonTerminalnodelist.get(i).calcNodeAllNetHPWL());
 			System.out.println();
 		}
 	}
@@ -184,5 +184,6 @@ public class NodeList
 	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
 	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
 	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
+	public int gettotalNonTerminalWidth() { return this.totalNonTerminalWidth; };
 	public void addNodeToNodeList(Nodes node) {this.nodelist.add(node);};
 }

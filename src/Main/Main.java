@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "test1";
+	static final String testFileName = "adaptec1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -19,72 +19,88 @@ public class Main
 		NodeList nodeList = new NodeList();
 		NetList netList = new NetList();
 		
-		System.out.println("Analysing " + testFileName);
-		
+		System.out.println("-I- Analysing " + testFileName);
+
 		// object always pass by reference
 		file.writeToFiles("\""+testFileName+"\" .node and .net descriptions and parameters:");
+		long startTime = System.currentTimeMillis();
 		nodeOperation(nodeList, file);
 		netOperation(netList, file);
+		long endTime   = System.currentTimeMillis();
+		long totalTime = (endTime - startTime)/1000;
+		System.out.println("Runtime = " + totalTime + " seconds");
+
 		file.deInitFileIO();
 		
-		System.out.println("Analyzing completed");
+		System.out.println("-I- Analyzing completed");
 	
 		//////////////// Project 2 Start here //////////////
 
-		System.out.println("Updated node started here....");
+		System.out.println("-I- Updated node started here....");
 		
-		System.out.println(LocalDateTime.now().toString());
 		netList.updateNodelist(nodeList); // net list with node object and remove terminal
-		System.out.println(LocalDateTime.now().toString());
-		System.out.println("Net list remainder =" + netList.getNetlist().size()); // check net list size
+		System.out.println("Nomber of Net list with no terminal = " + netList.getNetlist().size()); // check net list size
 		
-		System.out.println("Updated node completed");
+		
+		
+		System.out.println("-I- Updated node completed");
 		
 		// Sort NetList and update node coordinate
-		System.out.println("Sorted Net List Descending order.");
-		netList.sortNetListDescending();
-		//netList.printNetDegree();
-
-		
+		//System.out.println("Sorted Net List Descending order.");
+		//netList.sortNetListDescending();
 		
 		// random assign Coordinate - testing
 		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
-			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5+i, i);
+			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5*i, i);
 		}
-				
+			
 		// Display connected nodes
-		System.out.println("Display node connection");
+		System.out.println("-I- Update node-to-node connection");
 		netList.updateAllConnectedNodes(nodeList.getNodeList());
-		//nodeList.printNonTerminalNodeCoordinate();
-		nodeList.printConnectedNodeDetail();
 		
 		//Random placement
 		Graph floorplan = new Graph(10577,nodeList);
 		System.out.println("Algorithm finished");
-		//nodeList.sortAllNodeList();
+		
+		// Print out message
+		//netList.printNetDegree();
+		//nodeList.printNonTerminalNodeCoordinate();
+		//nodeList.printConnectedNodeDetail();
+		
+		FDPrippleMove(nodeList);
 		
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
-		System.out.println(hpwl);
+		System.out.println("-I- Total hpwl = " + hpwl);
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)
 	{
-		System.out.println("Start process .nodes file");
+		System.out.println("-I- Start process .nodes file");
 		nodeList.readAndAnalyseFile(testFileName, testFileDirectory, file);
-		System.out.println("Process .nodes file done");
-		System.out.println("Dumping nodes data to "+resultFileName + resultExtension);
+		System.out.println("-I- Process .nodes file done");
+		System.out.println("-I- Dumping nodes data to "+resultFileName + resultExtension);
 		nodeList.printSummary(file);
-		System.out.println("Done processing .nodes file");
+		System.out.println("-I- Done processing .nodes file");
 	}
 	
 	public static void netOperation(NetList netList, FileIO file)
 	{
-		System.out.println("Start processing .nets file");
+		System.out.println("-I- Start processing .nets file");
 		netList.netListReadAndAnalyseFile(testFileName, testFileDirectory, file);
-		System.out.println("Process .nets file done");
-		System.out.println("Dumping nets data to "+resultFileName + resultExtension);
+		System.out.println("-I- Process .nets file done");
+		System.out.println("-I- Dumping nets data to "+resultFileName + resultExtension);
 		netList.printSummary(file);
-		System.out.println("Done processing .nets file");
+		System.out.println("-I- Done processing .nets file");
+	}
+	
+	public static void FDPrippleMove(NodeList nodeList)
+	{
+		System.out.println("-I- Call FDP ripple Move");
+		// assume initial placement done
+		// 
+		nodeList.sortAllNodeList();
+		
+		
 	}
 }
