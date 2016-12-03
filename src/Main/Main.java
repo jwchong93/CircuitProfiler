@@ -5,7 +5,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -32,22 +32,24 @@ public class Main
 			
 		// Display connected nodes
 		System.out.println("-I- Get and linked node-to-node and net relationship in NODE");
-		netList.updateAllConnectedNodes(nodeList.getNodeList());
-		
+		netList.updateAllConnectedNodes();
+
 		//Random placement
 		System.out.println("-I- Instantiate Floorplan");
 		Graph floorplan = new Graph(nodeList);
 
 		// Print out message
-		//netList.printNetDegree();
 		//nodeList.printNonTerminalNodeCoordinate();
 		//nodeList.printConnectedNodeDetail();
+		//netList.printNetDegree();
 		
 		// Start Force-Directed Placement
-		FDPrippleMove(nodeList);
+		FDP fdp = new FDP(floorplan, nodeList);
+		FDPrippleMove(fdp);
+		//System.out.println(nodeList.getNonTerminalNodeList().get(2).computeAndReturnZFT());
 		
 		//Calculate total HPWL
-		int hpwl = netList.getTotalHPWL();
+		long hpwl = netList.getTotalHPWL();
 		System.out.println("Total HPWL = " + hpwl);
 	}
 	
@@ -90,11 +92,9 @@ public class Main
 		System.out.println("-I- Done processing .nets file");
 	}
 	
-	public static void FDPrippleMove(NodeList nodeList)
+	public static void FDPrippleMove(FDP fdp)
 	{
-		System.out.println("-I- Call FDP ripple Move");
-		
-		
-		
+		System.out.println("-I- Call FDP ripple Move Algorithm");
+		fdp.startAlgorithm();
 	}
 }
