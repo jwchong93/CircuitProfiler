@@ -108,7 +108,7 @@ public class Graph {
 	{
 		if (this.calculateTheWidthGuard(newNode))
 		{
-			this.updateNodeCoordinate (newNode,this.currentWidthSize,this.currentRowSize);
+			this.updateNodeCoordinateOnly (newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
 			if (this.placementList.size() < (this.currentRowSize/rowSeperation) + 1 )
 			{
@@ -151,6 +151,11 @@ public class Graph {
 		newNode.setNodeCoordinate(x, y);
 		this.placementList.get(y/rowSeperation).add(newNode);
 		
+	}
+	
+	private void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
+	{
+		newNode.setNodeCoordinate(x, y);
 	}
 
 	public void legalizeNodes ()
