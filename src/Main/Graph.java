@@ -64,14 +64,14 @@ public class Graph {
 		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
 		int xIndex1 = this.placementList.get(yIndex1).indexOf(node1);
 		int xIndex2 = this.placementList.get(yIndex2).indexOf(node2);
-		System.out.println(xIndex1);
-		System.out.println(xIndex2);
 		Nodes tempNode1 = this.placementList.get(yIndex1).get(xIndex1);
-		Nodes tempNode2 = this.placementList.get(yIndex2).get(xIndex2);
-		NodeCoordinate tempCoordinate1 = tempNode1.getNodeCoordinate();
-		NodeCoordinate tempCoordinate2 = tempNode2.getNodeCoordinate();
-		tempNode1.setNodeCoordinate(tempCoordinate2.getNodeXCoordinate(), tempCoordinate2.getNodeYCoordinate());
-		tempNode2.setNodeCoordinate(tempCoordinate1.getNodeXCoordinate(), tempCoordinate1.getNodeYCoordinate());
+		Nodes tempNode2 = this.placementList.get(yIndex2).get(xIndex2);		
+		int tempCoordinate1x = tempNode1.getNodeCoordinate().getNodeXCoordinate();
+		int tempCoordinate2x = tempNode2.getNodeCoordinate().getNodeXCoordinate();
+		int tempCoordinate1y = tempNode1.getNodeCoordinate().getNodeYCoordinate();
+		int tempCoordinate2y = tempNode2.getNodeCoordinate().getNodeYCoordinate();
+		tempNode1.setNodeCoordinate(tempCoordinate2x, tempCoordinate2y);
+		tempNode2.setNodeCoordinate(tempCoordinate1x, tempCoordinate1y);
 		this.placementList.get(yIndex1).remove(node1);
 		this.placementList.get(yIndex2).add(node1);
 		this.placementList.get(yIndex2).remove(node2);
@@ -156,7 +156,7 @@ public class Graph {
 		
 	}
 	
-	private void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
+	public void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);
 	}
