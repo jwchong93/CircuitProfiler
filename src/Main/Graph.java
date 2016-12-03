@@ -71,6 +71,10 @@ public class Graph {
 		NodeCoordinate tempCoordinate2 = tempNode2.getNodeCoordinate();
 		tempNode1.setNodeCoordinate(tempCoordinate2.getNodeXCoordinate(), tempCoordinate2.getNodeYCoordinate());
 		tempNode2.setNodeCoordinate(tempCoordinate1.getNodeXCoordinate(), tempCoordinate1.getNodeYCoordinate());
+		this.placementList.get(yIndex1).remove(node1);
+		this.placementList.get(yIndex2).add(node1);
+		this.placementList.get(yIndex2).remove(node2);
+		this.placementList.get(yIndex1).add(node2);
 	}
 	
 	public void changeCoordinate (Nodes node, int x, int y)
@@ -82,7 +86,7 @@ public class Graph {
 	
 	public boolean moveNodeByWidth (Nodes node, int width)
 	{
-		System.out.println(node.toString());
+		//System.out.println(node.toString());
 		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
 		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
 		int locationInPlacementList = this.placementList.get(rowNumber).indexOf(node);
@@ -102,7 +106,7 @@ public class Graph {
 	{
 		if (this.calculateTheWidthGuard(newNode))
 		{
-			this.updateNodeCoordinate (newNode,this.currentWidthSize,this.currentRowSize);
+			this.updateNodeCoordinateOnly(newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
 			if (this.placementList.size() < (this.currentRowSize/rowSeperation) + 1 )
 			{
@@ -252,12 +256,12 @@ public class Graph {
 			nodes.set(nodes.size() - 1, tempNode);
 		}
 	}
-	
+	*/
 	private void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);
 	}
-	*/
+
 	public void legalizeNodes ()
 	{
 		for (int row = 0; row < this.placementList.size(); row++)
@@ -387,9 +391,31 @@ public class Graph {
 		}
 	}
 
-	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) {
-		// TODO Auto-generated method stub
-		
+	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) 
+	{
+		int tempX = nodeXCoordinate;
+		int tempY = nodeYCoordinate;
+		Nodes node = this.nodeInThisLocation(tempX,tempY);
+		if (node ==null)
+		{
+			return;
+		}
+		else
+		{
+			NodeCoordinate coordinate = node.getNodeCoordinate();
+			while (node.isLock())
+			{
+				node = this.placementList.get(coordinate.getNodeYCoordinate()).get
+						(
+						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)+1)
+						);
+				
+			}
+			coordinate = node.getNodeCoordinate();
+			thisNodes.setNodeCoordinate(coordinate.getNodeXCoordinate(), coordinate.getNodeYCoordinate());
+			this.placementList.get(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation).remove(thisNodes);
+			this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).add(thisNodes);
+		}
 	}
 	
 	public void printRowNodeListCoor(int row)
