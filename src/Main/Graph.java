@@ -72,7 +72,10 @@ public class Graph {
 		NodeCoordinate tempCoordinate2 = tempNode2.getNodeCoordinate();
 		tempNode1.setNodeCoordinate(tempCoordinate2.getNodeXCoordinate(), tempCoordinate2.getNodeYCoordinate());
 		tempNode2.setNodeCoordinate(tempCoordinate1.getNodeXCoordinate(), tempCoordinate1.getNodeYCoordinate());
-		
+		this.placementList.get(yIndex1).remove(node1);
+		this.placementList.get(yIndex2).add(node1);
+		this.placementList.get(yIndex2).remove(node2);
+		this.placementList.get(yIndex1).add(node2);
 		
 	}
 	
@@ -287,9 +290,13 @@ public class Graph {
 		}
 	}
 
-	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) {
-		// TODO Auto-generated method stub
+	public void updateNodeCoordinateNextFreePos(Nodes thisNodes, int nodeXCoordinate, int nodeYCoordinate) 
+	{
 		
+		if (this.nodeInThisLocation(nodeXCoordinate,nodeYCoordinate)!=null)
+		{
+				
+		}
 	}
 	
 	public void printRowNodeListCoor(int row)
