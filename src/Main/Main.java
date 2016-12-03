@@ -7,7 +7,7 @@ public class Main
 	// Constant throughout the program
 	static final String resultFileName = "Result";
 	static final String resultExtension = ".txt";
-	static final String testFileName = "adaptec1";
+	static final String testFileName = "test1";
 	static final String testFileDirectory = System.getProperty("user.dir")+"/testFiles/"+testFileName+"/";
 	
 	public static void main(String[] args) 
@@ -34,27 +34,35 @@ public class Main
 		System.out.println("Updated node started here....");
 		
 		System.out.println(LocalDateTime.now().toString());
-		netList.updateNodelist(nodeList);
+		netList.updateNodelist(nodeList); // net list with node object and remove terminal
 		System.out.println(LocalDateTime.now().toString());
-		System.out.println(netList.getNetlist().size());
+		System.out.println("Net list remainder =" + netList.getNetlist().size()); // check net list size
 		
 		System.out.println("Updated node completed");
 		
-		// Sort NetList
+		// Sort NetList and update node coordinate
+		System.out.println("Sorted Net List Descending order.");
+		netList.sortNetListDescending();
+		//netList.printNetDegree();
+
+		
+		
+		// random assign Coordinate - testing
 		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
 			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5+i, i);
 		}
-		netList.sortNetListDescending();
-		//netList.printNetDegree();
+				
+		// Display connected nodes
+		System.out.println("Display node connection");
+		netList.updateAllConnectedNodes(nodeList.getNodeList());
+		//nodeList.printNonTerminalNodeCoordinate();
+		nodeList.printConnectedNodeDetail();
+		
+		//nodeList.sortAllNodeList();
 		
 		//Calculate HPWL...testing
 		int hpwl = netList.getTotalHPWL();
 		System.out.println(hpwl);
-
-		// Display connected nodes
-		System.out.println("Display node connection");
-		netList.updateAllConnectedNodes(nodeList.getNodeList());
-		nodeList.printConnectedNodeDetail();
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

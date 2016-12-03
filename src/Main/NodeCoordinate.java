@@ -29,6 +29,6 @@ public class NodeCoordinate
 	
 	//@Overrides
 	public String toString() {
-	        return this.nodeXCoordinate +", "+ this.nodeYCoordinate;
+	        return "(" + this.nodeXCoordinate +", "+ this.nodeYCoordinate + ")";
 	}
 }
