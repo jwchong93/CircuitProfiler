@@ -53,6 +53,10 @@ public class Main
 		System.out.println("Display node connection");
 		netList.updateAllConnectedNodes(nodeList.getNodeList());
 		nodeList.printConnectedNodeDetail();
+		
+		//Random placement
+		Graph floorplan = new Graph(10577,nodeList);
+		System.out.println("Algorithm finished");
 	}
 	
 	public static void nodeOperation(NodeList nodeList, FileIO file)

@@ -18,10 +18,17 @@ public class Graph {
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
 		this.calculatedRowSize = 294; 
-		for (Iterator<Nodes> i = nodeList.getNodeList().iterator(); i.hasNext();)
+		this.placementList = new ArrayList<ArrayList<Nodes>>();
+		try
 		{
-			Nodes tempNode = i.next();
-			this.addNode(tempNode);
+			for (Iterator<Nodes> i = nodeList.getNonTerminalNodeList().iterator(); i.hasNext();)
+			{
+				Nodes tempNode = i.next();
+				this.addNode(tempNode);
+			}
+		}catch (Exception e)
+		{
+			System.out.println(e.getMessage());
 		}
 		
 	}
