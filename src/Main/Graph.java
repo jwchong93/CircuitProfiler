@@ -9,7 +9,7 @@ public class Graph {
 	private int widthGuard;
 	private int currentWidthSize;
 	private int currentRowSize;
-	private ArrayList<Nodes> placementList;
+	private ArrayList<ArrayList<Nodes>> placementList;
 	private int calculatedRowSize;
 
 	public Graph(int widthSize, NodeList nodeList)
@@ -18,7 +18,11 @@ public class Graph {
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
 		this.calculatedRowSize = 294; 
-		this.placementList = new ArrayList<Nodes>(nodeList.getNonTerminalNodeList());
+		for (Iterator<Nodes> i = nodeList.getNodeList().iterator(); i.hasNext();)
+		{
+			Nodes tempNode = i.next();
+			this.addNode(tempNode);
+		}
 		
 	}
 	
@@ -26,25 +30,30 @@ public class Graph {
 	{
 		Nodes tempNode;
 		NodeCoordinate tempCoordinate;
-		for (Iterator<Nodes> i = this.placementList.iterator(); i.hasNext();)
+		for (int k =0; k < this.placementList.size() ;k++)
 		{
-			tempNode = i.next();
-			tempCoordinate = tempNode.getNodeCoordinate();
-			if (tempCoordinate.getNodeXCoordinate()+tempNode.getNodeWidth()>= x &&
-				tempCoordinate.getNodeXCoordinate() <= x &&
-				tempCoordinate.getNodeYCoordinate() == y	)
+			for (Iterator<Nodes> i = this.placementList.get(k).iterator(); i.hasNext();)
 			{
-				return tempNode;
+				tempNode = i.next();
+				tempCoordinate = tempNode.getNodeCoordinate();
+				if (tempCoordinate.getNodeXCoordinate()+tempNode.getNodeWidth()>= x &&
+					tempCoordinate.getNodeXCoordinate() <= x &&
+					tempCoordinate.getNodeYCoordinate() == y	)
+				{
+					return tempNode;
+				}
 			}
 		}
 		return null;
 	}
 	public void swapNodes (Nodes node1, Nodes node2)
 	{
-		int index1 = this.placementList.indexOf(node1);
-		int index2 = this.placementList.indexOf(node2);
-		Nodes tempNode1 = this.placementList.get(index1);
-		Nodes tempNode2 = this.placementList.get(index2);
+		int yIndex1 = node1.getNodeCoordinate().getNodeYCoordinate()/36;
+		int yIndex2 = node2.getNodeCoordinate().getNodeYCoordinate()/36;
+		int xIndex1 = this.placementList.get(yIndex1).indexOf(node1);
+		int xIndex2 = this.placementList.get(yIndex2).indexOf(node2);
+		Nodes tempNode1 = this.placementList.get(yIndex1).get(xIndex1);
+		Nodes tempNode2 = this.placementList.get(yIndex2).get(xIndex2);
 		NodeCoordinate tempCoordinate1 = tempNode1.getNodeCoordinate();
 		NodeCoordinate tempCoordinate2 = tempNode2.getNodeCoordinate();
 		tempNode1.setNodeCoordinate(tempCoordinate2.getNodeXCoordinate(), tempCoordinate2.getNodeYCoordinate());
@@ -63,33 +72,35 @@ public class Graph {
 	
 	public boolean moveNodeByWidth (Nodes node, int width)
 	{
-		int locationInPlacementList = this.placementList.indexOf(node);
-		Nodes tempNode = this.placementList.get(locationInPlacementList);
-		NodeCoordinate coordinate = node.getNodeCoordinate();
-		if (coordinate.getNodeYCoordinate() + width > this.widthGuard)
+		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
+		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/36;
+		int locationInPlacementList = this.placementList.get(rowNumber).indexOf(node);
+		Nodes tempNode = this.placementList.get(rowNumber).get(locationInPlacementList);
+		if (coordinateOfTheNode.getNodeYCoordinate() + width > this.widthGuard)
 		{
 			return false; //This node at the end, cant switch
 		}
 		else
 		{
-			tempNode.setNodeCoordinate(coordinate.getNodeXCoordinate(), coordinate.getNodeYCoordinate() + width);
+			tempNode.setNodeCoordinate(coordinateOfTheNode.getNodeXCoordinate(), coordinateOfTheNode.getNodeYCoordinate() + width);
 			return true; //This node can be switch.
 		}
 		
 		
 	}
+	
 	public boolean addNode(Nodes newNode)
 	{
 		if (this.calculateTheWidthGuard(newNode))
 		{
 			this.updateNodeCoordinate (newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
-			this.placementList.add(newNode);
+			this.placementList.get(this.currentRowSize/36).add(newNode);
 			return true;
 		}
 		else
 		{
-			return false; //Fulled and cant place d 
+			return false; //Fulled and cant place d
 		}
 	}
 	
