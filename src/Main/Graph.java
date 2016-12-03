@@ -30,7 +30,8 @@ public class Graph {
 		{
 			tempNode = i.next();
 			tempCoordinate = tempNode.getNodeCoordinate();
-			if (tempCoordinate.getNodeXCoordinate() == x &&
+			if (tempCoordinate.getNodeXCoordinate()+tempNode.getNodeWidth()>= x &&
+				tempCoordinate.getNodeXCoordinate() <= x &&
 				tempCoordinate.getNodeYCoordinate() == y	)
 			{
 				return tempNode;
