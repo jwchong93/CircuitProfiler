@@ -1,6 +1,5 @@
 package Main;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -14,9 +13,9 @@ public class Graph {
 	private ArrayList<ArrayList<Nodes>> placementList;
 	private int calculatedRowSize;
 	public static final int rowSeperation = 36;
+	
 	public Graph(NodeList nodeList)
 	{
-		
 		this.currentWidthSize = 0;
 		this.currentRowSize =0;
 		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
@@ -35,7 +34,6 @@ public class Graph {
 			System.out.println(e.getMessage());
 			System.out.println("failed");
 		}
-		
 	}
 	
 	public Nodes nodeInThisLocation (int x, int y)
@@ -58,6 +56,7 @@ public class Graph {
 		}
 		return null;
 	}
+	
 	public void swapNodes (Nodes node1, Nodes node2)
 	{
 		int yIndex1 = node1.getNodeCoordinate().getNodeYCoordinate()/rowSeperation;
@@ -76,7 +75,6 @@ public class Graph {
 		this.placementList.get(yIndex2).add(node1);
 		this.placementList.get(yIndex2).remove(node2);
 		this.placementList.get(yIndex1).add(node2);
-		
 	}
 	
 	public void changeCoordinate (Nodes node, int x, int y)
@@ -86,32 +84,36 @@ public class Graph {
 		newCoordinate.setNodeYCoordinate(y);
 	}
 	
-	
-	public boolean moveNodeByWidth (Nodes node, int width)
+	public boolean moveNodeByWidth (Nodes node, int width, int row)
 	{
-		System.out.println(node.toString());
+		//System.out.println(node.toString());
 		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
-		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
-		int locationInPlacementList = this.placementList.get(rowNumber).indexOf(node);
-		Nodes tempNode = this.placementList.get(rowNumber).get(locationInPlacementList);
+		//int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
+		int locationInPlacementList = this.placementList.get(row).indexOf(node);
+//		if(locationInPlacementList == -1) {
+//			System.out.println(node);
+//			System.out.println(row);
+//			for(int i=0;i<294;i++) {
+//			System.out.println(i + " " + this.placementList.get(i).indexOf(node));
+//			}
+//		}
+		Nodes tempNode = this.placementList.get(row).get(locationInPlacementList);
 		if (coordinateOfTheNode.getNodeXCoordinate() + width > this.widthGuard)
 		{
-			return false; //This node at the end, cant switch
+			return false; //This node at the end, cannot switch
 		}
 		else
 		{
 			tempNode.setNodeCoordinate(coordinateOfTheNode.getNodeXCoordinate() + width, coordinateOfTheNode.getNodeYCoordinate());
 			return true; //This node can be switch.
 		}
-		
-		
 	}
 	
 	public boolean addNode(Nodes newNode)
 	{
-		if (this.calculateTheWidthGuard(newNode))
+		if (this.calculateWithWidthGuard(newNode))
 		{
-			this.updateNodeCoordinateOnly (newNode,this.currentWidthSize,this.currentRowSize);
+			this.updateNodeCoordinateOnly(newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
 			if (this.placementList.size() < (this.currentRowSize/rowSeperation) + 1 )
 			{
@@ -122,11 +124,11 @@ public class Graph {
 		}
 		else
 		{
-			return false; //Fulled and cant place d
+			return false; //Fulled and cannot place already
 		}
 	}
 	
-	private boolean calculateTheWidthGuard(Nodes newNode) 
+	private boolean calculateWithWidthGuard(Nodes newNode) 
 	{
 		if (this.currentWidthSize + newNode.getNodeWidth() <= this.widthGuard)
 		{
@@ -149,13 +151,121 @@ public class Graph {
 
 	public void updateNodeCoordinate(Nodes newNode, int x, int y) 
 	{
+		newNode.setNodeCoordinate(x, y);
 		NodeCoordinate oldCoordinate = newNode.getNodeCoordinate();
 		this.placementList.get(oldCoordinate.getNodeYCoordinate()/rowSeperation).remove(newNode);
 		newNode.setNodeCoordinate(x, y);
 		this.placementList.get(y/rowSeperation).add(newNode);
-		
+	}
+	/*
+	public Graph(NodeList nodeList, int index)
+	{
+		this.currentWidthSize = 0;
+		this.currentRowSize =0;
+		this.calculatedRowSize = ((int)Math.ceil(Math.sqrt(nodeList.gettotalNonTerminalWidth()/rowSeperation))); 
+		this.widthGuard = this.calculatedRowSize * rowSeperation;
+		this.placementList = new ArrayList<ArrayList<Nodes>>();
+		ArrayList<Nodes> tempNodeList = nodeList.getNonTerminalNodeList();
+		this.addArrayNodeList(new ArrayList<Nodes>());
+		this.placeNodes(tempNodeList, 0, 0, 0);
 	}
 	
+	// Nested node placer
+	public void placeNodes(ArrayList<Nodes> nodes, int row, int startingPoint, int index)
+	{
+		boolean exceedRowWidth = false;
+		
+		if(row % 2 == 0)
+		{
+			//left to right place
+			exceedRowWidth = this.placeDirection(0, nodes.get(index), startingPoint, row);
+			if(exceedRowWidth)
+			{
+				row++;
+				if(row <= this.calculatedRowSize)
+					this.addArrayNodeList(new ArrayList<Nodes>());
+				placeNodes(nodes, row, 0, 0);
+			}
+			else
+			{
+				startingPoint += nodes.get(index).getNodeWidth();
+				this.addNodeToRow(nodes.get(index), row);
+				if(index < nodes.size() - 1)
+				{
+					if(startingPoint > this.widthGuard)
+					{
+						this.addArrayNodeList(new ArrayList<Nodes>());
+						placeNodes(nodes, row+1, this.widthGuard, index+1);
+					}
+					else
+						placeNodes(nodes, row, startingPoint, index+1);
+				}
+			}
+		}
+		else
+		{
+			//right to left place
+			exceedRowWidth = this.placeDirection(1, nodes.get(index), startingPoint, row);
+			if(exceedRowWidth)
+			{
+				row++;
+				if(row <= this.calculatedRowSize)
+					this.addArrayNodeList(new ArrayList<Nodes>());
+				this.reverseSort(this.getRowNodeList(row));
+				placeNodes(nodes, row, 0, 0);
+			}
+			else
+			{
+				startingPoint -= nodes.get(index).getNodeWidth();
+				this.addNodeToRow(nodes.get(index), row);
+				if(index < nodes.size() - 1)
+				{
+					if(startingPoint < 0)
+					{
+						this.addArrayNodeList(new ArrayList<Nodes>());
+						placeNodes(nodes, row+1, 0, index+1);
+					}
+					else
+						placeNodes(nodes, row, startingPoint, index+1);
+				}
+			}
+		}
+	}
+	
+	public boolean placeDirection(int leftOrRight, Nodes node, int startingPoint, int row)
+	{
+		if(leftOrRight == 0)
+		{
+			if(startingPoint + node.getNodeWidth() != this.widthGuard)
+			{
+				node.setNodeCoordinate(startingPoint, row);
+				return false;
+			}
+		}
+		else
+		{
+			if(startingPoint - node.getNodeWidth() >= 0)
+			{
+				node.setNodeCoordinate(startingPoint - node.getNodeWidth(), row);
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+<<<<<<< HEAD
+	public void reverseSort(ArrayList<Nodes> nodes)
+	{
+		for(int i = 0; i < nodes.size() / 2; i++)
+		{
+			Nodes tempNode = nodes.get(i);
+			nodes.set(i, nodes.get(nodes.size() - i));
+			nodes.set(nodes.size() - 1, tempNode);
+		}
+	}
+	*/
+
 	public void updateNodeCoordinateOnly(Nodes newNode, int x, int y) 
 	{
 		newNode.setNodeCoordinate(x, y);
@@ -169,7 +279,7 @@ public class Graph {
 			this.sortListBy(tempList,tempList.size());
 			Nodes leftNode = null;
 			Nodes rightNode = null;
-			Nodes nodeToRemove = null;
+			ArrayList<Nodes> nodeToRemove = new ArrayList<Nodes>();
 			NodeCoordinate leftNodeCoordinate,rightNodeCoordinate;
 			int lengthToShift, accumulatedWidthSize = 0;
 			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
@@ -183,9 +293,9 @@ public class Graph {
 					lengthToShift = leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() - rightNodeCoordinate.getNodeXCoordinate();
 					
 					if (leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() > rightNodeCoordinate.getNodeXCoordinate())
-						//Overlapped, shift the right cell
+						//Overlapped, shift the right cell, else do nothing
 					{
-						if (!this.moveNodeByWidth(rightNode, lengthToShift))
+						if (!this.moveNodeByWidth(rightNode, lengthToShift, row))
 						{
 							//Reached the end of the boundary.
 							if (accumulatedWidthSize <= this.widthGuard)
@@ -199,12 +309,12 @@ public class Graph {
 								//This row can not fit all the nodes.
 								//Change the coordinate of the node and add to the next row.
 								rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-								nodeToRemove = rightNode;
+								nodeToRemove.add(rightNode);
 								this.placementList.get(row+1).add(rightNode);
 							}
 						}
 					}
-					if (rightNodeCoordinate.getNodeXCoordinate() +rightNode.getNodeWidth() > this.widthGuard)
+					else if (rightNodeCoordinate.getNodeXCoordinate() +rightNode.getNodeWidth() > this.widthGuard)
 					{
 						lengthToShift = rightNodeCoordinate.getNodeXCoordinate()+rightNode.getNodeWidth()-this.widthGuard;
 						if (accumulatedWidthSize <= this.widthGuard)
@@ -218,14 +328,14 @@ public class Graph {
 							//This row can not fit all the nodes.
 							//Change the coordinate of the node and add to the next row.
 							rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-							nodeToRemove = rightNode;
+							nodeToRemove.add(rightNode);
 							this.placementList.get(row+1).add(rightNode);
 						}
 					}
 				}
 				leftNode = rightNode;
 			}
-			tempList.remove(nodeToRemove);
+			tempList.removeAll(nodeToRemove);
 		}
 	}
 
@@ -330,4 +440,6 @@ public class Graph {
 	public ArrayList<ArrayList<Nodes>> getPlacementList() { return this.placementList; }
 	public ArrayList<Nodes> getRowNodeList(int row) { return this.placementList.get(row); }
 	public Nodes getNodeInARow(int row, int nodeIndex) { return this.placementList.get(row).get(nodeIndex); }
+	public void addArrayNodeList(ArrayList<Nodes> nodes) { this.placementList.add(nodes); }
+	public void addNodeToRow(Nodes node, int row) { this.placementList.get(row).add(node); }
 }
