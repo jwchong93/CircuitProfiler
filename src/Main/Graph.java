@@ -84,13 +84,20 @@ public class Graph {
 		newCoordinate.setNodeYCoordinate(y);
 	}
 	
-	public boolean moveNodeByWidth (Nodes node, int width)
+	public boolean moveNodeByWidth (Nodes node, int width, int row)
 	{
 		//System.out.println(node.toString());
 		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
-		int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
-		int locationInPlacementList = this.placementList.get(rowNumber).indexOf(node);
-		Nodes tempNode = this.placementList.get(rowNumber).get(locationInPlacementList);
+		//int rowNumber = coordinateOfTheNode.getNodeYCoordinate()/rowSeperation;
+		int locationInPlacementList = this.placementList.get(row).indexOf(node);
+//		if(locationInPlacementList == -1) {
+//			System.out.println(node);
+//			System.out.println(row);
+//			for(int i=0;i<294;i++) {
+//			System.out.println(i + " " + this.placementList.get(i).indexOf(node));
+//			}
+//		}
+		Nodes tempNode = this.placementList.get(row).get(locationInPlacementList);
 		if (coordinateOfTheNode.getNodeXCoordinate() + width > this.widthGuard)
 		{
 			return false; //This node at the end, cannot switch
@@ -104,7 +111,7 @@ public class Graph {
 	
 	public boolean addNode(Nodes newNode)
 	{
-		if (this.calculateTheWidthGuard(newNode))
+		if (this.calculateWithWidthGuard(newNode))
 		{
 			this.updateNodeCoordinateOnly(newNode,this.currentWidthSize,this.currentRowSize);
 			this.currentWidthSize += newNode.getNodeWidth();
@@ -121,7 +128,7 @@ public class Graph {
 		}
 	}
 	
-	private boolean calculateTheWidthGuard(Nodes newNode) 
+	private boolean calculateWithWidthGuard(Nodes newNode) 
 	{
 		if (this.currentWidthSize + newNode.getNodeWidth() <= this.widthGuard)
 		{
@@ -272,7 +279,7 @@ public class Graph {
 			this.sortListBy(tempList,tempList.size());
 			Nodes leftNode = null;
 			Nodes rightNode = null;
-			Nodes nodeToRemove = null;
+			ArrayList<Nodes> nodeToRemove = new ArrayList<Nodes>();
 			NodeCoordinate leftNodeCoordinate,rightNodeCoordinate;
 			int lengthToShift, accumulatedWidthSize = 0;
 			for (Iterator<Nodes> i = tempList.iterator(); i.hasNext();)
@@ -286,9 +293,9 @@ public class Graph {
 					lengthToShift = leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() - rightNodeCoordinate.getNodeXCoordinate();
 					
 					if (leftNodeCoordinate.getNodeXCoordinate() + leftNode.getNodeWidth() > rightNodeCoordinate.getNodeXCoordinate())
-						//Overlapped, shift the right cell
+						//Overlapped, shift the right cell, else do nothing
 					{
-						if (!this.moveNodeByWidth(rightNode, lengthToShift))
+						if (!this.moveNodeByWidth(rightNode, lengthToShift, row))
 						{
 							//Reached the end of the boundary.
 							if (accumulatedWidthSize <= this.widthGuard)
@@ -302,12 +309,12 @@ public class Graph {
 								//This row can not fit all the nodes.
 								//Change the coordinate of the node and add to the next row.
 								rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-								nodeToRemove = rightNode;
+								nodeToRemove.add(rightNode);
 								this.placementList.get(row+1).add(rightNode);
 							}
 						}
 					}
-					if (rightNodeCoordinate.getNodeXCoordinate() +rightNode.getNodeWidth() > this.widthGuard)
+					else if (rightNodeCoordinate.getNodeXCoordinate() +rightNode.getNodeWidth() > this.widthGuard)
 					{
 						lengthToShift = rightNodeCoordinate.getNodeXCoordinate()+rightNode.getNodeWidth()-this.widthGuard;
 						if (accumulatedWidthSize <= this.widthGuard)
@@ -321,14 +328,15 @@ public class Graph {
 							//This row can not fit all the nodes.
 							//Change the coordinate of the node and add to the next row.
 							rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-							nodeToRemove = rightNode;
+							nodeToRemove.add(rightNode);
 							this.placementList.get(row+1).add(rightNode);
 						}
 					}
 				}
 				leftNode = rightNode;
 			}
-			tempList.remove(nodeToRemove);
+			tempList.removeAll(nodeToRemove);
+			this.sortListBy(tempList,tempList.size());
 		}
 	}
 
@@ -405,28 +413,45 @@ public class Graph {
 		else
 		{
 			NodeCoordinate coordinate = node.getNodeCoordinate();
+			int rowIndex = (int)(coordinate.getNodeYCoordinate()/rowSeperation);
+			ArrayList<Nodes> rowList = this.placementList.get(rowIndex);
+			int widthIndex = rowList.indexOf(node);
 			while (node.isLock())
 			{
-				node = this.placementList.get(coordinate.getNodeYCoordinate()).get
-						(
-						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)+1)
-						);
+				if (widthIndex >= rowList.size() -1)
+				{
+					widthIndex =0;
+					if (rowIndex >= this.placementList.size()-1)
+					{
+						rowIndex =0;
+					}
+					else
+					{
+						rowIndex +=1;
+					}
+				}
+				else
+				{
+					widthIndex += 1;
+				}
+				rowList = this.placementList.get(rowIndex);
+				node = rowList.get(widthIndex);
 				
 			}
 			coordinate = node.getNodeCoordinate();
 			thisNodes.setNodeCoordinate(coordinate.getNodeXCoordinate(), coordinate.getNodeYCoordinate());
-			this.placementList.get(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation).remove(thisNodes);
-			this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).add(thisNodes);
+			this.placementList.get((int)(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation)).remove(thisNodes);
+			this.placementList.get((int)(coordinate.getNodeYCoordinate()/rowSeperation)).add(thisNodes);
 		}
 	}
 	
-	public void printRowNodeListCoor(int row)
+	public void printRowNodeListCoor(int row, FileIO file)
 	{
 		ArrayList<Nodes> nodes = this.getRowNodeList(row);
 		
 		for(int i = 0; i < nodes.size(); i++)
 		{
-			System.out.println(nodes.get(i).toString() + nodes.get(i).getNodeWidth());
+			file.writeToFiles(nodes.get(i).toString() + nodes.get(i).getNodeWidth());
 		}
 	}
 	
