@@ -36,6 +36,11 @@ public class FileIO
 	    }
 	}
 	
+	public void deOutFileIO()
+	{
+		this.writer.close();
+	}
+	
 	public void deInitFileIO()
 	{
 		try

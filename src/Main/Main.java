@@ -1,7 +1,5 @@
 package Main;
 
-import java.util.ArrayList;
-
 public class Main 
 {
 	// Constant throughout the program
@@ -47,24 +45,24 @@ public class Main
 		netList.updateAllConnectedNodes();
 		
 		//Random placement
-		nodeList.sortAllNodeList();
+		//nodeList.sortAllNodeList();
 		Graph floorplan = new Graph(nodeList);
-		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
-		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
-		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
-		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
-		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
-		//System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
-		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
-		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
-		secRowFirstNode.setNodeCoordinate(5, 36);
-		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
-		//secRow.remove(secRowFirstNode);
-		//firstRow.add(secRowFirstNode);
-		floorplan.legalizeNodes();
-		System.out.println("Legalize node");
-		floorplan.printRowNodeListCoor(1);
-		System.out.println("Algorithm finished");
+//		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
+//		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
+//		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
+//		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
+//		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
+//		//System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
+//		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+//		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
+//		secRowFirstNode.setNodeCoordinate(5, 36);
+//		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
+//		//secRow.remove(secRowFirstNode);
+//		//firstRow.add(secRowFirstNode);
+//		floorplan.legalizeNodes();
+//		System.out.println("Legalize node");
+//		floorplan.printRowNodeListCoor(1);
+//		System.out.println("Algorithm finished");
 
 		// Print out message
 		//nodeList.printNonTerminalNodeCoordinate();
@@ -124,12 +122,17 @@ public class Main
 		System.out.println("-I- Call FDP ripple Move Algorithm");
 		double startTime = System.currentTimeMillis();
 		fdp.startAlgorithm();
-		//fdp.getFloorPlan().printRowNodeListCoor(22);
 		fdp.getFloorPlan().legalizeNodes();
 		double endTime   = System.currentTimeMillis();
 		double totalTime = (endTime - startTime)/1000;
 		System.out.println("Runtime = " + totalTime + " seconds");
-		
+		FileIO file = new FileIO();
+		file.initFileOutput(System.getProperty("user.dir"), "/","floorplan.txt");
+		for(int i=0; i<fdp.getFloorPlan().getPlacementList().size(); i++)
+		{ 
+			fdp.getFloorPlan().printRowNodeListCoor(i, file);
+		}
+		file.deOutFileIO();
 		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }

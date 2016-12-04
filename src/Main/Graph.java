@@ -336,6 +336,7 @@ public class Graph {
 				leftNode = rightNode;
 			}
 			tempList.removeAll(nodeToRemove);
+			this.sortListBy(tempList,tempList.size());
 		}
 	}
 
@@ -412,28 +413,45 @@ public class Graph {
 		else
 		{
 			NodeCoordinate coordinate = node.getNodeCoordinate();
+			int rowIndex = (int)(coordinate.getNodeYCoordinate()/rowSeperation);
+			ArrayList<Nodes> rowList = this.placementList.get(rowIndex);
+			int widthIndex = rowList.indexOf(node);
 			while (node.isLock())
 			{
-				node = this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).get
-						(
-						(this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).indexOf(node)-1)
-						);
+				if (widthIndex >= rowList.size() -1)
+				{
+					widthIndex =0;
+					if (rowIndex >= this.placementList.size()-1)
+					{
+						rowIndex =0;
+					}
+					else
+					{
+						rowIndex +=1;
+					}
+				}
+				else
+				{
+					widthIndex += 1;
+				}
+				rowList = this.placementList.get(rowIndex);
+				node = rowList.get(widthIndex);
 				
 			}
 			coordinate = node.getNodeCoordinate();
 			thisNodes.setNodeCoordinate(coordinate.getNodeXCoordinate(), coordinate.getNodeYCoordinate());
-			this.placementList.get(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation).remove(thisNodes);
-			this.placementList.get(coordinate.getNodeYCoordinate()/rowSeperation).add(thisNodes);
+			this.placementList.get((int)(thisNodes.getNodeCoordinate().getNodeYCoordinate()/rowSeperation)).remove(thisNodes);
+			this.placementList.get((int)(coordinate.getNodeYCoordinate()/rowSeperation)).add(thisNodes);
 		}
 	}
 	
-	public void printRowNodeListCoor(int row)
+	public void printRowNodeListCoor(int row, FileIO file)
 	{
 		ArrayList<Nodes> nodes = this.getRowNodeList(row);
 		
 		for(int i = 0; i < nodes.size(); i++)
 		{
-			System.out.println(nodes.get(i).toString() + nodes.get(i).getNodeWidth());
+			file.writeToFiles(nodes.get(i).toString() + nodes.get(i).getNodeWidth());
 		}
 	}
 	

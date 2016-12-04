@@ -109,7 +109,7 @@ public class Nodes implements Comparable<Nodes>
 		this.nodeZFT.setNodeXCoordinate((int)Math.round(x_zft/this.connectedNodes.size()));
 		int y = (int)Math.round(y_zft/this.connectedNodes.size());
 		double h = (double)y/36.0;
-		this.nodeZFT.setNodeYCoordinate((int)Math.round(h)*36);
+		this.nodeZFT.setNodeYCoordinate((int)Math.floor(h)*36);
 		return this.nodeZFT;
 	}
 	
