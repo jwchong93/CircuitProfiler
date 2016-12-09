@@ -4,38 +4,34 @@ import java.util.*;
 
 public class NodeList
 {
-	private ArrayList<Nodes> nodelist;
-	private ArrayList<Nodes> terminalnodelist;
-	private ArrayList<Nodes> nonTerminalnodelist;
+	// Different kind of NODE list
+	private ArrayList<Nodes> nodelist = new ArrayList<Nodes>();;
+	private ArrayList<Nodes> terminalnodelist = new ArrayList<Nodes>();;
+	private ArrayList<Nodes> nonTerminalnodelist = new ArrayList<Nodes>();;
 	
+	// Counter for Node and Width
 	private int totalTerminalNodes = 0;
 	private int totalNonTerminalNodes = 0;
 	private int totalNode = 0;
 	private int totalNonTerminalWidth = 0;
 	
 	// Variable for storing comparison
-	private ArrayList<Nodes> largestAreaTerminalNodeList;
-	private ArrayList<Nodes> smallestAreaTerminalNodeList;
-	private ArrayList<Nodes> largestAreaNonTerminalNodeList;
-	private ArrayList<Nodes> smallestAreaNonTerminalNodeList;
+	private ArrayList<Nodes> largestAreaTerminalNodeList = new ArrayList<Nodes>();;
+	private ArrayList<Nodes> smallestAreaTerminalNodeList = new ArrayList<Nodes>();;
+	private ArrayList<Nodes> largestAreaNonTerminalNodeList = new ArrayList<Nodes>();;
+	private ArrayList<Nodes> smallestAreaNonTerminalNodeList = new ArrayList<Nodes>();;
 	private final Nodes largestAreaNode = new Nodes(null, 0, 0, null);
 	private final Nodes smallestAreaNode = new Nodes(null, (int)Math.sqrt(Integer.MAX_VALUE), (int)Math.sqrt(Integer.MAX_VALUE), null);
 	
 	// Constructor
 	public NodeList () {
-		this.nodelist = new ArrayList<Nodes>();
-		this.terminalnodelist = new ArrayList<Nodes>();
-		this.nonTerminalnodelist = new ArrayList<Nodes>();
-		this.largestAreaTerminalNodeList = new ArrayList<Nodes>();
-		this.smallestAreaTerminalNodeList = new ArrayList<Nodes>();
-		this.largestAreaNonTerminalNodeList = new ArrayList<Nodes>();
-		this.smallestAreaNonTerminalNodeList = new ArrayList<Nodes>();
 		this.largestAreaTerminalNodeList.add(this.largestAreaNode);
 		this.smallestAreaTerminalNodeList.add(this.smallestAreaNode);
 		this.largestAreaNonTerminalNodeList.add(this.largestAreaNode);
 		this.smallestAreaNonTerminalNodeList.add(this.smallestAreaNode);
 	}
 	
+	// Read and process file from .nodes file
 	public void readAndAnalyseFile (String testFileName, String testFileDirectory, FileIO file) {
 		file.initFileInput(testFileDirectory, testFileName, ".nodes");
 		// Now we have pointer to the file, parse the file, process line by line
@@ -153,7 +149,48 @@ public class NodeList
 		}
 		if(remainNode != 0) file.writeToFiles(tempStr);
 	}
-
+	
+	// get methods
+	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
+	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
+	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
+	public int getTotalNonTerminalWidth() { return this.totalNonTerminalWidth; }
+	
+	// set methods
+	public void setNodeListAllNodeDegree() {
+		for(int i=0; i<this.nonTerminalnodelist.size(); i++) {
+			int totalNodeDegree=0;
+			for(int j = 0; j<this.nonTerminalnodelist.get(i).getConnectionNets().size(); j++)
+			{
+				totalNodeDegree += this.nonTerminalnodelist.get(i).getConnectionNets().get(j).getIO_nodes().size()-1;
+			}
+			this.nonTerminalnodelist.get(i).setNodeDegree(totalNodeDegree);
+		}
+	}
+	
+	// print methods
+	public void printNonTerminalNodeCoordinate() {
+		for(Nodes str:this.nonTerminalnodelist) {
+			System.out.println(str);
+		}
+	}
+	
+	public void printConnectedNodeDetail()
+	{
+		for(int i = 0; i < this.nonTerminalnodelist.size(); i++)
+		{
+			System.out.print(nonTerminalnodelist.get(i).getNodeName() + ": ");
+			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectedNodes().size(); j++)
+				System.out.print(nonTerminalnodelist.get(i).getConnectedNodes().get(j).getNodeName() + " ");
+			System.out.print("\nNets: ");
+			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectionNets().size(); j++)
+				System.out.print(nonTerminalnodelist.get(i).getConnectionNets().get(j).getNetName() + " ");
+			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " /*+ nonTerminalnodelist.get(i).calcNodeAllNetHPWL()*/);
+			System.out.println();
+		}
+	}
+	
+	// Other method
 	public void sortAllNodeList() {
 		Collections.sort(this.nodelist);
 		Collections.sort(this.nonTerminalnodelist);
@@ -199,31 +236,4 @@ public class NodeList
 			}
 		}
 	}
-	
-	public void printNonTerminalNodeCoordinate() {
-		for(Nodes str:this.nonTerminalnodelist) {
-			System.out.println(str);
-		}
-	}
-	
-	public void printConnectedNodeDetail()
-	{
-		for(int i = 0; i < this.nonTerminalnodelist.size(); i++)
-		{
-			System.out.print(nonTerminalnodelist.get(i).getNodeName() + ": ");
-			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectedNodes().size(); j++)
-				System.out.print(nonTerminalnodelist.get(i).getConnectedNodes().get(j).getNodeName() + " ");
-			System.out.print("\nNets: ");
-			for(int j = 0; j < nonTerminalnodelist.get(i).getConnectionNets().size(); j++)
-				System.out.print(nonTerminalnodelist.get(i).getConnectionNets().get(j).getNetName() + " ");
-			System.out.println("\nNodeDeg: " + nonTerminalnodelist.get(i).getNodeDegree() + " NodeTotalHPWL: " + nonTerminalnodelist.get(i).calcNodeAllNetHPWL());
-			System.out.println();
-		}
-	}
-	
-	public ArrayList<Nodes> getTerminalNodeList() { return terminalnodelist; }
-	public ArrayList<Nodes> getNonTerminalNodeList() { return nonTerminalnodelist; }
-	public ArrayList<Nodes> getNodeList() { return this.nodelist; }
-	public int gettotalNonTerminalWidth() { return this.totalNonTerminalWidth; }
-	public void addNodeToNodeList(Nodes node) { this.nodelist.add(node); }
 }

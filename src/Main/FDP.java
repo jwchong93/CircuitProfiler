@@ -6,13 +6,15 @@ public class FDP {
 	
 	private NodeList nodeList;
 	private Graph floorplan;
+	private NetList netlist;
 	
-	public final static int iteration_limit = 5000;
-	public final static int abort_limit = 3;
+	public final static int iteration_limit = 3;
+	public final static int abort_limit = 2;
 	
-	public FDP(Graph floorplan, NodeList nodeList) {
+	public FDP(Graph floorplan, NodeList nodeList, NetList netlist) {
 		this.nodeList = nodeList;
 		this.floorplan = floorplan;
+		this.netlist = netlist;
 	}
 	public NodeList getNodeList() { return this.nodeList; }
 	public Graph getFloorPlan() { return this.floorplan; }
@@ -31,19 +33,33 @@ public class FDP {
 			Nodes thisNodes = i.next();
 			thisNodes.unlockNode();
 			while(end_ripple_move == false) {
+				System.out.println(thisNodes);
 				NodeCoordinate curr_ZFT = thisNodes.computeAndReturnZFT();
 				Nodes node_cond = this.floorplan.nodeInThisLocation(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 				if(node_cond == null) // position is free --okay
 				{
 					//System.out.println("node_cond is empty");
-					this.floorplan.updateNodeCoordinate(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
-					thisNodes.lockNode();
+					int oldX = thisNodes.getNodeCoordinate().getNodeXCoordinate();
+					int oldY = thisNodes.getNodeCoordinate().getNodeYCoordinate();
+					if(thisNodes.calcNodeAllNetHPWL(netlist) > thisNodes.calcNewNodeAllNetHPWL1(floorplan, netlist, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate()))
+					{
+						thisNodes.lockNode();
+					}
+					else
+					{
+						this.floorplan.updateNodeCoordinate(thisNodes, oldX, oldY);
+						ArrayList<Integer> rowList = new ArrayList<Integer>();
+						rowList.add(thisNodes.getNodeCoordinate().getNodeYCoordinate()/36);
+						rowList.add(oldY/36);
+						this.floorplan.legalizeNodes(rowList);
+					}
 					end_ripple_move = true;
 					abort_count = 0;
 				}else if(node_cond.isLock() == true) // ZFT position is occupied and fixed.
 				{
 					//System.out.println("node_cond is LOCKED");
-					this.floorplan.updateNodeCoordinateNextFreePos(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
+					//if(thisNodes.calcNodeAllNetHPWL() > thisNodes.calcNewNodeAllNetHPWL(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate()))
+					//this.floorplan.updateNodeCoordinateNextFreePos(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					thisNodes.lockNode();
 					end_ripple_move = true;
 					abort_count++;
@@ -55,9 +71,9 @@ public class FDP {
 							Nodes tempNodes = j.next();
 							tempNodes.unlockNode();
 						}
+						iteration_count++;
 					}
-					iteration_count++;
-				}else if(node_cond.isSameLocation(curr_ZFT)) // --okay
+				}else if(thisNodes.isSameLocation(curr_ZFT)) // --okay
 				{
 					//System.out.println("node_cond is SAME");
 					thisNodes.lockNode();
@@ -67,15 +83,28 @@ public class FDP {
 				else if(node_cond.isLock() == false) // occupied but not locked--okay
 				{
 					//System.out.println("node_cond is FREE");
-					this.floorplan.updateNodeCoordinate(node_cond, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
-					this.floorplan.swapNodes(thisNodes, node_cond);
-					thisNodes.lockNode();
-					thisNodes = node_cond;
-					end_ripple_move = false;
+					long a = thisNodes.calcNodeAllNetHPWL(netlist);
+					long b = thisNodes.calcNewNodeAllNetHPWL2(floorplan, node_cond, netlist);
+					//System.out.println( a + ">" + b);
+					if(a > b)
+					{
+						//System.out.println("node_cond is FREE");
+						end_ripple_move = false;
+						thisNodes.lockNode();
+						thisNodes = node_cond;
+					}
+					else {
+						this.floorplan.swapNodes(thisNodes, node_cond);
+						ArrayList<Integer> rowList = new ArrayList<Integer>();
+						rowList.add(thisNodes.getNodeCoordinate().getNodeYCoordinate()/36);
+						rowList.add(node_cond.getNodeCoordinate().getNodeYCoordinate()/36);
+						this.floorplan.legalizeNodes(rowList);
+						end_ripple_move = true;
+					}
 					abort_count = 0;
 				}
+				//System.out.println(thisNodes.calcNodeAllNetHPWL(netlist));
 			}
-			System.out.println("Reach iteration at ===== " + iteration_count);
 			if(iteration_count >= iteration_limit) {
 				System.out.println("Reach iteration Limit break");
 				break;

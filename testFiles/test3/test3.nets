@@ -1,0 +1,35 @@
+UCLA nets 1.0
+# Created	:	Jan  6 2005
+# User   	:	Gi-Joon Nam & Mehmet Yildiz at IBM Austin Research({gnam, mcan}@us.ibm.com)
+
+NumNets : 221142
+NumPins : 944053
+
+NetDegree : 2   n0
+	o0	I : -0.500000	-6.000000
+	o2	O : -1.500000	-3.000000
+NetDegree : 2   n1
+	o4	O : -6.500000	2.000000
+	o6	I : -4.000000	-5.000000
+NetDegree : 2   n2
+	o8	I : -14.500000	0.000000
+	o10	O : 0.000000	-1.000000
+NetDegree : 2   n3
+	o1	O : -6.500000	-3.000000
+	o3	I : -5.500000	-1.000000
+NetDegree : 2   n4
+	o5	I : -4.500000	-6.000000
+	o7	O : -4.500000	-3.000000
+NetDegree : 2   n5
+	o9	I : -5.500000	5.000000
+	o11	O : -4.500000	-3.000000
+NetDegree : 2   n6
+	o7	O : -6.500000	2.000000
+	o4	I : -5.500000	-1.000000
+	o12	I : -5.500000	-1.000000
+NetDegree : 2   n7
+	o13	I : -5.500000	-1.000000
+NetDegree : 2   n8
+	o13	I : -5.500000	-1.000000
+NetDegree : 2   n9
+	o13	B : -5.500000	-1.000000

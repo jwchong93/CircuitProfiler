@@ -32,50 +32,34 @@ public class Main
 		//System.out.println("Sorted Net List Descending order.");
 		//netList.sortNetListDescending();
 		
-		// random assign Coordinate - testing
-		for(int i=0; i< nodeList.getNonTerminalNodeList().size(); i++) {
-			nodeList.getNonTerminalNodeList().get(i).setNodeCoordinate(5*i, i);
-		}
-		
 		System.out.println("-I- Get and linked node-to-node and net relationship in NODE");
 		netList.updateAllConnectedNodes();
-			
-		// Display connected nodes
-		System.out.println("-I- Update node-to-node connection");
-		netList.updateAllConnectedNodes();
+		nodeList.setNodeListAllNodeDegree();
 		
 		//Random placement
 		//nodeList.sortAllNodeList();
 		Graph floorplan = new Graph(nodeList);
-//		ArrayList<Nodes> firstRow = floorplan.getRowNodeList(0);
-//		ArrayList<Nodes> secRow = floorplan.getRowNodeList(1);
-//		Nodes firstRowLastNode = floorplan.getNodeInARow(0, firstRow.size() - 1);
-//		Nodes secRowFirstNode = floorplan.getNodeInARow(1, 0);
-//		Nodes secRowSecNode = floorplan.getNodeInARow(1, 1);
-//		//System.out.println(firstRowLastNode.toString() + firstRowLastNode.getNodeWidth());
-//		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
-//		System.out.println(secRowSecNode.toString() + secRowSecNode.getNodeWidth());
-//		secRowFirstNode.setNodeCoordinate(5, 36);
-//		System.out.println(secRowFirstNode.toString() + secRowFirstNode.getNodeWidth());
-//		//secRow.remove(secRowFirstNode);
-//		//firstRow.add(secRowFirstNode);
-//		floorplan.legalizeNodes();
-//		System.out.println("Legalize node");
-//		floorplan.printRowNodeListCoor(1);
-//		System.out.println("Algorithm finished");
+		//nodeList.printNonTerminalNodeCoordinate();
+		
+		//Calculate initial placement HPWL
+		long hpwl = netList.getTotalHPWL();
+		System.out.println("Initial Total HPWL = " + hpwl);
+		//netList.printNetDegree();
+		//floorplan.printFloorPlan();
+		
+		// Start Force-Directed Placement
+		FDP fdp = new FDP(floorplan, nodeList, netList);
+		FDPrippleMove(fdp);
 
+		//Calculate total HPWL
+		hpwl = netList.getTotalHPWL();
+		System.out.println("Total HPWL = " + hpwl);
+		
 		// Print out message
 		//nodeList.printNonTerminalNodeCoordinate();
 		//nodeList.printConnectedNodeDetail();
 		//netList.printNetDegree();
-		
-		// Start Force-Directed Placement
-		FDP fdp = new FDP(floorplan, nodeList);
-		FDPrippleMove(fdp);
-
-		//Calculate total HPWL
-		long hpwl = netList.getTotalHPWL();
-		System.out.println("Total HPWL = " + hpwl);
+		//floorplan.printFloorPlan();
 	}
 	
 	public static void nodeAndNetOps(NodeList nodeList, NetList netList, FileIO file)
@@ -121,8 +105,11 @@ public class Main
 	{
 		System.out.println("-I- Call FDP ripple Move Algorithm");
 		double startTime = System.currentTimeMillis();
-		fdp.startAlgorithm();
-		fdp.getFloorPlan().legalizeNodes();
+		for(int i=0;i<1;i++){
+			fdp.startAlgorithm();
+			//fdp.getFloorPlan().legalizeNodes();
+			fdp.getFloorPlan().showAllRowLength();
+		}
 		double endTime   = System.currentTimeMillis();
 		double totalTime = (endTime - startTime)/1000;
 		System.out.println("Runtime = " + totalTime + " seconds");
@@ -133,6 +120,7 @@ public class Main
 			fdp.getFloorPlan().printRowNodeListCoor(i, file);
 		}
 		file.deOutFileIO();
+		//floorplan.showAllRowLength();
 		//fdp.getNodeList().printNonTerminalNodeCoordinate();
 	}
 }
