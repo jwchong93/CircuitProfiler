@@ -180,43 +180,6 @@ public class Graph {
 					else {
 						System.out.println("Other Condition....!!!");
 					}
-//						if (!this.moveNodeByWidth(rightNode, lengthToShift, row))
-//						{
-//							//Reached the end of the boundary.
-//							if (accumulatedWidthSize <= this.widthGuard)
-//							{
-//								//This row can fit all the nodes
-//								//Add node to the end of the last line
-//								this.reduceTheWidthSpacing (tempList,lengthToShift);
-//							}
-//							else
-//							{
-//								//This row can not fit all the nodes.
-//								//Change the coordinate of the node and add to the next row.
-//								rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-//								nodeToRemove.add(rightNode);
-//								this.placementList.get(row+1).add(rightNode);
-//							}
-//						}
-//					}
-//					else if (rightNodeCoordinate.getNodeXCoordinate() +rightNode.getNodeWidth() > this.widthGuard)
-//					{
-//						lengthToShift = rightNodeCoordinate.getNodeXCoordinate()+rightNode.getNodeWidth()-this.widthGuard;
-//						if (accumulatedWidthSize <= this.widthGuard)
-//						{
-//							//This row can fit all the nodes
-//							//Add node to the end of the last line
-//							this.reduceTheWidthSpacing (tempList,lengthToShift);
-//						}
-//						else
-//						{
-//							//This row can not fit all the nodes.
-//							//Change the coordinate of the node and add to the next row.
-//							rightNode.setNodeCoordinate(rightNodeCoordinate.getNodeXCoordinate(), rightNodeCoordinate.getNodeYCoordinate()+rowSeperation);
-//							nodeToRemove.add(rightNode);
-//							this.placementList.get(row+1).add(rightNode);
-//						}
-//					}
 				}
 				leftNode = rightNode;
 			}
@@ -231,15 +194,8 @@ public class Graph {
 		NodeCoordinate coordinateOfTheNode = node.getNodeCoordinate();
 		int locationInPlacementList = this.placementList.get(row).indexOf(node);
 		Nodes tempNode = this.placementList.get(row).get(locationInPlacementList);
-//		if (coordinateOfTheNode.getNodeXCoordinate() + width > this.widthGuard)
-//		{
-//			return false; //This node at the end, cannot switch
-//		}
-//		else
-//		{
 			tempNode.setNodeCoordinate(coordinateOfTheNode.getNodeXCoordinate() + width, coordinateOfTheNode.getNodeYCoordinate());
 			return true; //This node can be switch.
-//		}
 	}
 
 	private void sortListBy(ArrayList<Nodes> tempList, int max_size) 
