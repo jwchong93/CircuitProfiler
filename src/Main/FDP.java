@@ -8,8 +8,8 @@ public class FDP {
 	private Graph floorplan;
 	private NetList netlist;
 	
-	public final static int iteration_limit = 3;
-	public final static int abort_limit = 2;
+	public final static int iteration_limit = 500;
+	public final static int abort_limit = 0;
 	
 	public FDP(Graph floorplan, NodeList nodeList, NetList netlist) {
 		this.nodeList = nodeList;
@@ -23,6 +23,7 @@ public class FDP {
 
 		int iteration_count = 0;
 		int abort_count = 0;
+		int abc=0;
 		
 		// sort nodeList by descending order by degree
 		nodeList.sortAllNodeList();
@@ -32,8 +33,9 @@ public class FDP {
 			boolean end_ripple_move = false;
 			Nodes thisNodes = i.next();
 			thisNodes.unlockNode();
+			System.out.println(thisNodes + " " + abc++);
 			while(end_ripple_move == false) {
-				System.out.println(thisNodes);
+				//System.out.println(thisNodes);
 				NodeCoordinate curr_ZFT = thisNodes.computeAndReturnZFT();
 				Nodes node_cond = this.floorplan.nodeInThisLocation(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 				if(node_cond == null) // position is free --okay
@@ -58,8 +60,6 @@ public class FDP {
 				}else if(node_cond.isLock() == true) // ZFT position is occupied and fixed.
 				{
 					//System.out.println("node_cond is LOCKED");
-					//if(thisNodes.calcNodeAllNetHPWL() > thisNodes.calcNewNodeAllNetHPWL(curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate()))
-					//this.floorplan.updateNodeCoordinateNextFreePos(thisNodes, curr_ZFT.getNodeXCoordinate(), curr_ZFT.getNodeYCoordinate());
 					thisNodes.lockNode();
 					end_ripple_move = true;
 					abort_count++;
@@ -99,6 +99,7 @@ public class FDP {
 						rowList.add(thisNodes.getNodeCoordinate().getNodeYCoordinate()/36);
 						rowList.add(node_cond.getNodeCoordinate().getNodeYCoordinate()/36);
 						this.floorplan.legalizeNodes(rowList);
+						thisNodes.lockNode();
 						end_ripple_move = true;
 					}
 					abort_count = 0;
